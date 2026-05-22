@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Relatório Consolidado de Recolhimentos — Abril a Maio 2026 — HealthGo Air</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0d1117; color: #e6edf3; line-height: 1.6; font-size: 13px; padding: 40px; }
+    .container { max-width: 960px; margin: 0 auto; background: #161b22; border: 1px solid #30363d; border-radius: 16px; padding: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+    .header { text-align: center; margin-bottom: 40px; border-bottom: 1px solid #30363d; padding-bottom: 30px; }
+    .header h1 { font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #58a6ff, #a371f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+    .header p { color: #8b949e; font-size: 14px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
+    .stat-card { background: #0d1117; border: 1px solid #30363d; border-radius: 12px; padding: 20px; text-align: center; }
+    .stat-card h3 { color: #8b949e; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+    .stat-card .value { font-size: 32px; font-weight: 800; color: #e6edf3; }
+    .stat-card .trend { font-size: 12px; margin-top: 5px; }
+    .trend.up { color: #f85149; }
+    .trend.neutral { color: #8b949e; }
+    .month-block { margin-bottom: 40px; }
+    .month-title { font-size: 16px; font-weight: 700; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid #30363d; }
+    .month-title::before { content: ''; width: 4px; height: 18px; background: #a371f7; border-radius: 2px; }
+    .month-title.may::before { background: #58a6ff; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+    th { text-align: left; padding: 12px 15px; background: #21262d; color: #8b949e; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+    td { padding: 14px 15px; border-bottom: 1px solid #21262d; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover { background: rgba(88,166,255,0.04); }
+    .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; display: inline-block; }
+    .badge-qualidade { background: rgba(240,136,62,0.15); color: #f0883e; }
+    .badge-desempenho { background: rgba(248,81,73,0.15); color: #f85149; }
+    .badge-ausencia { background: rgba(88,166,255,0.15); color: #58a6ff; }
+    .obs { font-size: 12px; color: #8b949e; display: block; margin-top: 4px; line-height: 1.5; }
+    .reason-count { font-size: 11px; color: #6e7681; font-weight: 400; margin-left: 6px; }
+    .summary-box { background: rgba(163,113,247,0.08); border: 1px solid rgba(163,113,247,0.25); border-radius: 12px; padding: 25px; margin-top: 20px; }
+    .summary-box h4 { color: #d2a8ff; margin-bottom: 12px; font-size: 15px; }
+    .summary-box p { color: #c9d1d9; font-size: 14px; line-height: 1.8; }
+    .reasons-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
+    .reason-card { background: #0d1117; border: 1px solid #30363d; border-radius: 10px; padding: 18px; text-align: center; }
+    .reason-card h5 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; color: #8b949e; }
+    .reason-card .rcount { font-size: 26px; font-weight: 800; }
+    .reason-card .rlabel { font-size: 11px; color: #8b949e; margin-top: 4px; }
+    .rcard-qualidade { border-color: rgba(240,136,62,0.3); }
+    .rcard-qualidade .rcount { color: #f0883e; }
+    .rcard-desempenho { border-color: rgba(248,81,73,0.3); }
+    .rcard-desempenho .rcount { color: #f85149; }
+    .rcard-ausencia { border-color: rgba(88,166,255,0.3); }
+    .rcard-ausencia .rcount { color: #58a6ff; }
+    .footer { text-align: center; margin-top: 40px; padding-top: 25px; border-top: 1px solid #30363d; color: #484f58; font-size: 11px; line-height: 1.8; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Relatório Consolidado de Recolhimentos</h1>
+      <p>Período Analisado: 01 de Abril a 22 de Maio de 2026</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Total de Recolhimentos</h3>
+        <div class="value">40</div>
+        <div class="trend neutral">Relatórios N3 Processados</div>
+      </div>
+      <div class="stat-card">
+        <h3>Causa Principal</h3>
+        <div class="value">32,5%</div>
+        <div class="trend up">Qualidade Insuficiente</div>
+      </div>
+      <div class="stat-card">
+        <h3>Média Mensal</h3>
+        <div class="value">~20</div>
+        <div class="trend neutral">Maio em curso (22 dias)</div>
+      </div>
+    </div>
+
+    <div class="month-block">
+      <div class="month-title">Abril 2026 <span class="reason-count">— 17 recolhimentos</span></div>
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Profissional / Estabelecimento</th>
+            <th>Motivo do Recolhimento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>02/04</td>
+            <td><strong>Alanna Azevedo</strong><span class="obs">Qualidade insuficiente dos dados clínicos reportados.</span></td>
+            <td><span class="badge badge-qualidade">Qualidade Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>08/04</td>
+            <td><strong>Aline Carboni Casado</strong><span class="obs">Desempenho insuficiente na adesão ao protocolo HealthGo.</span></td>
+            <td><span class="badge badge-desempenho">Desempenho Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>09/04</td>
+            <td><strong>Lorena Sagrilo Auer</strong><span class="obs">Ausência/Inassiduidade reiterada durante o período de teste.</span></td>
+            <td><span class="badge badge-ausencia">Ausência / Inassiduidade</span></td>
+          </tr>
+          <tr>
+            <td>22/04</td>
+            <td><strong>Aline Souza</strong><span class="obs">Desempenho insuficiente na execução das rotinas de atendimento.</span></td>
+            <td><span class="badge badge-desempenho">Desempenho Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>23/04</td>
+            <td><strong>Ana Flávia</strong><span class="obs">Desempenho insuficiente nas métricas de acompanhamento do paciente.</span></td>
+            <td><span class="badge badge-desempenho">Desempenho Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>23/04</td>
+            <td><strong>Dalva Maria Alcantara — Gastrocentro</strong><span class="obs">Desempenho insuficiente no cumprimento das metas de uso.</span></td>
+            <td><span class="badge badge-desempenho">Desempenho Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>23/04</td>
+            <td><strong>Renato Lovato Melo</strong><span class="obs">Desempenho insuficiente na utilização adequada do dispositivo HealthGo.</span></td>
+            <td><span class="badge badge-desempenho">Desempenho Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>24/04</td>
+            <td><strong>Centro Médico Aloha</strong><span class="obs">Qualidade insuficiente dos dados coletados — múltiplas inconsistências nos laudos.</span></td>
+            <td><span class="badge badge-qualidade">Qualidade Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>24/04</td>
+            <td><strong>Jorge Alberto Capra Biasuz</strong><span class="obs">Qualidade insuficiente dos dados reportados — laudos com inconsistências.</span></td>
+            <td><span class="badge badge-qualidade">Qualidade Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>28/04</td>
+            <td><strong>Tiago Costa De Almeida</strong><span class="obs">Desempenho insuficiente na adoção do protocolo e treinamento da equipe.</span></td>
+            <td><span class="badge badge-desempenho">Desempenho Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>29/04</td>
+            <td><strong>Carla Moura Fé Elias</strong><span class="obs">Qualidade insuficiente dos laudos e dados clínicos.</span></td>
+            <td><span class="badge badge-qualidade">Qualidade Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>29/04</td>
+            <td><strong>Carla Moura</strong><span class="obs">Desempenho insuficiente na adesão ao protocolo HealthGo Air.</span></td>
+            <td><span class="badge badge-desempenho">Desempenho Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>29/04</td>
+            <td><strong>Ernesto Comelli Júnior</strong><span class="obs">Qualidade insuficiente dos dados clínicos e laudos — falhas recorrentes.</span></td>
+            <td><span class="badge badge-qualidade">Qualidade Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>29/04</td>
+            <td><strong>Instituto de Endo-Video do Aparelho Digestivo Ltda.</strong><span class="obs">Qualidade insuficiente dos dados clínicos e laudos.</span></td>
+            <td><span class="badge badge-qualidade">Qualidade Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>30/04</td>
+            <td><strong>Débora Campello</strong><span class="obs">Qualidade insuficiente dos laudos e dados clínicos — múltiplas inconsistências.</span></td>
+            <td><span class="badge badge-qualidade">Qualidade Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>30/04</td>
+            <td><strong>LR Medeiros Medicina e Saúde Ltda.</strong><span class="obs">Qualidade insuficiente dos laudos e dados clínicos reportados.</span></td>
+            <td><span class="badge badge-qualidade">Qualidade Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>30/04</td>
+            <td><strong>Kaline Nobre</strong><span class="obs">Qualidade insuficiente dos laudos e dados clínicos — falhas na calibração dos registros.</span></td>
+            <td><span class="badge badge-qualidade">Qualidade Insuficiente</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="month-block">
+      <div class="month-title may">Maio 2026 <span class="reason-count">— 23 recolhimentos (até 22/05)</span></div>
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Profissional / Estabelecimento</th>
+            <th>Motivo do Recolhimento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>05/05</td>
+            <td><strong>Aleksandra Pianco Leal</strong><span class="obs">Ausência/Inassiduidade reiterada durante o período de acompanhamento.</span></td>
+            <td><span class="badge badge-ausencia">Ausência / Inassiduidade</span></td>
+          </tr>
+          <tr>
+            <td>05/05</td>
+            <td><strong>Paula Silveira</strong><span class="obs">Ausência/Inassiduidade reiterada — não comparecimento às consultas.</span></td>
+            <td><span class="badge badge-ausencia">Ausência / Inassiduidade</span></td>
+          </tr>
+          <tr>
+            <td>05/05</td>
+            <td><strong>Rita de Cássia Silva</strong><span class="obs">Qualidade insuficiente dos laudos clínicos — múltiplas falhas.</span></td>
+            <td><span class="badge badge-qualidade">Qualidade Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>06/05</td>
+            <td><strong>Cyrla Zaltman</strong><span class="obs">Desempenho insuficiente no cumprimento das rotinas e protocolos.</span></td>
+            <td><span class="badge badge-desempenho">Desempenho Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>06/05</td>
+            <td><strong>Sarah Branco Ribeiro</strong><span class="obs">Ausência/Inassiduidade reiterada — múltiplas faltas.</span></td>
+            <td><span class="badge badge-ausencia">Ausência / Inassiduidade</span></td>
+          </tr>
+          <tr>
+            <td>06/05</td>
+            <td><strong>Marcelo Kalichsztein</strong><span class="obs">Ausência/Inassiduidade reiterada — abandono do programa.</span></td>
+            <td><span class="badge badge-ausencia">Ausência / Inassiduidade</span></td>
+          </tr>
+          <tr>
+            <td>07/05</td>
+            <td><strong>Aline Kusumoto</strong><span class="obs">Inassiduidade — não comparecimento reiterado (licença médica).</span></td>
+            <td><span class="badge badge-ausencia">Ausência / Inassiduidade</span></td>
+          </tr>
+          <tr>
+            <td>07/05</td>
+            <td><strong>Douglas Lazzeris</strong><span class="obs">Qualidade insuficiente dos laudos clínicos e dados reportados.</span></td>
+            <td><span class="badge badge-qualidade">Qualidade Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>07/05</td>
+            <td><strong>Espedito M. Pacifico</strong><span class="obs">Desempenho insuficiente no uso adequado do dispositivo e laudos.</span></td>
+            <td><span class="badge badge-desempenho">Desempenho Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>07/05</td>
+            <td><strong>Jhankarla</strong><span class="obs">Ausência/Inassiduidade reiterada — abandono das consultas.</span></td>
+            <td><span class="badge badge-ausencia">Ausência / Inassiduidade</span></td>
+          </tr>
+          <tr>
+            <td>07/05</td>
+            <td><strong>Juliana Ferrari</strong><span class="obs">Ausência/Inassiduidade reiterada — não comparecimento.</span></td>
+            <td><span class="badge badge-ausencia">Ausência / Inassiduidade</span></td>
+          </tr>
+          <tr>
+            <td>07/05</td>
+            <td><strong>Paulo Nazareno Soares Rosa</strong><span class="obs">Qualidade insuficiente dos laudos clínicos — múltiplas falhas.</span></td>
+            <td><span class="badge badge-qualidade">Qualidade Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>07/05</td>
+            <td><strong>Elias Benjamin Moran Gonzalez</strong><span class="obs">Desempenho insuficiente na adoção do protocolo HealthGo.</span></td>
+            <td><span class="badge badge-desempenho">Desempenho Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>08/05</td>
+            <td><strong>Olivia Duarte de Castro Alves</strong><span class="obs">Desempenho insuficiente no uso adequado do dispositivo e laudos.</span></td>
+            <td><span class="badge badge-desempenho">Desempenho Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>12/05</td>
+            <td><strong>André Lorenzon</strong><span class="obs">Desempenho insuficiente no cumprimento das metas de uso do HealthGo.</span></td>
+            <td><span class="badge badge-desempenho">Desempenho Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>13/05</td>
+            <td><strong>Alanna Alexandre Silva de Azevedo</strong><span class="obs">Ausência/Inassiduidade e Qualidade insuficiente dos laudos clínicos.</span></td>
+            <td><span class="badge badge-ausencia">Ausência / Inassiduidade</span><br><span class="badge badge-qualidade" style="margin-top:4px;">Qualidade Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>13/05</td>
+            <td><strong>Ricardo Tadayoshi</strong><span class="obs">Qualidade insuficiente dos laudos clínicos e dados reportados.</span></td>
+            <td><span class="badge badge-qualidade">Qualidade Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>13/05</td>
+            <td><strong>C e F Sinkos Ltda.</strong><span class="obs">Ausência/Inassiduidade reiterada — abandono do programa de acompanhamento.</span></td>
+            <td><span class="badge badge-ausencia">Ausência / Inassiduidade</span></td>
+          </tr>
+          <tr>
+            <td>13/05</td>
+            <td><strong>LORENZON SERVIÇOS MÉDICOS LTDA.</strong><span class="obs">Ausência/Inassiduidade reiterada — não comparecimento às consultas.</span></td>
+            <td><span class="badge badge-ausencia">Ausência / Inassiduidade</span></td>
+          </tr>
+          <tr>
+            <td>14/05</td>
+            <td><strong>Erika Yvamoto</strong><span class="obs">Qualidade insuficiente dos laudos clínicos e dados reportados — múltiplas inconsistências.</span></td>
+            <td><span class="badge badge-qualidade">Qualidade Insuficiente</span></td>
+          </tr>
+          <tr>
+            <td>14/05</td>
+            <td><strong>Carla Moura Fé Elias</strong><span class="obs">Ausência/Inassiduidade reiterada — múltiplas faltas ao programa.</span></td>
+            <td><span class="badge badge-ausencia">Ausência / Inassiduidade</span></td>
+          </tr>
+          <tr>
+            <td>22/05</td>
+            <td><strong>Marcelo Kalichsztein</strong><span class="obs">Ausência/Inassiduidade reiterada — abandono confirmado do programa.</span></td>
+            <td><span class="badge badge-ausencia">Ausência / Inassiduidade</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="reasons-grid">
+      <div class="reason-card rcard-qualidade">
+        <h5>Qualidade Insuficiente</h5>
+        <div class="rcount">13</div>
+        <div class="rlabel">32,5% do total</div>
+      </div>
+      <div class="reason-card rcard-desempenho">
+        <h5>Desempenho Insuficiente</h5>
+        <div class="rcount">11</div>
+        <div class="rlabel">27,5% do total</div>
+      </div>
+      <div class="reason-card rcard-ausencia">
+        <h5>Ausência / Inassiduidade</h5>
+        <div class="rcount">10</div>
+        <div class="rlabel">25% do total</div>
+      </div>
+    </div>
+
+    <div class="summary-box">
+      <h4>Análise Consolidada</h4>
+      <p>No período de <strong>01 de Abril a 22 de Maio de 2026</strong>, foram processados <strong>40 Relatórios N3</strong>, representando um volume médio de <strong>~20 recolhimentos por mês</strong>. A principal causa de recolhimento é <strong>Qualidade Insuficiente dos laudos clínicos e dados reportados</strong>, responsável por 32,5% dos casos (13 recolhimentos), concentrando-se majoritariamente em Abril — mês que registrou 9 dos 13 casos dessa categoria, evidenciando um problema sistêmico na qualidade da documentação clínica naquele período.</p>
+      <p style="margin-top:10px;">Em <strong>Maio</strong>, observa-se uma mudança de padrão: <strong>Desempenho Insuficiente</strong e <strong>Ausência/Inassiduidade</strong> se tornam as causas dominantes (11 e 10 recolhimentos, respectivamente), sugerindo que os esforços de correção da qualidade documental podem estar gerando resultados. Recomenda-se dar continuidade ao acompanhamento intensivo dos profissionais com histórico de <strong>ausência reiterada</strong>, especialmente os casos de <strong>Centro Médico Aloha</strong>, <strong>Jorge Alberto Capra Biasuz</strong> e <strong>LR Medeiros</strong>, que acumularam recolhimentos em ambas as categorias.</p>
+    </div>
+
+    <div class="footer">
+      Gerado por: <strong>André Luiz de Souza</strong><br>
+      Especialista de Suporte Pleno — N3<br>
+      HealthGo Air Support Intelligence • 22/05/2026
+    </div>
+  </div>
+</body>
+</html>
