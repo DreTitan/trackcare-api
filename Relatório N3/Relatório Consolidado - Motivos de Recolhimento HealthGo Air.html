@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatório Consolidado - Motivos de Recolhimento HealthGo Air</title>
+  <style>
+    @page { size: A4; margin: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 11px; color: #1a1a2e; line-height: 1.4; background: #f5f5f5; }
+    .page { max-width: 210mm; margin: 20px auto; background: white; padding: 15mm 15mm 10mm 15mm; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+
+    /* Header */
+    .header { text-align: center; border-bottom: 3px solid #1a1a2e; padding-bottom: 10px; margin-bottom: 15px; }
+    .header h1 { font-size: 16px; font-weight: bold; color: #1a1a2e; margin-bottom: 3px; }
+    .header .subtitle { font-size: 10px; color: #666; }
+    .header .period { font-size: 11px; font-weight: bold; color: #1a1a2e; margin-top: 5px; }
+
+    /* Sections */
+    .section { margin-bottom: 12px; border: 1px solid #ccc; }
+    .section-header { background: #1a1a2e; color: white; padding: 5px 10px; font-weight: bold; font-size: 10px; text-transform: uppercase; }
+    .section-content { padding: 8px 10px; }
+
+    /* Data Tables */
+    .data-row { display: flex; border-bottom: 1px solid #eee; padding: 3px 0; }
+    .data-row:last-child { border-bottom: none; }
+    .data-label { font-weight: bold; width: 150px; color: #333; }
+    .data-value { flex: 1; color: #1a1a2e; }
+
+    /* Measurements Table */
+    .measurements-table { width: 100%; border-collapse: collapse; font-size: 9px; margin-top: 5px; }
+    .measurements-table th { background: #e0e0e0; border: 1px solid #aaa; padding: 4px; font-weight: bold; text-align: center; }
+    .measurements-table td { border: 1px solid #aaa; padding: 3px; text-align: center; }
+
+    /* Grid Layout */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .four-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+    /* Status Badges */
+    .badge { padding: 2px 8px; border-radius: 3px; font-size: 9px; font-weight: bold; display: inline-block; }
+    .badge-resolvido { background: #4caf50; color: white; }
+    .badge-enviado { background: #f44336; color: white; }
+    .badge-pendente { background: #ff9800; color: white; }
+    .badge-ok { background: #4caf50; color: white; }
+    .badge-fora { background: #f44336; color: white; }
+
+    /* Consolidade Table */
+    .consolidado-table { width: 100%; border-collapse: collapse; font-size: 9px; margin-top: 10px; }
+    .consolidado-table th { background: #1a1a2e; color: white; border: 1px solid #333; padding: 5px; font-weight: bold; text-align: center; }
+    .consolidado-table td { border: 1px solid #999; padding: 4px 5px; vertical-align: top; }
+    .consolidado-table tr:nth-child(even) { background: #f9f9f9; }
+
+    /* Footer */
+    .footer { margin-top: 15px; padding-top: 10px; border-top: 1px solid #ccc; font-size: 9px; color: #666; text-align: center; }
+
+    /* Page Breaks */
+    .page-break { page-break-after: always; }
+
+    /* Analysis Section */
+    .analysis-text { font-size: 10px; line-height: 1.5; }
+
+    /* Print Styles */
+    @media print {
+      body { background: white; }
+      .page { box-shadow: none; margin: 0; }
+      .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- CONSOLIDADO -->
+<div class="page">
+  <div class="header">
+    <h1>RELATÓRIO CONSOLIDADO - MOTIVOS DE RECOLHIMENTO</h1>
+    <div class="subtitle">HealthGo Air — Sistema de Monitoramento Respiratório</div>
+    <div class="period">Período Analisado: 01 de Abril a 22 de Maio de 2026</div>
+  </div>
+
+  <table class="consolidado-table">
+    <thead>
+      <tr>
+        <th style="width:60px;">Data</th>
+        <th style="width:180px;">Profissional / Estabelecimento</th>
+        <th style="width:70px;">HGID</th>
+        <th style="width:70px;">Nº Série</th>
+        <th style="width:65px;">H2 (PPM)</th>
+        <th style="width:65px;">CH4 (PPM)</th>
+        <th style="width:80px;">Condição Sensores</th>
+        <th>Problema Identificado / Conclusão</th>
+        <th style="width:90px;">Ação Recomendada</th>
+        <th style="width:60px;">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- ABRIL -->
+      <tr>
+        <td style="text-align:center; font-weight:bold;" colspan="10">► ABRIL 2026</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">02/04/2026</td>
+        <td><strong>Alanna Azevedo</strong></td>
+        <td style="text-align:center;">25082501</td>
+        <td style="text-align:center;">25082501</td>
+        <td style="text-align:center;">13</td>
+        <td style="text-align:center;">2.2</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Dados clínicos insuficientes; não atingiu meta de 80% de adesão ao protocolo.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-resolvido">Resolvido</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">08/04/2026</td>
+        <td><strong>Aline Carboni Casado</strong></td>
+        <td style="text-align:center;">25090909</td>
+        <td style="text-align:center;">25090909</td>
+        <td style="text-align:center;">12</td>
+        <td style="text-align:center;">2.2</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Desempenho insuficiente na adesão ao protocolo HealthGo. Sensores TGS2611 acima do padrão; IMO constante 4.4 PPM.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-resolvido">Resolvido</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">09/04/2026</td>
+        <td><strong>Lorena Sagrilo Auer</strong></td>
+        <td style="text-align:center;">25101802</td>
+        <td style="text-align:center;">25101802</td>
+        <td style="text-align:center;">10</td>
+        <td style="text-align:center;">2.1</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Inassiduidade reiterada; abandonou programa de acompanhamento. 0 consultas realizadas.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-pendente">Pendente</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">22/04/2026</td>
+        <td><strong>Aline Souza</strong></td>
+        <td style="text-align:center;">25090919</td>
+        <td style="text-align:center;">25090919</td>
+        <td style="text-align:center;">11</td>
+        <td style="text-align:center;">2.2</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Execução abaixo do esperado; apenas 3 dos 7 exames programados realizados.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-resolvido">Resolvido</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">23/04/2026</td>
+        <td><strong>Ana Flávia</strong></td>
+        <td style="text-align:center;">25090917</td>
+        <td style="text-align:center;">25090917</td>
+        <td style="text-align:center;">8</td>
+        <td style="text-align:center;">2.2</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Sensores H2 fora do padrão desde o início; não respondeu ao recalibramento proposto.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-enviado">Enviado</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">23/04/2026</td>
+        <td><strong>Dalva Maria Alcantara — Gastrocentro</strong></td>
+        <td style="text-align:center;">25090922</td>
+        <td style="text-align:center;">25090922</td>
+        <td style="text-align:center;">12</td>
+        <td style="text-align:center;">2.2</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Estabelecimento não conseguiu implementar o protocolo de uso do dispositivo HealthGo.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-pendente">Pendente</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">23/04/2026</td>
+        <td><strong>Renato Lovato Melo</strong></td>
+        <td style="text-align:center;">25121601</td>
+        <td style="text-align:center;">25121601</td>
+        <td style="text-align:center;">45</td>
+        <td style="text-align:center;">5.4</td>
+        <td style="text-align:center;"><span class="badge badge-fora">FORA DO PADRÃO</span></td>
+        <td>Contaminação por umidade no TGS2611 (Fábrica). Basais muito acima do padrão. LED vermelho no sensor.</td>
+        <td style="text-align:center;"><strong>Troca de Sensor</strong></td>
+        <td style="text-align:center;"><span class="badge badge-enviado">Enviado</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">24/04/2026</td>
+        <td><strong>Centro Médico Aloha</strong></td>
+        <td style="text-align:center;">25090911</td>
+        <td style="text-align:center;">25090911</td>
+        <td style="text-align:center;">16</td>
+        <td style="text-align:center;">2.4</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Qualidade dos laudos clínicos insuficientes; múltiplas inconsistências nos registros de H2/CH4.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-pendente">Pendente</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">24/04/2026</td>
+        <td><strong>Jorge Alberto Capra Biasuz</strong></td>
+        <td style="text-align:center;">25082507</td>
+        <td style="text-align:center;">25082507</td>
+        <td style="text-align:center;">14</td>
+        <td style="text-align:center;">2.3</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Laudos com dados inconsistentes; não seguiu protocolo de calibração. Basais elevados.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-pendente">Pendente</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">28/04/2026</td>
+        <td><strong>Tiago Costa De Almeida</strong></td>
+        <td style="text-align:center;">25090920</td>
+        <td style="text-align:center;">25090920</td>
+        <td style="text-align:center;">12</td>
+        <td style="text-align:center;">2.2</td>
+        <td style="text-align:center;"><span class="badge badge-fora">FORA DO PADRÃO</span></td>
+        <td>LED vermelho; falha de autenticação HTU. Equipamento apresentando problemas de hardware.</td>
+        <td style="text-align:center;"><strong>Troca de Dispositivo</strong></td>
+        <td style="text-align:center;"><span class="badge badge-resolvido">Resolvido</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">29/04/2026</td>
+        <td><strong>Carla Moura Fé Elias</strong></td>
+        <td style="text-align:center;">25090918</td>
+        <td style="text-align:center;">25090918</td>
+        <td style="text-align:center;">15</td>
+        <td style="text-align:center;">2.3</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Laudos clínicos com múltiplas falhas; dados incompletos e fora do padrão esperado.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-resolvido">Resolvido</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">29/04/2026</td>
+        <td><strong>Carla Moura</strong></td>
+        <td style="text-align:center;">25090910</td>
+        <td style="text-align:center;">25090910</td>
+        <td style="text-align:center;">13</td>
+        <td style="text-align:center;">2.2</td>
+        <td style="text-align:center;"><span class="badge badge-fora">FORA DO PADRÃO</span></td>
+        <td>Sensores TGS2611-C11 com IMO de 4.4 PPM acima do limite. Não atingiu meta de uso.</td>
+        <td style="text-align:center;"><strong>Recalibragem</strong></td>
+        <td style="text-align:center;"><span class="badge badge-enviado">Enviado</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">29/04/2026</td>
+        <td><strong>Ernesto Comelli Júnior</strong></td>
+        <td style="text-align:center;">25090923</td>
+        <td style="text-align:center;">25090923</td>
+        <td style="text-align:center;">17</td>
+        <td style="text-align:center;">2.5</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Qualidade dos dados clínicos insuficiente; falhas recorrentes nos laudos e calibração.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-pendente">Pendente</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">29/04/2026</td>
+        <td><strong>Instituto de Endo-Video do Aparelho Digestivo Ltda.</strong></td>
+        <td style="text-align:center;">25121602</td>
+        <td style="text-align:center;">25121602</td>
+        <td style="text-align:center;">14</td>
+        <td style="text-align:center;">2.3</td>
+        <td style="text-align:center;"><span class="badge badge-fora">FORA DO PADRÃO</span></td>
+        <td>Laudos com basais > 40 PPM persistentes; falha no sensor de H2. Necesidade de recalibragem.</td>
+        <td style="text-align:center;"><strong>Recalibragem</strong></td>
+        <td style="text-align:center;"><span class="badge badge-pendente">Pendente</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">30/04/2026</td>
+        <td><strong>Débora Campello</strong></td>
+        <td style="text-align:center;">25090925</td>
+        <td style="text-align:center;">25090925</td>
+        <td style="text-align:center;">18</td>
+        <td style="text-align:center;">2.6</td>
+        <td style="text-align:center;"><span class="badge badge-fora">FORA DO PADRÃO</span></td>
+        <td>Sensores com IMO constante de 4.4 PPM; múltiplas inconsistências nos laudos clínicos.</td>
+        <td style="text-align:center;"><strong>Troca de Sensor</strong></td>
+        <td style="text-align:center;"><span class="badge badge-enviado">Enviado</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">30/04/2026</td>
+        <td><strong>LR Medeiros Medicina e Saúde Ltda.</strong></td>
+        <td style="text-align:center;">25090927</td>
+        <td style="text-align:center;">25090927</td>
+        <td style="text-align:center;">16</td>
+        <td style="text-align:center;">2.4</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Laudos com dados incompletos; múltiplas falhas na calibração e leitura dos sensores.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-pendente">Pendente</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">30/04/2026</td>
+        <td><strong>Kaline Nobre</strong></td>
+        <td style="text-align:center;">25090928</td>
+        <td style="text-align:center;">25090928</td>
+        <td style="text-align:center;">19</td>
+        <td style="text-align:center;">2.7</td>
+        <td style="text-align:center;"><span class="badge badge-fora">FORA DO PADRÃO</span></td>
+        <td>Laudos com basais persistentemente elevados (> 40 PPM); falhas na calibração dos registros.</td>
+        <td style="text-align:center;"><strong>Recalibragem</strong></td>
+        <td style="text-align:center;"><span class="badge badge-pendente">Pendente</span></td>
+      </tr>
+
+      <!-- MAIO -->
+      <tr>
+        <td style="text-align:center; font-weight:bold;" colspan="10">► MAIO 2026</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">05/05/2026</td>
+        <td><strong>Aleksandra Pianco Leal</strong></td>
+        <td style="text-align:center;">25122601</td>
+        <td style="text-align:center;">25122601</td>
+        <td style="text-align:center;">10</td>
+        <td style="text-align:center;">2.0</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Inassiduidade reiterada; abandonou o programa de acompanhamento sem justificativa.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-pendente">Pendente</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">05/05/2026</td>
+        <td><strong>Paula Silveira</strong></td>
+        <td style="text-align:center;">25122602</td>
+        <td style="text-align:center;">25122602</td>
+        <td style="text-align:center;">11</td>
+        <td style="text-align:center;">2.1</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Não comparecimento às consultas agendadas; múltiplas ausências consecutivas.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-pendente">Pendente</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">05/05/2026</td>
+        <td><strong>Rita de Cássia Silva</strong></td>
+        <td style="text-align:center;">25092606</td>
+        <td style="text-align:center;">25092606</td>
+        <td style="text-align:center;">22</td>
+        <td style="text-align:center;">3.1</td>
+        <td style="text-align:center;"><span class="badge badge-fora">FORA DO PADRÃO</span></td>
+        <td>Basais > 40 PPM persistentes; falha no sensor de H2. Necesidade de troca do sensor.</td>
+        <td style="text-align:center;"><strong>Troca de Sensor</strong></td>
+        <td style="text-align:center;"><span class="badge badge-enviado">Enviado</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">06/05/2026</td>
+        <td><strong>Cyrla Zaltman</strong></td>
+        <td style="text-align:center;">25122603</td>
+        <td style="text-align:center;">25122603</td>
+        <td style="text-align:center;">12</td>
+        <td style="text-align:center;">2.2</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Desempenho insuficiente no cumprimento das rotinas e protocolos estabelecidos.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-resolvido">Resolvido</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">06/05/2026</td>
+        <td><strong>Sarah Branco Ribeiro</strong></td>
+        <td style="text-align:center;">25122604</td>
+        <td style="text-align:center;">25122604</td>
+        <td style="text-align:center;">10</td>
+        <td style="text-align:center;">2.0</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Inassiduidade reiterada; múltiplas faltas sem comunicação prévia.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-pendente">Pendente</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">06/05/2026</td>
+        <td><strong>Marcelo Kalichsztein</strong></td>
+        <td style="text-align:center;">25122605</td>
+        <td style="text-align:center;">25122605</td>
+        <td style="text-align:center;">11</td>
+        <td style="text-align:center;">2.1</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Abandono do programa de acompanhamento; sem retorno às tentativas de contato.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-pendente">Pendente</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">07/05/2026</td>
+        <td><strong>Aline Kusumoto</strong></td>
+        <td style="text-align:center;">25122606</td>
+        <td style="text-align:center;">25122606</td>
+        <td style="text-align:center;">10</td>
+        <td style="text-align:center;">2.0</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Inassiduidade por licença médica; não comparecimento reiterado ao programa.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-pendente">Pendente</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">07/05/2026</td>
+        <td><strong>Douglas Lazzeris</strong></td>
+        <td style="text-align:center;">25122607</td>
+        <td style="text-align:center;">25122607</td>
+        <td style="text-align:center;">16</td>
+        <td style="text-align:center;">2.4</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Qualidade insuficiente dos laudos clínicos e dados reportados; múltiplas inconsistências.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-enviado">Enviado</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">07/05/2026</td>
+        <td><strong>Espedito M. Pacifico</strong></td>
+        <td style="text-align:center;">25122608</td>
+        <td style="text-align:center;">25122608</td>
+        <td style="text-align:center;">13</td>
+        <td style="text-align:center;">2.2</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Desempenho insuficiente no uso adequado do dispositivo HealthGo e laudos.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-resolvido">Resolvido</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">07/05/2026</td>
+        <td><strong>Jhankarla</strong></td>
+        <td style="text-align:center;">25122609</td>
+        <td style="text-align:center;">25122609</td>
+        <td style="text-align:center;">10</td>
+        <td style="text-align:center;">2.0</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Abandono das consultas programadas; múltiplas tentativas de contato sem sucesso.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-pendente">Pendente</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">07/05/2026</td>
+        <td><strong>Juliana Ferrari</strong></td>
+        <td style="text-align:center;">25122610</td>
+        <td style="text-align:center;">25122610</td>
+        <td style="text-align:center;">11</td>
+        <td style="text-align:center;">2.1</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Não comparecimento reiterado; abandono do programa de acompanhamento.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-pendente">Pendente</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">07/05/2026</td>
+        <td><strong>Paulo Nazareno Soares Rosa</strong></td>
+        <td style="text-align:center;">25082501</td>
+        <td style="text-align:center;">25082501</td>
+        <td style="text-align:center;">15</td>
+        <td style="text-align:center;">2.3</td>
+        <td style="text-align:center;"><span class="badge badge-fora">FORA DO PADRÃO</span></td>
+        <td>Valores basais de H2 elevados; curvas flatline. Sensor de H2 fora do padrão.</td>
+        <td style="text-align:center;"><strong>Troca de Sensor</strong></td>
+        <td style="text-align:center;"><span class="badge badge-resolvido">Resolvido</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">07/05/2026</td>
+        <td><strong>Elias Benjamin Moran Gonzalez</strong></td>
+        <td style="text-align:center;">25122611</td>
+        <td style="text-align:center;">25122611</td>
+        <td style="text-align:center;">12</td>
+        <td style="text-align:center;">2.2</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Desempenho insuficiente na adoção do protocolo HealthGo Air.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-resolvido">Resolvido</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">08/05/2026</td>
+        <td><strong>Olivia Duarte de Castro Alves</strong></td>
+        <td style="text-align:center;">25120402</td>
+        <td style="text-align:center;">25120402</td>
+        <td style="text-align:center;">12</td>
+        <td style="text-align:center;">2.2</td>
+        <td style="text-align:center;"><span class="badge badge-fora">FORA DO PADRÃO</span></td>
+        <td>Instabilidade física na entrada USB-C; não houve coleta de dados por 3 dias.</td>
+        <td style="text-align:center;"><strong>Troca de Dispositivo</strong></td>
+        <td style="text-align:center;"><span class="badge badge-resolvido">Resolvido</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">12/05/2026</td>
+        <td><strong>André Lorenzon</strong></td>
+        <td style="text-align:center;">25122612</td>
+        <td style="text-align:center;">25122612</td>
+        <td style="text-align:center;">13</td>
+        <td style="text-align:center;">2.2</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Desempenho insuficiente no cumprimento das metas de uso do HealthGo Air.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-resolvido">Resolvido</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">13/05/2026</td>
+        <td><strong>Alanna Alexandre Silva de Azevedo</strong></td>
+        <td style="text-align:center;">25122613</td>
+        <td style="text-align:center;">25122613</td>
+        <td style="text-align:center;">14</td>
+        <td style="text-align:center;">2.3</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Dupla causa: inassiduidade reiterada + qualidade insuficiente dos laudos clínicos.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-enviado">Enviado</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">13/05/2026</td>
+        <td><strong>Ricardo Tadayoshi</strong></td>
+        <td style="text-align:center;">25122614</td>
+        <td style="text-align:center;">25122614</td>
+        <td style="text-align:center;">16</td>
+        <td style="text-align:center;">2.4</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Qualidade insuficiente dos laudos clínicos e dados reportados.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-enviado">Enviado</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">13/05/2026</td>
+        <td><strong>C e F Sinkos Ltda.</strong></td>
+        <td style="text-align:center;">25122615</td>
+        <td style="text-align:center;">25122615</td>
+        <td style="text-align:center;">10</td>
+        <td style="text-align:center;">2.0</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Abandono do programa de acompanhamento; sem retorno às tentativas de contato.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-pendente">Pendente</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">13/05/2026</td>
+        <td><strong>LORENZON SERVIÇOS MÉDICOS LTDA.</strong></td>
+        <td style="text-align:center;">25122616</td>
+        <td style="text-align:center;">25122616</td>
+        <td style="text-align:center;">11</td>
+        <td style="text-align:center;">2.1</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Não comparecimento às consultas agendadas; múltiplas ausências consecutivas.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-pendente">Pendente</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">14/05/2026</td>
+        <td><strong>Erika Yvamoto</strong></td>
+        <td style="text-align:center;">25122617</td>
+        <td style="text-align:center;">25122617</td>
+        <td style="text-align:center;">17</td>
+        <td style="text-align:center;">2.5</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Qualidade insuficiente dos laudos clínicos e dados reportados; múltiplas inconsistências.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-enviado">Enviado</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">14/05/2026</td>
+        <td><strong>Carla Moura Fé Elias</strong></td>
+        <td style="text-align:center;">25090918</td>
+        <td style="text-align:center;">25090918</td>
+        <td style="text-align:center;">11</td>
+        <td style="text-align:center;">2.1</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Inassiduidade reiterada; múltiplas faltas ao programa de acompanhamento.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-pendente">Pendente</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center;">22/05/2026</td>
+        <td><strong>Marcelo Kalichsztein</strong></td>
+        <td style="text-align:center;">25122605</td>
+        <td style="text-align:center;">25122605</td>
+        <td style="text-align:center;">11</td>
+        <td style="text-align:center;">2.1</td>
+        <td style="text-align:center;"><span class="badge badge-ok">OK</span></td>
+        <td>Abandono confirmado do programa após múltiplas tentativas de reativação.</td>
+        <td style="text-align:center;"><strong>Recolhimento</strong></td>
+        <td style="text-align:center;"><span class="badge badge-enviado">Enviado</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer" style="margin-top:20px;">
+    <strong>RESUMO CONSOLIDADO:</strong> 40 Recolhimentos | 17 em Abril | 23 em Maio<br>
+    <strong>Status:</strong> Resolvidos: 10 | Pendentes: 12 | Enviados: 10<br>
+    <br>
+    Gerado por: <strong>André Luiz de Souza</strong> — Especialista de Suporte Pleno — N3<br>
+    HealthGo Air Support Intelligence • 22/05/2026
+  </div>
+</div>
+
+</body>
+</html>
