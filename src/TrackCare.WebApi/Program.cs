@@ -85,4 +85,7 @@ app.UseCors("AllowReactApp");
 app.UseAuthorization();
 app.MapControllers();
 
+// Railway health check endpoint
+app.MapGet("/", () => Results.Ok(new { status = "ok", timestamp = DateTime.UtcNow }));
+
 app.Run();
