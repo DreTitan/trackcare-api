@@ -4,10 +4,10 @@ EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["TrackCare.WebApi/TrackCare.WebApi.csproj", "TrackCare.WebApi/"]
-COPY ["TrackCare.Application/TrackCare.Application.csproj", "TrackCare.Application/"]
-COPY ["TrackCare.Domain/TrackCare.Domain.csproj", "TrackCare.Domain/"]
-COPY ["TrackCare.Infrastructure/TrackCare.Infrastructure.csproj", "TrackCare.Infrastructure/"]
+COPY ["src/TrackCare.WebApi/TrackCare.WebApi.csproj", "TrackCare.WebApi/"]
+COPY ["src/TrackCare.Application/TrackCare.Application.csproj", "TrackCare.Application/"]
+COPY ["src/TrackCare.Domain/TrackCare.Domain.csproj", "TrackCare.Domain/"]
+COPY ["src/TrackCare.Infrastructure/TrackCare.Infrastructure.csproj", "TrackCare.Infrastructure/"]
 RUN dotnet restore "TrackCare.WebApi/TrackCare.WebApi.csproj"
 COPY . ./
 WORKDIR "/src/TrackCare.WebApi"
