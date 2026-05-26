@@ -1,0 +1,15 @@
+{
+  "$schema": "https://aka.ms/web-app-publishing.schema",
+  "configurations": {
+    "Azure": {
+      "premiumFree": {
+        "appName": "trackcare-api",
+        "subscription": "SUA_ASSINATURA_AZURE",
+        "resourceGroup": "trackcare-rg",
+        "sku": "Free",
+        "region": "Brazil South",
+        "appServicePlan": "trackcare-plan"
+      }
+    }
+  }
+}

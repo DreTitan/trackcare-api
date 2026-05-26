@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthGo - Revisão Técnica de Sistemas</title>
+    <style>
+        :root {
+            --primary: #00f2fe; --secondary: #4facfe; --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7); --text: #f1f5f9; --text-dim: #94a3b8; --accent: #fb7185;
+        }
+        body {
+            font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text);
+            margin: 0; padding: 40px 20px; line-height: 1.6;
+            background-image: radial-gradient(at 0% 0%, hsla(210,100%,10%,1) 0, transparent 50%), radial-gradient(at 100% 100%, hsla(200,100%,10%,1) 0, transparent 50%);
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 50px; }
+        h1 { font-size: 2.8rem; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
+        .system-card { background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 35px; margin-bottom: 30px; border-left: 5px solid var(--primary); }
+        .badge { color: var(--primary); font-size: 0.8rem; font-weight: bold; text-transform: uppercase; border: 1px solid var(--primary); padding: 4px 12px; border-radius: 50px; display: inline-block; margin-bottom: 15px; }
+        .section-title { color: var(--primary); font-weight: bold; margin-top: 25px; margin-bottom: 10px; }
+        ul { list-style: none; padding: 0; }
+        li { margin-bottom: 8px; padding-left: 20px; position: relative; }
+        li::before { content: '→'; position: absolute; left: 0; color: var(--secondary); }
+        .impact-box { background: rgba(251, 113, 133, 0.1); border-left: 4px solid var(--accent); padding: 20px; border-radius: 10px; margin-top: 25px; }
+        .impact-title { color: var(--accent); font-weight: bold; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HealthGo Tech Review</h1>
+            <p style="color: var(--text-dim)">Relatório Consolidado de Sistemas Internos</p>
+        </header>
+        
+        <div class="system-card">
+            <span class="badge">Software de Ponta (Cliente)</span>
+            <h2 style="margin: 0 0 10px 0">HealthGoClient</h2>
+            <p style="color: var(--text-dim)">Interface principal utilizada por médicos e técnicos em clínicas para a execução de exames de sopro em tempo real. O software atua como a ponte entre o hardware HealthGo Air e o profissional de saúde.</p>
+            <div class="section-title">⚡ FUNÇÃO</div><p>Realizar a coleta de dados dos sensores, visualização gráfica de curvas basais (H2/CH4), geração de relatórios de exames, sincronização de dados com a nuvem e interface para calibração guiada.</p>
+            <div class="section-title">🛠️ REQUISITOS</div><ul><li>Sistema Operacional: Windows 10 ou 11 (x64)</li><li>Hardware: Porta USB 2.0/3.0 funcional para conexão com o dispositivo</li><li>Drivers: Drivers de comunicação Serial/USB atualizados (FTDI/Silicon Labs)</li><li>Conectividade: Internet estável para login e sincronização de dados</li><li>Hardware Adicional: Dispositivo HealthGo Air com firmware compatível</li></ul>
+            <div class="section-title">🚧 GARGALOS</div><ul><li>Falhas de Reconhecimento: Problemas frequentes de detecção na porta COM/USB.</li><li>Autenticação HTU: Erros de segurança que impedem o reconhecimento do dispositivo no software.</li><li>Limites de Calibração: Travamento do sistema após atingir 250 exames ou 1 ano sem manutenção.</li><li>Conflitos de Drivers: Incompatibilidade com outros dispositivos periféricos na mesma máquina.</li></ul>
+            <div class="impact-box"><div class="impact-title">🎯 IMPACTO NA DEVOLUTIVA</div><p>A impossibilidade de conexão ou falha no software interrompe a agenda da clínica, causando atrasos no atendimento ao paciente e gerando uma percepção de instabilidade técnica do produto.</p></div>
+        </div>
+        
+        <div class="system-card">
+            <span class="badge">Plataforma Interna de Gestão e Suporte</span>
+            <h2 style="margin: 0 0 10px 0">HealthGoStudio</h2>
+            <p style="color: var(--text-dim)">Ferramenta avançada de uso interno (Níveis N2 e N3) para monitoramento, diagnóstico e manutenção remota do parque de dispositivos ativos.</p>
+            <div class="section-title">⚡ FUNÇÃO</div><p>Análise profunda de logs técnicos, execução de SVM (Self Verification Mode), atualização remota de firmware, verificação de offsets de sensores e auditoria de hardware em tempo real.</p>
+            <div class="section-title">🛠️ REQUISITOS</div><ul><li>Navegador: Google Chrome ou Microsoft Edge (versões recentes)</li><li>Acesso: Autenticação via SSO ou VPN da empresa</li><li>Permissões: Nível de acesso configurado no HubSpot/Database (N2/N3)</li><li>Conectividade: Conexão de alta velocidade para visualização de logs volumosos</li></ul>
+            <div class="section-title">🚧 GARGALOS</div><ul><li>Latência de Dados: Atraso na sincronização entre o que ocorre no HealthGoClient e o que aparece no Studio.</li><li>Complexidade da Interface: Curva de aprendizado elevada para novos analistas de suporte.</li><li>Dependência de Status: Comandos remotos (como SVM) exigem que o software do cliente esteja aberto e conectado.</li><li>Carga do Banco de Dados: Lentidão ocasional ao buscar históricos de dispositivos com muitos exames.</li></ul>
+            <div class="impact-box"><div class="impact-title">🎯 IMPACTO NA DEVOLUTIVA</div><p>É a 'caixa preta' que permite resolver problemas sem recolhimento físico. Se o Studio falha, o tempo de análise técnica aumenta, impactando diretamente o SLA de devolução e aumentando custos logísticos.</p></div>
+        </div>
+        
+    </div>
+</body>
+</html>

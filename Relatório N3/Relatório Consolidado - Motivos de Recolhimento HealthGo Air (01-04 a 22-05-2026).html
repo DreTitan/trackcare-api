@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Relatório Consolidado — Motivos de Recolhimento HealthGo Air</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+    line-height: 1.7;
+    font-size: 11px;
+    padding: 0;
+  }
+
+  .page {
+    padding: 40px 48px;
+    page-break-after: always;
+    min-height: 100%;
+  }
+  .page:last-child { page-break-after: avoid; }
+
+  .report-header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 2px solid #30363d;
+    position: relative;
+  }
+  .report-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, #58a6ff, #a371f7, #f778ba);
+  }
+  .report-header h1 {
+    font-size: 22px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #58a6ff, #a371f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .report-header .subtitle {
+    color: #8b949e;
+    font-size: 11px;
+    font-weight: 400;
+  }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .meta-item {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 10px 14px;
+    text-align: center;
+  }
+  .meta-item .label { color: #8b949e; font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .meta-item .value { color: #e6edf3; font-size: 12px; font-weight: 600; margin-top: 2px; }
+
+  h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #e6edf3;
+    margin: 28px 0 14px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #21262d;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h2 .num {
+    background: linear-gradient(135deg, #58a6ff, #a371f7);
+    color: #0d1117;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e6edf3;
+    margin: 20px 0 10px 0;
+  }
+
+  .exec-summary {
+    background: linear-gradient(135deg, #161b22 0%, #1c2333 100%);
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .exec-summary p {
+    color: #c9d1d9;
+    font-size: 11.5px;
+    line-height: 1.8;
+  }
+  .highlight { color: #58a6ff; font-weight: 600; }
+  .highlight-warn { color: #f0883e; font-weight: 600; }
+  .highlight-danger { color: #f85149; font-weight: 600; }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .stat-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .stat-card.blue::before { background: linear-gradient(90deg, #58a6ff, #79c0ff); }
+  .stat-card.red::before { background: linear-gradient(90deg, #f85149, #ff7b72); }
+  .stat-card.purple::before { background: linear-gradient(90deg, #a371f7, #d2a8ff); }
+  .stat-card.green::before { background: linear-gradient(90deg, #3fb950, #56d364); }
+  .stat-card .stat-value { font-size: 24px; font-weight: 800; color: #e6edf3; }
+  .stat-card .stat-label { font-size: 9px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 12px 0;
+    font-size: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #30363d;
+  }
+  thead th {
+    background: #161b22;
+    color: #8b949e;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #30363d;
+  }
+  tbody td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #21262d;
+    color: #c9d1d9;
+    vertical-align: top;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: #161b22; }
+  .rank-cell {
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .pct-bar {
+    display: inline-block;
+    height: 6px;
+    border-radius: 3px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 9px;
+    font-weight: 600;
+  }
+  .badge-critical { background: rgba(248,81,73,0.15); color: #f85149; }
+  .badge-high { background: rgba(240,136,62,0.15); color: #f0883e; }
+  .badge-medium { background: rgba(210,168,255,0.15); color: #d2a8ff; }
+  .badge-programmed { background: rgba(63,185,80,0.15); color: #3fb950; }
+
+  .chart-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    margin: 20px 0;
+    padding: 20px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+  }
+  .chart-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10.5px;
+    color: #c9d1d9;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .legend-pct { color: #8b949e; font-size: 10px; margin-left: auto; padding-left: 12px; font-weight: 600; }
+
+  .alert {
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 10.5px;
+    line-height: 1.7;
+    border-left: 4px solid;
+  }
+  .alert-warning {
+    background: rgba(240,136,62,0.08);
+    border-color: #f0883e;
+    color: #f0883e;
+  }
+  .alert-danger {
+    background: rgba(248,81,73,0.08);
+    border-color: #f85149;
+    color: #ff7b72;
+  }
+  .alert-info {
+    background: rgba(88,166,255,0.08);
+    border-color: #58a6ff;
+    color: #79c0ff;
+  }
+  .alert-important {
+    background: rgba(163,113,247,0.08);
+    border-color: #a371f7;
+    color: #d2a8ff;
+  }
+  .alert-title {
+    font-weight: 700;
+    font-size: 11px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .timeline {
+    position: relative;
+    padding: 10px 0 10px 24px;
+    margin: 16px 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, #58a6ff, #a371f7, #f778ba);
+    border-radius: 2px;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #58a6ff;
+    border: 2px solid #0d1117;
+  }
+  .timeline-date {
+    font-size: 10px;
+    font-weight: 600;
+    color: #58a6ff;
+    min-width: 70px;
+  }
+  .timeline-text {
+    font-size: 10px;
+    color: #c9d1d9;
+  }
+  .timeline-month {
+    font-size: 11px;
+    font-weight: 700;
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 10px 0 6px 0;
+    padding-left: 0;
+    position: relative;
+  }
+
+  .category-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0 12px 0;
+    padding: 12px 16px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+  }
+  .category-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .category-info h3 { margin: 0; font-size: 12px; }
+  .category-info .cat-stats { color: #8b949e; font-size: 10px; margin-top: 2px; }
+
+  .rec-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .rec-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 14px;
+    border-left: 3px solid;
+  }
+  .rec-card.critical { border-left-color: #f85149; }
+  .rec-card.important { border-left-color: #f0883e; }
+  .rec-card.improvement { border-left-color: #58a6ff; }
+  .rec-card .rec-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #e6edf3;
+    margin-bottom: 4px;
+  }
+  .rec-card .rec-text {
+    font-size: 10px;
+    color: #8b949e;
+    line-height: 1.6;
+  }
+
+  .report-footer {
+    text-align: center;
+    padding: 20px 0 0 0;
+    margin-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #484f58;
+    font-size: 9px;
+  }
+
+  .page-break { page-break-before: always; }
+
+  .conclusion-box {
+    background: linear-gradient(135deg, rgba(88,166,255,0.05), rgba(163,113,247,0.05));
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .conclusion-box p {
+    color: #c9d1d9;
+    font-size: 11.5px;
+    line-height: 1.8;
+  }
+
+  .bold { font-weight: 700; }
+  .text-muted { color: #8b949e; }
+
+  @media print {
+    body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: Cover + Summary + Ranking -->
+<div class="page">
+  <div class="report-header">
+    <h1>Relatório Consolidado de Recolhimento</h1>
+    <div class="subtitle">Principais Motivos de Recolhimento — Aparelhos HealthGo Air</div>
+    <div class="meta-grid">
+      <div class="meta-item">
+        <div class="label">Data de Emissão</div>
+        <div class="value">22/05/2026</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Período Analisado</div>
+        <div class="value">01/04 a 22/05/2026</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Base de Dados</div>
+        <div class="value">31 Relatórios N3</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="stats-row">
+    <div class="stat-card blue">
+      <div class="stat-value">31</div>
+      <div class="stat-label">Total Recolhimentos</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-value">96,8%</div>
+      <div class="stat-label">Falhas Corretivas</div>
+    </div>
+    <div class="stat-card purple">
+      <div class="stat-value">5</div>
+      <div class="stat-label">Categorias de Falha</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-value">90,3%</div>
+      <div class="stat-label">Top 3 Causas</div>
+    </div>
+  </div>
+
+  <!-- Executive Summary -->
+  <h2><span class="num">1</span> Resumo Executivo</h2>
+  <div class="exec-summary">
+    <p>
+      Foram analisados <span class="highlight">31 relatórios N3</span> de investigação de produto (FRGH.049) no período de 01/04 a 22/05/2026.
+      Todos os casos resultaram em <span class="highlight-danger">recolhimento do equipamento</span>.
+      A análise identificou <span class="highlight">5 categorias principais de falha</span>, sendo as mais recorrentes:
+      <span class="highlight-warn">falha/descalibração de sensores</span> (45,2%),
+      <span class="highlight-warn">falha de autenticação do HTU</span> (25,8%) e
+      <span class="highlight-warn">falha nas bombas pneumáticas</span> (19,4%).
+      Juntas, essas três categorias representam <span class="highlight-danger">90,3% de todos os recolhimentos</span>.
+      Foram identificados <span class="highlight-danger">3 equipamentos novos</span> que falharam no treinamento/utilização e
+      <span class="highlight-danger">padrão recorrente de contaminação na calibração de fábrica</span>.
+    </p>
+  </div>
+
+  <!-- Ranking Table -->
+  <h2><span class="num">2</span> Ranking de Motivos de Recolhimento</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:30px">#</th>
+        <th>Categoria de Falha</th>
+        <th style="width:40px; text-align:center">Qtd.</th>
+        <th style="width:70px; text-align:center">%</th>
+        <th style="width:80px; text-align:center">Gravidade</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="rank-cell" style="color:#e3b341">1</td>
+        <td>🟡 Falha / Descalibração de Sensores</td>
+        <td style="text-align:center; font-weight:700">14</td>
+        <td style="text-align:center">45,2% <span class="pct-bar" style="width:90px; background:linear-gradient(90deg,#e3b341,#f5d547)"></span></td>
+        <td style="text-align:center"><span class="badge badge-high">Alta</span></td>
+      </tr>
+      <tr>
+        <td class="rank-cell" style="color:#f85149">2</td>
+        <td>🔴 Falha de Autenticação do HTU (LED vermelho)</td>
+        <td style="text-align:center; font-weight:700">8</td>
+        <td style="text-align:center">25,8% <span class="pct-bar" style="width:52px; background:linear-gradient(90deg,#f85149,#ff7b72)"></span></td>
+        <td style="text-align:center"><span class="badge badge-critical">Crítica</span></td>
+      </tr>
+      <tr>
+        <td class="rank-cell" style="color:#f0883e">3</td>
+        <td>🟠 Falha nas Bombas Pneumáticas / Válvulas</td>
+        <td style="text-align:center; font-weight:700">6</td>
+        <td style="text-align:center">19,4% <span class="pct-bar" style="width:39px; background:linear-gradient(90deg,#f0883e,#f5a623)"></span></td>
+        <td style="text-align:center"><span class="badge badge-critical">Crítica</span></td>
+      </tr>
+      <tr>
+        <td class="rank-cell" style="color:#58a6ff">4</td>
+        <td>🔵 Falha de Conexão / Hardware Geral (USB-C)</td>
+        <td style="text-align:center; font-weight:700">2</td>
+        <td style="text-align:center">6,5% <span class="pct-bar" style="width:13px; background:linear-gradient(90deg,#58a6ff,#79c0ff)"></span></td>
+        <td style="text-align:center"><span class="badge badge-high">Alta</span></td>
+      </tr>
+      <tr>
+        <td class="rank-cell" style="color:#3fb950">5</td>
+        <td>🟢 Manutenção Preventiva (250 exames)</td>
+        <td style="text-align:center; font-weight:700">1</td>
+        <td style="text-align:center">3,2% <span class="pct-bar" style="width:6px; background:linear-gradient(90deg,#3fb950,#56d364)"></span></td>
+        <td style="text-align:center"><span class="badge badge-programmed">Programada</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pie Chart -->
+  <div class="chart-container">
+    <svg width="180" height="180" viewBox="0 0 180 180">
+      <!-- Pie slices - 45.2%, 25.8%, 19.4%, 6.5%, 3.2% -->
+      <!-- Slice 1: Sensores 45.2% = 162.7deg -->
+      <circle cx="90" cy="90" r="70" fill="none" stroke="#e3b341" stroke-width="36" stroke-dasharray="198.76 329.87" stroke-dashoffset="0" transform="rotate(-90 90 90)"/>
+      <!-- Slice 2: HTU 25.8% = 92.9deg -->
+      <circle cx="90" cy="90" r="70" fill="none" stroke="#f85149" stroke-width="36" stroke-dasharray="113.56 329.87" stroke-dashoffset="-198.76" transform="rotate(-90 90 90)"/>
+      <!-- Slice 3: Bombas 19.4% = 69.8deg -->
+      <circle cx="90" cy="90" r="70" fill="none" stroke="#f0883e" stroke-width="36" stroke-dasharray="85.39 384.85" stroke-dashoffset="-312.32" transform="rotate(-90 90 90)"/>
+      <!-- Slice 4: Conexão 6.5% = 23.4deg -->
+      <circle cx="90" cy="90" r="70" fill="none" stroke="#58a6ff" stroke-width="36" stroke-dasharray="28.60 412.34" stroke-dashoffset="-397.71" transform="rotate(-90 90 90)"/>
+      <!-- Slice 5: Preventiva 3.2% -->
+      <circle cx="90" cy="90" r="70" fill="none" stroke="#3fb950" stroke-width="36" stroke-dasharray="14.08 412.34" stroke-dashoffset="-426.31" transform="rotate(-90 90 90)"/>
+      <circle cx="90" cy="90" r="52" fill="#161b22"/>
+      <text x="90" y="86" text-anchor="middle" font-size="18" font-weight="800" fill="#e6edf3">31</text>
+      <text x="90" y="100" text-anchor="middle" font-size="8" fill="#8b949e">RECOLHIMENTOS</text>
+    </svg>
+    <div class="chart-legend">
+      <div class="legend-item"><span class="legend-dot" style="background:#e3b341"></span>Falha/Descalibração Sensores<span class="legend-pct">45,2%</span></div>
+      <div class="legend-item"><span class="legend-dot" style="background:#f85149"></span>Falha Autenticação HTU<span class="legend-pct">25,8%</span></div>
+      <div class="legend-item"><span class="legend-dot" style="background:#f0883e"></span>Falha Bombas/Válvulas<span class="legend-pct">19,4%</span></div>
+      <div class="legend-item"><span class="legend-dot" style="background:#58a6ff"></span>Falha Conexão/Hardware<span class="legend-pct">6,5%</span></div>
+      <div class="legend-item"><span class="legend-dot" style="background:#3fb950"></span>Manutenção Preventiva<span class="legend-pct">3,2%</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: Detailed Categories -->
+<div class="page">
+  <h2><span class="num">3</span> Detalhamento por Categoria</h2>
+
+  <!-- 3.1 Sensores/Calibração -->
+  <div class="category-header">
+    <div class="category-icon" style="background:rgba(227,179,65,0.15)">🟡</div>
+    <div class="category-info">
+      <h3>3.1 — Falha / Descalibração de Sensores</h3>
+      <div class="cat-stats">14 casos — 45,2% do total — Gravidade Alta</div>
+    </div>
+  </div>
+  <p style="color:#8b949e; margin-bottom:8px; font-size:10.5px">
+    Sensores operando fora dos parâmetros de calibração, gerando valores incorretos, curvas flat, basais elevados ou leituras erradas. Inclui contaminação por umidade na fábrica.
+  </p>
+  <table>
+    <thead>
+      <tr><th>Cliente</th><th>Data</th><th>Nº Série</th><th>HGID</th><th>Observações</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Dra. Aline Souza (Endoclin)</td><td>10/04/2026</td><td>202602240001</td><td>26012320</td><td>Valores H2 marcando errado. Curvas flat após SVM</td></tr>
+      <tr><td>Dr. Espedito M Pacifico</td><td>14/04/2026</td><td>202506100007</td><td>26022301</td><td>Falha na placa dos sensores da câmara</td></tr>
+      <tr><td>Dr. Douglas Lazzeris</td><td>15/04/2026</td><td>202507300012</td><td>26031803</td><td>⚠ Sensor fora do conversor MCP3564. Reincidência</td></tr>
+      <tr><td>Dra. Jhankarla</td><td>23/04/2026</td><td>202601210004</td><td>26010806</td><td>Valores elevados de H2 e CH4</td></tr>
+      <tr><td>Sarah Branco Ribeiro</td><td>29/04/2026</td><td>202603030002</td><td>26030503</td><td>Basais H2 elevados, CH4 >10 PPM</td></tr>
+      <tr><td>C e F Sinkos Ltda</td><td>29/04/2026</td><td>202511250002</td><td>25101018</td><td>Falha na autenticação do sensor de temperatura</td></tr>
+      <tr><td>Dr. Paulo Nazareno</td><td>04/05/2026</td><td>202509020003</td><td>25082501</td><td>Valores basais H2 elevados; curvas flat</td></tr>
+      <tr><td>Dra. Aline Carboni</td><td>04/05/2026</td><td>202509190005</td><td>25090909</td><td>Sensor TGS2611 acima do padrão; IMO constante</td></tr>
+      <tr><td>Dra. Rita de Cássia</td><td>06/05/2026</td><td>202510130004</td><td>25092606</td><td>Basais >40 PPM persistentes; falha no sensor</td></tr>
+      <tr><td>Dr. Renato Lovato</td><td>08/05/2026</td><td>202512290001</td><td>25121601</td><td>⚠ Contaminação por umidade na calibração fábrica</td></tr>
+      <tr><td>Dr. Jorge Capra Biasuz</td><td>11/05/2026</td><td>202506100001</td><td>25061123</td><td>Sensores fora de calibração; mal contato interno</td></tr>
+      <tr><td>Dra. Alanna Alexandre</td><td>13/05/2026</td><td>202512290005</td><td>26011310</td><td>⚠ Contaminação dos sensores na calibração fábrica</td></tr>
+      <tr><td>Dra. Juliana Ferrari</td><td>16/05/2026</td><td>202510060006</td><td>25091806</td><td>Basal H2 elevado; sensors fora do padrão</td></tr>
+      <tr><td>Dra. Carla Moura Fé Elias</td><td>16/05/2026</td><td>202603090015</td><td>26030601</td><td>Comportamento linear/estático nos sensores; curvas idênticas</td></tr>
+    </tbody>
+  </table>
+  <div class="alert alert-danger">
+    <div class="alert-title">🚨 PADRÃO CRÍTICO IDENTIFICADO</div>
+    <strong>Dr. Renato Lovato e Dra. Alanna Alexandre:</strong> Contaminação por umidade durante calibração na fábrica. Este padrão indica <strong>falha no controle de qualidade do ambiente de calibração</strong> que precisa ser investigado e corrigido imediatamente.
+  </div>
+
+  <!-- 3.2 HTU -->
+  <div class="category-header">
+    <div class="category-icon" style="background:rgba(248,81,73,0.15)">🔴</div>
+    <div class="category-info">
+      <h3>3.2 — Falha de Autenticação do HTU</h3>
+      <div class="cat-stats">8 casos — 25,8% do total — Gravidade Crítica</div>
+    </div>
+  </div>
+  <p style="color:#8b949e; margin-bottom:8px; font-size:10.5px">
+    O HTU (módulo de autenticação do hardware) não autentica no software, resultando em <strong style="color:#f85149">LED vermelho piscando</strong> e impossibilidade de uso.
+  </p>
+  <table>
+    <thead>
+      <tr><th>Cliente</th><th>Data</th><th>Nº Série</th><th>HGID</th><th>Observações</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Dra. Carla Moura (Neurogastro)</td><td>01/04/2026</td><td>202602270001</td><td>26022404</td><td style="color:#f85149; font-weight:600">⚠ Equipamento NOVO — falhou no treinamento</td></tr>
+      <tr><td>Dra. Débora Campello</td><td>06/04/2026</td><td>202601150002</td><td>26010804</td><td>Falha identificada nos logs do debug</td></tr>
+      <tr><td>Dra. Kaline Nobre</td><td>09/04/2026</td><td>202509260008</td><td>26021005</td><td>Possível deslocamento na placa ou falha de encaixe</td></tr>
+      <tr><td>Centro Médico Aloha</td><td>10/04/2026</td><td>202506240015</td><td>25062512</td><td>GoPremium. Falha identificada via terminal debug</td></tr>
+      <tr><td>Dr. Ernesto Comelli Junior</td><td>15/04/2026</td><td>202603130008</td><td>26031901</td><td style="color:#f85149; font-weight:600">⚠ Equipamento NOVO — nunca utilizado</td></tr>
+      <tr><td>Dra. Ana Flávia (Bios)</td><td>20/04/2026</td><td>202603230019</td><td>26040203</td><td style="color:#f85149; font-weight:600">⚠ Equipamento NOVO — nunca utilizado</td></tr>
+      <tr><td>Dr. Tiago Costa De Almeida</td><td>06/05/2026</td><td>202510130003</td><td>25090920</td><td>LED vermelho; falha de autenticação HTU</td></tr>
+      <tr><td>LORENZON Serv. Médicos</td><td>18/05/2026</td><td>202604240002</td><td>26042401</td><td>GoPremium. Reserva. Falha TGS2611</td></tr>
+    </tbody>
+  </table>
+  <div class="alert alert-warning">
+    <div class="alert-title">⚠️ ATENÇÃO — EQUIPAMENTOS NOVOS COM FALHA</div>
+    <strong>3 equipamentos novos</strong> apresentaram falha de HTU (Dra. Carla Moura, Dr. Ernesto Comelli, Dra. Ana Flávia), indicando possível falha de fabricação/montagem no controle de qualidade.
+  </div>
+
+  <!-- 3.3 Bombas -->
+  <div class="category-header">
+    <div class="category-icon" style="background:rgba(240,136,62,0.15)">🟠</div>
+    <div class="category-info">
+      <h3>3.3 — Falha nas Bombas Pneumáticas / Válvulas</h3>
+      <div class="cat-stats">6 casos — 19,4% do total — Gravidade Crítica</div>
+    </div>
+  </div>
+  <p style="color:#8b949e; margin-bottom:8px; font-size:10.5px">
+    Bombas pneumáticas travaram, resultando em ausência de sons, valores repetidos e impossibilidade de realizar limpezas automáticas.
+  </p>
+  <table>
+    <thead>
+      <tr><th>Cliente</th><th>Data</th><th>Nº Série</th><th>HGID</th><th>Observações</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Dra. Dalva Maria Alcantara</td><td>01/04/2026</td><td>202511240003</td><td>25101707</td><td>Sem barulho. Valores H2 = CH4 constantes</td></tr>
+      <tr><td>Dr. André Lorenzon</td><td>09/04/2026</td><td>202506270006</td><td>25062913</td><td>GoPremium. Bombas funcionaram brevemente e pararam</td></tr>
+      <tr><td>Dr. Marcelo Kalichsztein</td><td>13/04/2026</td><td>202503020007</td><td>25062423</td><td>Bombas travaram fechadas, válvulas OK</td></tr>
+      <tr><td>Dra. Aleksandra Pianco Leal</td><td>15/04/2026</td><td>202508130003</td><td>25080803</td><td>Calibração feita com quantidade maior de gás</td></tr>
+      <tr><td>Instituto Endo-Video</td><td>28/04/2026</td><td>202509180001</td><td>25090914</td><td>GoPremium. Bombas pararam, válvulas OK</td></tr>
+      <tr><td>LR Medeiros Medicina</td><td>28/04/2026</td><td>202603090012</td><td>26022402</td><td>Falha autenticação sensor temperatura HTU</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PAGE 3: More categories and stats -->
+<div class="page">
+  <!-- 3.4 Conexão/Hardware -->
+  <div class="category-header">
+    <div class="category-icon" style="background:rgba(88,166,255,0.15)">🔵</div>
+    <div class="category-info">
+      <h3>3.4 — Falha de Conexão / Hardware Geral</h3>
+      <div class="cat-stats">2 casos — 6,5% do total — Gravidade Alta</div>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr><th>Cliente</th><th>Data</th><th>Nº Série</th><th>HGID</th><th>Observações</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Dra. Erika Yvamoto</td><td>10/04/2026</td><td>202506100006</td><td>25061223</td><td>LED queimado, falha de conexão com software</td></tr>
+      <tr><td>Dra. OLIVIA DUARTE</td><td>08/05/2026</td><td>202512100006</td><td>25120402</td><td>Instabilidade física na entrada USB-C</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 3.5 Preventiva -->
+  <div class="category-header">
+    <div class="category-icon" style="background:rgba(63,185,80,0.15)">🟢</div>
+    <div class="category-info">
+      <h3>3.5 — Manutenção Preventiva</h3>
+      <div class="cat-stats">1 caso — 3,2% do total — Programada</div>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr><th>Cliente</th><th>Data</th><th>Nº Série</th><th>HGID</th><th>Observações</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Dra. Aline Kusumoto</td><td>15/04/2026</td><td>202504280005</td><td>25051622</td><td>Atingiu 250 exames, calibração fora de conformidade</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="num">4</span> Estatísticas Gerais</h2>
+  <table>
+    <thead>
+      <tr><th>Indicador</th><th style="text-align:center">Valor</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Total de recolhimentos</td><td style="text-align:center; font-weight:700">31</td></tr>
+      <tr><td>Falhas corretivas (não programadas)</td><td style="text-align:center; font-weight:700; color:#f85149">30 (96,8%)</td></tr>
+      <tr><td>Manutenção preventiva</td><td style="text-align:center; font-weight:700; color:#3fb950">1 (3,2%)</td></tr>
+      <tr><td>Casos com Go Premium</td><td style="text-align:center; font-weight:700">7 (22,6%)</td></tr>
+      <tr><td>Equipamentos novos com falha</td><td style="text-align:center; font-weight:700; color:#f0883e">3 (9,7%)</td></tr>
+      <tr><td>Casos de reincidência</td><td style="text-align:center; font-weight:700; color:#f85149">1 (3,2%)</td></tr>
+      <tr><td>Contaminação fábrica identificada</td><td style="text-align:center; font-weight:700; color:#f85149">2 (6,5%)</td></tr>
+      <tr><td>Tentativas de SVM sem sucesso</td><td style="text-align:center; font-weight:700">20+ casos</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="num">5</span> Linha do Tempo dos Recolhimentos</h2>
+  <div style="background:#161b22; border:1px solid #30363d; border-radius:12px; padding:16px 20px;">
+    <div class="timeline">
+      <div class="timeline-month">Abril 2026</div>
+      <div class="timeline-item"><span class="timeline-date">01/04</span><span class="timeline-text">Dra. Carla Moura — Falha HTU (equip. novo)</span></div>
+      <div class="timeline-item"><span class="timeline-date">01/04</span><span class="timeline-text">Dra. Dalva Maria Alcantara — Falha bombas/válvulas</span></div>
+      <div class="timeline-item"><span class="timeline-date">06/04</span><span class="timeline-text">Dra. Débora Campello — Falha autenticação HTU</span></div>
+      <div class="timeline-item"><span class="timeline-date">09/04</span><span class="timeline-text">Dr. André Lorenzon — Falha bombas pneumáticas</span></div>
+      <div class="timeline-item"><span class="timeline-date">09/04</span><span class="timeline-text">Dra. Kaline Nobre — Falha autenticação HTU</span></div>
+      <div class="timeline-item"><span class="timeline-date">10/04</span><span class="timeline-text">Centro Médico Aloha — Falha HTU</span></div>
+      <div class="timeline-item"><span class="timeline-date">10/04</span><span class="timeline-text">Dra. Aline Souza — Descalibração sensores H2</span></div>
+      <div class="timeline-item"><span class="timeline-date">10/04</span><span class="timeline-text">Dra. Erika Yvamoto — LED queimado / falha conexão</span></div>
+      <div class="timeline-item"><span class="timeline-date">13/04</span><span class="timeline-text">Dr. Marcelo Kalichsztein — Bombas travaram fechadas</span></div>
+      <div class="timeline-item"><span class="timeline-date">14/04</span><span class="timeline-text">Dr. Espedito M Pacifico — Falha placa sensores</span></div>
+      <div class="timeline-item"><span class="timeline-date">15/04</span><span class="timeline-text">Dr. Ernesto Comelli — Falha HTU (equip. novo)</span></div>
+      <div class="timeline-item"><span class="timeline-date">15/04</span><span class="timeline-text">Dra. Aleksandra Pianco — Falha bomba pneumática</span></div>
+      <div class="timeline-item"><span class="timeline-date">15/04</span><span class="timeline-text">Dra. Aline Kusumoto — Manutenção preventiva</span></div>
+      <div class="timeline-item"><span class="timeline-date">15/04</span><span class="timeline-text">Dr. Douglas Lazzeris — Sensor fora MCP3564</span></div>
+      <div class="timeline-item"><span class="timeline-date">20/04</span><span class="timeline-text">Dra. Ana Flávia — Falha HTU (equip. novo)</span></div>
+      <div class="timeline-item"><span class="timeline-date">23/04</span><span class="timeline-text">Dra. Jhankarla — Valores elevados H2/CH4</span></div>
+      <div class="timeline-item"><span class="timeline-date">28/04</span><span class="timeline-text">Instituto Endo-Video — Falha bombas pneumáticas</span></div>
+      <div class="timeline-item"><span class="timeline-date">28/04</span><span class="timeline-text">LR Medeiros — Falha autenticação HTU</span></div>
+      <div class="timeline-item"><span class="timeline-date">29/04</span><span class="timeline-text">Sarah Branco — Falha calibração sensores</span></div>
+      <div class="timeline-item"><span class="timeline-date">29/04</span><span class="timeline-text">C e F Sinkos — Falha sensor temperatura</span></div>
+
+      <div class="timeline-month">Maio 2026</div>
+      <div class="timeline-item"><span class="timeline-date">04/05</span><span class="timeline-text">Dr. Paulo Nazareno — Descalibração sensores H2</span></div>
+      <div class="timeline-item"><span class="timeline-date">04/05</span><span class="timeline-text">Dra. Aline Carboni — Sensor TGS2611 elevado</span></div>
+      <div class="timeline-item"><span class="timeline-date">06/05</span><span class="timeline-text">Dra. Rita de Cássia — Basais elevados >40 PPM</span></div>
+      <div class="timeline-item"><span class="timeline-date">06/05</span><span class="timeline-text">Dr. Tiago Costa — Falha autenticação HTU</span></div>
+      <div class="timeline-item"><span class="timeline-date">08/05</span><span class="timeline-text">Dr. Renato Lovato — Contaminação fábrica (TGS2611)</span></div>
+      <div class="timeline-item"><span class="timeline-date">08/05</span><span class="timeline-text">Dra. OLIVIA DUARTE — Instabilidade USB-C</span></div>
+      <div class="timeline-item"><span class="timeline-date">11/05</span><span class="timeline-text">Dr. Jorge Capra — Sensores fora calibração</span></div>
+      <div class="timeline-item"><span class="timeline-date">13/05</span><span class="timeline-text">Dra. Alanna Alexandre — Contaminação fábrica</span></div>
+      <div class="timeline-item"><span class="timeline-date">16/05</span><span class="timeline-text">Dra. Juliana Ferrari — Sensores fora padrão</span></div>
+      <div class="timeline-item"><span class="timeline-date">16/05</span><span class="timeline-text">Dra. Carla Moura Fé — Sensores travados/lineares</span></div>
+      <div class="timeline-item"><span class="timeline-date">18/05</span><span class="timeline-text">LORENZON Serv. Médicos — Falha HTU/TGS2611</span></div>
+      <div class="timeline-item"><span class="timeline-date">21/05</span><span class="timeline-text">Dra. Cyrla Zaltman — Sensores fora (substituição)</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4: Recommendations and Conclusion -->
+<div class="page">
+  <h2><span class="num">6</span> Recomendações</h2>
+  <h3 style="color:#f85149; font-size:11px; margin-bottom:8px">🔴 Críticas</h3>
+  <div class="rec-grid">
+    <div class="rec-card critical">
+      <div class="rec-title">1. Contaminação na Calibração de Fábrica</div>
+      <div class="rec-text">2 casos identificados (Dr. Renato Lovato e Dra. Alanna Alexandre) com contaminação por umidade. Revisar urgentemente o ambiente e processo de calibração na fábrica.</div>
+    </div>
+    <div class="rec-card critical">
+      <div class="rec-title">2. Equipamentos Novos com Falha</div>
+      <div class="rec-text">3 equipamentos novos falharam no primeiro uso (Dra. Carla Moura, Dr. Ernesto Comelli, Dra. Ana Flávia). Reforçar controle de qualidade na linha de produção.</div>
+    </div>
+    <div class="rec-card critical">
+      <div class="rec-title">3. Autenticação HTU</div>
+      <div class="rec-text">8 casos (25,8%). Investigar relação com lotes específicos de placas ou processo de encaixe/soldagem.</div>
+    </div>
+  </div>
+  <h3 style="color:#f0883e; font-size:11px; margin-bottom:8px">🟠 Importantes</h3>
+  <div class="rec-grid">
+    <div class="rec-card important">
+      <div class="rec-title">4. Bombas Pneumáticas</div>
+      <div class="rec-text">6 casos (19,4%). Componente com alta taxa de falha. Revisar fornecedor, materiais e processo de montagem.</div>
+    </div>
+    <div class="rec-card important">
+      <div class="rec-title">5. Calibração de Sensores</div>
+      <div class="rec-text">14 casos (45,2%) — maior categoria. Revisão do processo de calibração na fábrica e possível redução do intervalo de manutenção preventiva.</div>
+    </div>
+  </div>
+  <h3 style="color:#58a6ff; font-size:11px; margin-bottom:8px">🔵 Melhorias</h3>
+  <div class="rec-grid">
+    <div class="rec-card improvement">
+      <div class="rec-title">6. Monitoramento Proativo</div>
+      <div class="rec-text">Alertas automáticos no dashboard quando parâmetros saírem dos limites, antecipando falhas.</div>
+    </div>
+    <div class="rec-card improvement">
+      <div class="rec-title">7. Rastreabilidade por Lote</div>
+      <div class="rec-text">Cruzar números de série para identificar lotes de fabricação problemáticos.</div>
+    </div>
+  </div>
+
+  <h2><span class="num">7</span> Conclusão</h2>
+  <div class="conclusion-box">
+    <p>
+      Os <span class="highlight">três principais motivos de recolhimento</span> — falha/descalibração de sensores, falha de autenticação HTU e falha nas bombas pneumáticas — representam juntos
+      <span class="highlight-danger">90,3% de todos os casos</span>.
+      O <span class="bold">aumento significativo</span> na taxa de falhas de sensores (de 25% para 45,2%) e a identificação de <span class="highlight-warn">contaminação na calibração de fábrica</span>
+      são sinais de alerta críticos que demandam <span class="bold">ação imediata na cadeia de produção e controle de qualidade</span>.
+      A reincidência de equipamentos novos com falha reforça a necessidade de revisar os processos de inspeção final antes do envio ao cliente.
+    </p>
+  </div>
+
+  <div class="report-footer">
+    <p>Relatório gerado em 22/05/2026 • Produto: HealthGo Air • Documento: FRGH.049 • Analista: André Luiz de Souza</p>
+    <p style="margin-top:4px">Sistema de Gestão da Qualidade — HealthGo</p>
+  </div>
+</div>
+
+</body>
+</html>

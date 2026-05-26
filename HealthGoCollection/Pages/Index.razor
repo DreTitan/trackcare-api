@@ -1,0 +1,162 @@
+@page "/"
+@inject IRecolhimentoService RecolhimentoService
+@inject NavigationManager Navigation
+
+<PageTitle>Dashboard - HealthGo Collection</PageTitle>
+
+<MudText Typo="Typo.h4" Class="mb-4">
+    <MudIcon Icon="@Icons.Material.Filled.Dashboard" Class="mr-2" />
+    Dashboard
+</MudText>
+
+@if (_stats == null)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-4" />
+}
+else
+{
+    <MudGrid>
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Elevation="2" Class="pa-4" Style="@($"background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%); color: white; border-radius: 12px;")">
+                <MudIcon Icon="@Icons.Material.Filled.Assignment" Size="Size.Large" Class="mb-2" />
+                <MudText Typo="Typo.h4" Class="font-weight-bold">@_stats.TotalAtivos</MudText>
+                <MudText Typo="Typo.body2" Style="opacity: 0.9;">Recolhimentos Ativos</MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Elevation="2" Class="pa-4" Style="@($"background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: white; border-radius: 12px;")">
+                <MudIcon Icon="@Icons.Material.Filled.Schedule" Size="Size.Large" Class="mb-2" />
+                <MudText Typo="Typo.h4" Class="font-weight-bold">@_stats.AguardaColeta</MudText>
+                <MudText Typo="Typo.body2" Style="opacity: 0.9;">Aguardam Coleta</MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Elevation="2" Class="pa-4" Style="@($"background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%); color: white; border-radius: 12px;")">
+                <MudIcon Icon="@Icons.Material.Filled.Build" Size="Size.Large" Class="mb-2" />
+                <MudText Typo="Typo.h4" Class="font-weight-bold">@_stats.EmReparo</MudText>
+                <MudText Typo="Typo.body2" Style="opacity: 0.9;">Em Reparo</MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Elevation="2" Class="pa-4" Style="@($"background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: white; border-radius: 12px;")">
+                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Large" Class="mb-2" />
+                <MudText Typo="Typo.h4" Class="font-weight-bold">@_stats.EncerradosMes</MudText>
+                <MudText Typo="Typo.body2" Style="opacity: 0.9;">Encerrados (Mês)</MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    <MudGrid Class="mt-4">
+        <MudItem xs="12" md="8">
+            <MudPaper Elevation="2" Class="pa-4">
+                <MudText Typo="Typo.h6" Class="mb-4">
+                    <MudIcon Icon="@Icons.Material.Filled.List" Class="mr-2" />
+                    Recolhimentos Recentes
+                </MudText>
+
+                <MudTable Items="@_recolhimentosRecentes" Hover="true" Striped="true" Dense="true">
+                    <HeaderContent>
+                        <MudTh>HGID</MudTh>
+                        <MudTh>Cliente</MudTh>
+                        <MudTh>Status</MudTh>
+                        <MudTh>Solicitação</MudTh>
+                        <MudTh>Ações</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="HGID">
+                            <MudChip T="string" Size="Size.Small" Color="Color.Primary" Variant="Variant.Outlined">
+                                @context.Hgid
+                            </MudChip>
+                        </MudTd>
+                        <MudTd DataLabel="Cliente">@context.ClienteNome</MudTd>
+                        <MudTd DataLabel="Status">
+                            <StatusChip Status="@context.Status" />
+                        </MudTd>
+                        <MudTd DataLabel="Solicitação">@context.DataSolicitacao.ToString("dd/MM/yyyy")</MudTd>
+                        <MudTd DataLabel="Ações">
+                            <MudIconButton Icon="@Icons.Material.Filled.Visibility"
+                                           Color="Color.Info"
+                                           Size="Size.Small"
+                                           Href="@($"/recolhimentos/detalhe/{context.Id}")" />
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+
+                @if (_recolhimentosRecentes.Count == 0)
+                {
+                    <MudAlert Severity="Severity.Info" Class="mt-4">
+                        Nenhum recolhimento encontrado.
+                        <MudLink Href="/recolhimentos/novo" Class="ml-2">
+                            Criar novo recolhimento
+                        </MudLink>
+                    </MudAlert>
+                }
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="4">
+            <MudPaper Elevation="2" Class="pa-4">
+                <MudText Typo="Typo.h6" Class="mb-4">
+                    <MudIcon Icon="@Icons.Material.Filled.Speed" Class="mr-2" />
+                    Métricas
+                </MudText>
+
+                <MudList T="string" Dense="true">
+                    <MudListItem Icon="@Icons.Material.Filled.Timer">
+                        <MudText><strong>Tempo Médio:</strong> @_stats.TempoMedioDias dias</MudText>
+                    </MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.TrendingUp">
+                        <MudText><strong>SLA Cumprido:</strong> @_stats.TaxaSLA%</MudText>
+                    </MudListItem>
+                </MudList>
+
+                <MudDivider Class="my-4" />
+
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           FullWidth="true"
+                           Href="/recolhimentos/novo"
+                           StartIcon="@Icons.Material.Filled.Add">
+                    Novo Recolhimento
+                </MudButton>
+
+                <MudButton Variant="Variant.Outlined"
+                           Color="Color.Primary"
+                           FullWidth="true"
+                           Class="mt-2"
+                           Href="/recolhimentos"
+                           StartIcon="@Icons.Material.Filled.List">
+                    Ver Todos
+                </MudButton>
+            </MudPaper>
+
+            <MudPaper Elevation="2" Class="pa-4 mt-4">
+                <MudText Typo="Typo.h6" Class="mb-4">
+                    <MudIcon Icon="@Icons.Material.Filled.Info" Class="mr-2" />
+                    Status do Sistema
+                </MudText>
+                <MudChip T="string" Color="Color.Success" Icon="@Icons.Material.Filled.CheckCircle">
+                    Online
+                </MudChip>
+                <MudText Typo="Typo.caption" Class="ml-2">
+                    @DateTime.Now.ToString("dd/MM/yyyy HH:mm")
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+}
+
+@code {
+    private DashboardStats? _stats;
+    private List<Recolhimento> _recolhimentosRecentes = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _stats = await RecolhimentoService.GetDashboardStatsAsync();
+        var todos = await RecolhimentoService.GetAllAsync();
+        _recolhimentosRecentes = todos.Take(5).ToList();
+    }
+}

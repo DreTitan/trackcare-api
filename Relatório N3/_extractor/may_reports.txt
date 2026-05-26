@@ -1,0 +1,45 @@
+RELATÓRIOS DO PERÍODO 04/05 A 08/05/2026
+============================================================
+
+Data: 04/05/2026
+Cliente: Paulo Nazareno Soares Rosa
+Série: 202509020003 | HGID: 25082501
+Categoria: Falha / Descalibração de Sensores
+Problema cliente: Cliente aponta que os valores basais de H2 estão elevados
+Constatado suporte: Problema na calibração
+------------------------------------------------------------
+Data: 08/05/2026
+Cliente: Renato Lovato Melo
+Série: 202512290001 | HGID: 25121601
+Categoria: Falha / Descalibração de Sensores
+Problema cliente: Cliente está reclamando de todos os valores de CH4 elevados, já foram realizadas 3 SVM's e não solucionou. Cliente solicita o recolhimento do aparelho para recalibração na fábrica.
+Constatado suporte: Falha de calibração
+------------------------------------------------------------
+Data: 06/05/2026
+Cliente: Tiago Costa De Almeida
+Série: 202510130003 | HGID: 25090920
+Categoria: Falha de Autenticação do HTU (LED vermelho)
+Problema cliente: Equipamento piscando o Led vermelho
+Constatado suporte: Problema na autenticação de componentes internos
+------------------------------------------------------------
+Data: 04/05/2026
+Cliente: Aline Carboni Casado
+Série: 202509190005 | HGID: 25090909
+Categoria: Falha / Descalibração de Sensores
+Problema cliente: Aponta que todos os exames estão se apresentando com IMO positivo, valores sempre se mostram elevados.
+Constatado suporte: Problema na calibração
+------------------------------------------------------------
+Data: 08/05/2026
+Cliente: OLIVIA DUARTE DE CASTRO ALVES
+Série: 202512100006 | HGID: 25120402
+Categoria: Falha de Conexão / Hardware Geral
+Problema cliente: Falha de hardware - Entrada C com mau contato
+Constatado suporte: Problema na autenticação de componentes internos
+------------------------------------------------------------
+Data: 06/05/2026
+Cliente: RITA DE CÁSSIA SILVA
+Série: 202510130004 | HGID: 25092606
+Categoria: Falha / Descalibração de Sensores
+Problema cliente: Descreve basais elevados para H2 e não elevação de H2 após ingestão de substrato.
+Constatado suporte: Problema na calibração
+------------------------------------------------------------

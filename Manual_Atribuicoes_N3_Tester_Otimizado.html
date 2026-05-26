@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Atribuições N3 e Tester - HealthGo</title>
+
+    <style>
+        :root {
+            --primary: #00d4ff;
+            --primary-dark: #0099cc;
+            --secondary: #4facfe;
+            --bg: #0a0e17;
+            --bg-card: #111827;
+            --bg-card-hover: #1a2332;
+            --text: #f1f5f9;
+            --text-dim: #94a3b8;
+            --accent-critical: #ef4444;
+            --accent-high: #f59e0b;
+            --accent-medium: #3b82f6;
+            --accent-low: #6b7280;
+            --success: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(at 0% 0%, hsla(200, 100%, 15%, 0.8) 0, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(190, 100%, 12%, 0.6) 0, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+
+        .meta-item svg {
+            width: 16px;
+            height: 16px;
+            opacity: 0.7;
+        }
+
+        .author-box {
+            margin-top: 30px;
+            padding: 20px 30px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(79, 172, 254, 0.05));
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .author-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .author-role {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .summary-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .summary-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+        }
+
+        .summary-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .summary-label {
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+
+        .section-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .section-card:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .section-title-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .section-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(79, 172, 254, 0.1));
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section-icon svg {
+            width: 28px;
+            height: 28px;
+            color: var(--primary);
+        }
+
+        .section-name {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .section-type {
+            display: inline-block;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 12px;
+            border-radius: 50px;
+        }
+
+        .subsection {
+            margin-bottom: 28px;
+        }
+
+        .subsection-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .subsection-title svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .subsection-content {
+            color: var(--text-dim);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .step-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .step-item::before {
+            content: '';
+            position: absolute;
+            left: 35px;
+            top: 60px;
+            width: 2px;
+            height: calc(100% - 30px);
+            background: rgba(0, 212, 255, 0.2);
+        }
+
+        .step-item:last-child::before {
+            display: none;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--bg);
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .step-meta {
+            font-size: 0.8rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .step-desc {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .sla-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: var(--accent-high);
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 16px;
+            border-left: 4px solid var(--accent-high);
+        }
+
+        .info-box-title {
+            font-weight: 600;
+            color: var(--accent-high);
+            margin-bottom: 8px;
+        }
+
+        .info-box-content {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .checklist-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .checklist-icon svg {
+            width: 14px;
+            height: 14px;
+            color: var(--primary);
+        }
+
+        .checklist-content {
+            flex: 1;
+        }
+
+        .checklist-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .checklist-desc {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        .golden-rule {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 20px;
+        }
+
+        .golden-rule-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--accent-high);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+        }
+
+        .golden-rule-content {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .output-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .output-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .output-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 50px;
+            margin-bottom: 10px;
+        }
+
+        .output-badge.saida-b {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-medium);
+        }
+
+        .output-badge.saida-c {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-critical);
+        }
+
+        .output-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .output-desc {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 24px 16px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .section-card {
+                padding: 24px;
+            }
+
+            .section-name {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    </style>
+</head>
+
+<body>
+    <div class="gradient-bg"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">HG</div>
+            </div>
+            <h1>Manual de Atribuições N3 e Tester</h1>
+            <p class="subtitle">Documento unificado: POP de Atendimento + POP Operacional Técnico</p>
+            <div class="meta-info">
+                <div class="meta-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span>08/04/2026</span>
+                </div>
+                <div class="meta-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <span>Suporte N3 e Tester</span>
+                </div>
+                <div class="meta-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>SLA: 3 horas</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-number">3</div>
+                <div class="summary-label">Saídas Formais (A, B, C)</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-number">5</div>
+                <div class="summary-label">Seções de Fluxo</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-number">3h</div>
+                <div class="summary-label">Tempo Máximo SLA</div>
+            </div>
+        </div>
+
+        <!-- Propósito e Visão Geral -->
+        <div class="section-card">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <div class="section-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="section-name">Propósito e Visão Geral</h2>
+                        <span class="section-type">Seção 1</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection-content">
+                <p>Este documento tem como finalidade primordial mapear as atribuições, os fluxos e as responsabilidades inerentes à cadeira conjunta de Suporte Avançado N3 e Tester. A documentação consiste na unificação do Procedimento Operacional Padrão (POP) de Atendimento e o POP Operacional Técnico, garantindo que todo o capital intelectual fique consolidado em um roteiro linear.</p>
+            </div>
+        </div>
+
+        <!-- SLA -->
+        <div class="section-card">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <div class="section-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="section-name">Acordo de Nível de Serviço (SLA)</h2>
+                        <span class="section-type">Seção 2</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sla-badge">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Tempo Limite (Atuação e Resolução): 3 horas
+            </div>
+            <p class="subsection-content" style="margin-top: 16px;">
+                Após a recepção do chamado, o N3 dispõe de até <strong>3 horas</strong> para aplicar análises, tentar corrigir via software, alterar bases geradas e emitir o Parecer Técnico.
+            </p>
+        </div>
+
+        <!-- Fluxo Prático de Atendimento -->
+        <div class="section-card">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <div class="section-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="section-name">Fluxo Prático de Atendimento (Suporte N3)</h2>
+                        <span class="section-type">Seção 3</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.1 Recepção e Conexão -->
+            <div class="subsection">
+                <div class="subsection-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                    3.1 Recepção e Conexão de Dispositivos
+                </div>
+                <div class="step-list">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <div class="step-title">Recepção de Ticket e Triagem Inicial</div>
+                            <div class="step-desc">Receber o chamado vindo do N2 para atuar no escopo do SLA.</div>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <div class="step-title">Telemetria Básica</div>
+                            <div class="step-desc">Consultar o aparelho referenciado usando o seu HGID no HealthGo Studio.</div>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <div class="step-title">Upload de HGID para NocoBase/GoStudio</div>
+                            <div class="step-desc">Caso o equipamento não conste na calibração ou seja um novo cadastro, acessar a aplicação GoClient, inserir o HGID e executar todas as etapas da Pipeline.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <div class="info-box-title">⚠ Observação Importante</div>
+                    <div class="info-box-content">Se ao importar os dados de calibração o terminal apresentar erro, encaminhar à produção para upload no Datalake.</div>
+                </div>
+            </div>
+
+            <!-- 3.2 Diagnóstico -->
+            <div class="subsection">
+                <div class="subsection-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    3.2 Diagnóstico a Fundo e Análise Analógica
+                </div>
+                <div class="step-list">
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <div class="step-title">Histórico de Temperatura</div>
+                            <div class="step-desc">Analisar a temperatura aferida antes dos exames passados iniciarem.</div>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <div class="step-title">Leitura dos Sensores (H2 e CH4)</div>
+                            <div class="step-desc">Analisar exaustivamente os sensores (Antes, durante e pós sopro do paciente). Comparar as medições do DADOS EM TEMPO REAL.</div>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <div class="step-title">Comportamentos Anormais do Sistema</div>
+                            <div class="step-desc">Analisar a exibição e passar o mouse nas linhas verticais para interpretar os valores.</div>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">7</div>
+                        <div class="step-content">
+                            <div class="step-title">Bombas Pneumáticas e Gás</div>
+                            <div class="step-desc">Analisar a umidade na câmara ExamChamberCirculate e o comportamento da bomba relacionando tensão nominal e PPMS.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.3 Monitoramento -->
+            <div class="subsection">
+                <div class="subsection-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    3.3 Monitoramento de Software, Firmware e Acesso
+                </div>
+                <div class="step-list">
+                    <div class="step-item">
+                        <div class="step-number">8</div>
+                        <div class="step-content">
+                            <div class="step-title">Criação de Login de Usuário (HealthGo Studio)</div>
+                            <div class="step-desc">Na aba de Cadastro, inserir Username, E-mail e atribuir o air_group. O sistema confirmará em verde.</div>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">9</div>
+                        <div class="step-content">
+                            <div class="step-title">Manipulação / Atualização de Firmware (Emissão de SVM)</div>
+                            <div class="step-desc">Acessar o HealthGoStudio, buscar pelo HGID desejado e selecionar a opção de gerador do instalador.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.4 Banco de Dados -->
+            <div class="subsection">
+                <div class="subsection-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                    </svg>
+                    3.4 Atuação via Banco de Dados (DBeaver)
+                </div>
+                <div class="step-list">
+                    <div class="step-item">
+                        <div class="step-number">10</div>
+                        <div class="step-content">
+                            <div class="step-title">Edição do Banco Local</div>
+                            <div class="step-desc">
+                                <ul style="margin-left: 20px; margin-top: 8px;">
+                                    <li>Extrair a base de dados na plataforma DBeaver (SQLite/JSON)</li>
+                                    <li>Realizar mineração procurando códigos de erro escondidos que causam as falhas de ambiente</li>
+                                    <li>Alterar instâncias imperfeitas</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">11</div>
+                        <div class="step-content">
+                            <div class="step-title">Fechamento de Pacote Lógico</div>
+                            <div class="step-desc">Re-compactar a base de dados e anexar este arquivo no chamado.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.5 Parecer -->
+            <div class="subsection">
+                <div class="subsection-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    3.5 Parecer e Repasse de Chamado
+                </div>
+                <div class="step-list">
+                    <div class="step-item">
+                        <div class="step-number">12</div>
+                        <div class="step-content">
+                            <div class="step-title">Classificar Saídas (SOP e Qualidade ISO)</div>
+                            <div class="step-desc">Determinar Saída A (Solução Lógica), Saída B ("MonaLisa" - Garantia/reparo) ou Saída C (Treinamento).</div>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">13</div>
+                        <div class="step-content">
+                            <div class="step-title">Parecer Final</div>
+                            <div class="step-desc">Emitir diagnóstico indicando a solução/direcionamento e repassar ao N2.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Saídas Formais -->
+        <div class="section-card">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <div class="section-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="section-name">Classificação de Saídas (SOP e Qualidade ISO)</h2>
+                        <span class="section-type">Referência</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="output-grid">
+                <div class="output-card">
+                    <div class="output-badge">Saída A - Solução Lógica</div>
+                    <div class="output-title">Problema Resolvido</div>
+                    <div class="output-desc">Correção via software, alteração de bases ou configuração. Encerrar ticket e repassar ao N2.</div>
+                </div>
+                <div class="output-card">
+                    <div class="output-badge saida-b">Saída B - MonaLisa</div>
+                    <div class="output-title">Garantia / Reparo</div>
+                    <div class="output-desc">Necessidade de recolhimento do equipamento para manutenção ou reparo físico.</div>
+                </div>
+                <div class="output-card">
+                    <div class="output-badge saida-c">Saída C - Treinamento</div>
+                    <div class="output-title">Treinamento</div>
+                    <div class="output-desc">Problema causado por mau uso ou necessidade de orientação ao cliente.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Atribuições de Tester -->
+        <div class="section-card">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <div class="section-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="section-name">Atribuições da Posição de "Tester"</h2>
+                        <span class="section-type">Seção 4</span>
+                    </div>
+                </div>
+            </div>
+
+            <p class="subsection-content" style="margin-bottom: 20px;">
+                Esta responsabilidade trabalha proativamente com os desenvolvimentos de Firmware e Softwares da engenharia da empresa.
+            </p>
+
+            <div class="subsection-title">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+                Check-lista de Validação
+            </div>
+            <p class="subsection-content" style="margin-bottom: 16px;">
+                O intuito é caçar bugs, instabilidades não reportadas e processos limitadores na usabilidade do dia a dia da ferramenta.
+            </p>
+
+            <ul class="checklist">
+                <li class="checklist-item">
+                    <div class="checklist-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <div class="checklist-content">
+                        <div class="checklist-title">Banco de Dados no DBeaver</div>
+                        <div class="checklist-desc">Buscar falhas silenciadas geradas durante os "Testes de Stress" via análise relacional.</div>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="golden-rule">
+                <div class="golden-rule-title">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                    </svg>
+                    Regra de Ouro (Terminal Debug)
+                </div>
+                <div class="golden-rule-content">
+                    Todo e qualquer pacote disponibilizado pelas áreas de Desenvolvimento <strong>deverá obrigatoriamente</strong> possuir o Terminal de Debug da aplicação ligado. A evidência de funcionamento dos testes exige a exibição destes prompts.
+                </div>
+            </div>
+        </div>
+
+        <!-- Práticas Paliativas -->
+        <div class="section-card">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <div class="section-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="section-name">Práticas Paliativas para Mitigação de Bugs</h2>
+                        <span class="section-type">Seção 5</span>
+                    </div>
+                </div>
+            </div>
+
+            <p class="subsection-content" style="margin-bottom: 20px;">
+                Quando o problema encontrado não apresenta solução simples a curtíssimo prazo, atua-se em vias paliativas a fim de manter o cliente operando:
+            </p>
+
+            <ul class="checklist">
+                <li class="checklist-item">
+                    <div class="checklist-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                    </div>
+                    <div class="checklist-content">
+                        <div class="checklist-title">Orientação a respeito de contornos lógicos</div>
+                        <div class="checklist-desc">Para clientes ou N2 sobre como contornar o problema temporariamente.</div>
+                    </div>
+                </li>
+                <li class="checklist-item">
+                    <div class="checklist-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                    </div>
+                    <div class="checklist-content">
+                        <div class="checklist-title">Acesso Remoto e Rollback</div>
+                        <div class="checklist-desc">Pedido de Acesso Remoto e Rollback/Retroação atrelada a autorizações da Engenharia.</div>
+                    </div>
+                </li>
+                <li class="checklist-item">
+                    <div class="checklist-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                        </svg>
+                    </div>
+                    <div class="checklist-content">
+                        <div class="checklist-title">Injeção de Software com Debug</div>
+                        <div class="checklist-desc">Injeção de "Software com Debug" no setup do cliente visando mapeamento em loco das intempéries.</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>Manual de Atribuições N3 e Tester | HealthGo</p>
+            <p style="margin-top: 8px;">Documento unificado: POP de Atendimento + POP Operacional Técnico</p>
+            <p style="margin-top: 4px; opacity: 0.6;">Atualizado em 08/04/2026</p>
+        </footer>
+    </div>
+</body>
+
+</html>

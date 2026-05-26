@@ -1,0 +1,73 @@
+{
+  "version": "2.0",
+  "last_updated": "2026-05-11",
+  "systems": [
+    {
+      "id": "healthgo_client",
+      "name": "HealthGoClient",
+      "type": "Software de Ponta (Cliente)",
+      "severity": "CRÍTICA",
+      "explanation": "Interface principal utilizada por médicos e técnicos em clínicas para a execução de exames de sopro em tempo real. O software atua como a ponte entre o hardware HealthGo Air e o profissional de saúde.",
+      "function": "Realizar a coleta de dados dos sensores, visualização gráfica de curvas basais (H2/CH4), geração de relatórios de exames, sincronização de dados com a nuvem e interface para calibração guiada.",
+      "technical_requirements": [
+        {"category": "Sistema Operacional", "requirement": "Windows 10 ou 11 (x64)"},
+        {"category": "Porta USB", "requirement": "USB 2.0/3.0 funcional"},
+        {"category": "Drivers", "requirement": "FTDI/Silicon Labs (atualizados)"},
+        {"category": "Conectividade", "requirement": "Internet estável para login e sincronização"},
+        {"category": "Hardware", "requirement": "Dispositivo HealthGo Air com firmware compatível"}
+      ],
+      "bottlenecks": [
+        {"name": "Falhas de Reconhecimento", "description": "Problemas frequentes de detecção na porta COM/USB", "severity": "Alta"},
+        {"name": "Autenticação HTU", "description": "Erros de segurança que impedem o reconhecimento do dispositivo", "severity": "Alta"},
+        {"name": "Limites de Calibração", "description": "Travamento após 250 exames ou 1 ano sem manutenção", "severity": "Média"},
+        {"name": "Conflitos de Drivers", "description": "Incompatibilidade com outros periféricos na mesma máquina", "severity": "Média"}
+      ],
+      "client_impact": "A impossibilidade de conexão ou falha no software interrompe a agenda da clínica, causando atrasos no atendimento ao paciente, perda de receita e percepção de instabilidade técnica do produto.",
+      "impact_points": [
+        "Atrasos no atendimento ao paciente",
+        "Percepção de instabilidade técnica do produto",
+        "Perda de receita da clínica por exames não realizados",
+        "Desgaste no relacionamento com o cliente"
+      ]
+    },
+    {
+      "id": "healthgo_studio",
+      "name": "HealthGoStudio",
+      "type": "Plataforma Interna de Gestão e Suporte",
+      "severity": "ALTA",
+      "explanation": "Ferramenta avançada de uso interno (Níveis N2 e N3) para monitoramento, diagnóstico e manutenção remota do parque de dispositivos ativos.",
+      "function": "Análise profunda de logs técnicos, execução de SVM (Self Verification Mode), atualização remota de firmware, verificação de offsets de sensores e auditoria de hardware em tempo real.",
+      "technical_requirements": [
+        {"category": "Navegador", "requirement": "Google Chrome ou Microsoft Edge (versões recentes)"},
+        {"category": "Acesso", "requirement": "Autenticação via SSO ou VPN da empresa"},
+        {"category": "Permissões", "requirement": "Nível N2/N3 configurado no HubSpot/Database"},
+        {"category": "Conectividade", "requirement": "Alta velocidade para visualização de logs volumosos"}
+      ],
+      "bottlenecks": [
+        {"name": "Latência de Dados", "description": "Atraso na sincronização entre HealthGoClient e Studio", "severity": "Alta"},
+        {"name": "Complexidade da Interface", "description": "Curva de aprendizado elevada para novos analistas", "severity": "Média"},
+        {"name": "Dependência de Status", "description": "Comandos remotos exigem software cliente aberto", "severity": "Alta"},
+        {"name": "Carga do Banco de Dados", "description": "Lentidão ao buscar históricos de dispositivos antigos", "severity": "Média"}
+      ],
+      "client_impact": "É a 'caixa preta' que permite resolver problemas sem recolhimento físico. Se o Studio falha, o tempo de análise técnica aumenta, impactando diretamente o SLA de devolução e aumentando custos logísticos.",
+      "impact_points": [
+        "Aumento do tempo de análise técnica",
+        "Impacto direto no SLA de devolução",
+        "Aumento de custos logísticos (recolhimento/reparo físico)",
+        "Maior tempo de espera para resolução do problema"
+      ]
+    }
+  ],
+  "summary": {
+    "total_systems": 2,
+    "total_bottlenecks": 8,
+    "critical_bottlenecks": 4,
+    "medium_bottlenecks": 4,
+    "priorities": [
+      {"priority": 1, "title": "Resolver problemas de detecção USB/COM", "timeline": "Urgente"},
+      {"priority": 2, "title": "Reduzir latência de sincronização", "timeline": "Urgente"},
+      {"priority": 3, "title": "Implementar alertas proativos de calibração", "timeline": "Médio Prazo"},
+      {"priority": 4, "title": "Simplificar interface do HealthGoStudio", "timeline": "Médio Prazo"}
+    ]
+  }
+}

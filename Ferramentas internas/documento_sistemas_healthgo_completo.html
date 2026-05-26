@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthGo - Analise de Sistemas Internos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00d4ff;
+            --primary-dark: #0099cc;
+            --secondary: #4facfe;
+            --bg: #0a0e17;
+            --bg-card: #111827;
+            --bg-card-hover: #1a2332;
+            --text: #f1f5f9;
+            --text-dim: #94a3b8;
+            --accent-critical: #ef4444;
+            --accent-high: #f59e0b;
+            --accent-medium: #3b82f6;
+            --accent-low: #6b7280;
+            --success: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(at 0% 0%, hsla(200, 100%, 15%, 0.8) 0, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(190, 100%, 12%, 0.6) 0, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+
+        .meta-item svg {
+            width: 16px;
+            height: 16px;
+            opacity: 0.7;
+        }
+
+        .author-box {
+            margin-top: 30px;
+            padding: 20px 30px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(79, 172, 254, 0.05));
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .author-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .author-role {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .summary-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .summary-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+        }
+
+        .summary-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .summary-label {
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+
+        .system-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .system-card:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .system-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .system-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .system-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(79, 172, 254, 0.1));
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .system-icon svg {
+            width: 28px;
+            height: 28px;
+            color: var(--primary);
+        }
+
+        .system-name {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .system-type {
+            display: inline-block;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 12px;
+            border-radius: 50px;
+        }
+
+        .section {
+            margin-bottom: 28px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .section-title svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .section-content {
+            color: var(--text-dim);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+        }
+
+        .info-table th,
+        .info-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .info-table th {
+            color: var(--text-dim);
+            font-weight: 500;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .info-table td {
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        .info-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .info-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-item {
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .feature-item strong {
+            color: var(--text);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .feature-item span {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .bottleneck-list {
+            list-style: none;
+        }
+
+        .bottleneck-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .bottleneck-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .bottleneck-item.high {
+            border-left-color: var(--accent-critical);
+        }
+
+        .bottleneck-item.medium {
+            border-left-color: var(--accent-medium);
+        }
+
+        .bottleneck-item.low {
+            border-left-color: var(--accent-low);
+        }
+
+        .bottleneck-severity {
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .severity-high-badge {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-critical);
+        }
+
+        .severity-medium-badge {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-medium);
+        }
+
+        .severity-low-badge {
+            background: rgba(107, 114, 128, 0.15);
+            color: var(--accent-low);
+        }
+
+        .bottleneck-text {
+            flex: 1;
+        }
+
+        .bottleneck-name {
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+
+        .bottleneck-desc {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        .impact-box {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(239, 68, 68, 0.03));
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-top: 8px;
+        }
+
+        .impact-box.high {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(245, 158, 11, 0.03));
+            border-color: rgba(245, 158, 11, 0.2);
+        }
+
+        .impact-box.medium {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(59, 130, 246, 0.03));
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+
+        .impact-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .impact-icon {
+            width: 24px;
+            height: 24px;
+            color: var(--accent-critical);
+        }
+
+        .impact-box.high .impact-icon {
+            color: var(--accent-high);
+        }
+
+        .impact-box.medium .impact-icon {
+            color: var(--accent-medium);
+        }
+
+        .impact-title {
+            font-weight: 600;
+            color: var(--accent-critical);
+        }
+
+        .impact-box.high .impact-title {
+            color: var(--accent-high);
+        }
+
+        .impact-box.medium .impact-title {
+            color: var(--accent-medium);
+        }
+
+        .impact-list {
+            list-style: none;
+        }
+
+        .impact-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .impact-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 6px;
+            height: 6px;
+            background: var(--accent-critical);
+            border-radius: 50%;
+        }
+
+        .impact-box.high .impact-list li::before {
+            background: var(--accent-high);
+        }
+
+        .impact-box.medium .impact-list li::before {
+            background: var(--accent-medium);
+        }
+
+        .flow-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .flow-step::before {
+            content: '';
+            position: absolute;
+            left: 35px;
+            top: 60px;
+            width: 2px;
+            height: calc(100% - 30px);
+            background: rgba(0, 212, 255, 0.2);
+        }
+
+        .flow-step:last-child::before {
+            display: none;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--bg);
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .step-meta {
+            font-size: 0.8rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .step-desc {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .executive-section {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 32px;
+            margin-top: 40px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .comparison-table th {
+            color: var(--text-dim);
+            font-weight: 500;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .comparison-table td {
+            font-size: 0.9rem;
+        }
+
+        .priority-list {
+            margin-top: 24px;
+        }
+
+        .priority-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .priority-number {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--bg);
+        }
+
+        .priority-content {
+            flex: 1;
+        }
+
+        .priority-title {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .priority-desc {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        .priority-tag {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-weight: 500;
+        }
+
+        .tag-urgent {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-critical);
+        }
+
+        .tag-medium {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-medium);
+        }
+
+        .tag-low {
+            background: rgba(107, 114, 128, 0.15);
+            color: var(--accent-low);
+        }
+
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .glossary-item {
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            border-left: 3px solid var(--secondary);
+        }
+
+        .glossary-term {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 4px;
+            font-size: 0.95rem;
+        }
+
+        .glossary-def {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 24px 16px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .system-card {
+                padding: 24px;
+            }
+
+            .system-name {
+                font-size: 1.4rem;
+            }
+
+            .info-table {
+                font-size: 0.85rem;
+            }
+
+            .info-table th,
+            .info-table td {
+                padding: 10px 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="gradient-bg"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">HG</div>
+            </div>
+            <h1>Analise de Sistemas Internos</h1>
+            <p class="subtitle">HealthGoClient & HealthGoStudio</p>
+            <div class="meta-info">
+                <div class="meta-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span>11/05/2026</span>
+                </div>
+                <div class="meta-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <span>Versao 1.0</span>
+                </div>
+                <div class="meta-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                    </svg>
+                    <span>2 Sistemas</span>
+                </div>
+            </div>
+            <div class="author-box">
+                <div class="author-name">Andre Luiz de Souza</div>
+                <div class="author-role">Especialista de Suporte Pleno N3</div>
+            </div>
+        </header>
+
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-number">2</div>
+                <div class="summary-label">Sistemas Documentados</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-number">6</div>
+                <div class="summary-label">Gargalos Identificados</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-number">6</div>
+                <div class="summary-label">Melhorias Prioritarias</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-number">2h</div>
+                <div class="summary-label">Tempo Medio Resolucao</div>
+            </div>
+        </div>
+
+        <!-- HealthGoClient -->
+        <div class="system-card">
+            <div class="system-header">
+                <div class="system-title">
+                    <div class="system-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="system-name">HealthGoClient</h2>
+                        <span class="system-type">Desktop Application - Suporte</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Explicacao
+                </div>
+                <p class="section-content">Aplicativo desktop utilizado pelos especialistas de Suporte. Vinculado ao
+                    servidor interno da HealthGo com conexao ao banco de dados Nocobase/AWS e Datalake para envio de SVM
+                    ao HealthGo Studio.</p>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Requisitos Tecnicos
+                </div>
+                <table class="info-table">
+                    <thead>
+                        <tr>
+                            <th>Categoria</th>
+                            <th>Requisito</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sistema Operacional</td>
+                            <td>Windows 10 ou superior</td>
+                        </tr>
+                        <tr>
+                            <td>Rede</td>
+                            <td>Netbird VPN conectado ao SV HealthGo</td>
+                        </tr>
+                        <tr>
+                            <td>Processador</td>
+                            <td>Intel Core i5 ou superior</td>
+                        </tr>
+                        <tr>
+                            <td>Memoria RAM</td>
+                            <td>8GB</td>
+                        </tr>
+                        <tr>
+                            <td>Disco</td>
+                            <td>256GB SSD</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    Maiores Gargalos
+                </div>
+                <ul class="bottleneck-list">
+                    <li class="bottleneck-item high">
+                        <span class="bottleneck-severity severity-high-badge">Alta</span>
+                        <div class="bottleneck-text">
+                            <div class="bottleneck-name">Instabilidade por Queda do Servidor</div>
+                            <div class="bottleneck-desc">Quando o servidor principal cai, o HealthGoClient tambem fica
+                                indisponivel</div>
+                        </div>
+                    </li>
+                    <li class="bottleneck-item high">
+                        <span class="bottleneck-severity severity-high-badge">Alta</span>
+                        <div class="bottleneck-text">
+                            <div class="bottleneck-name">Dependencia do Datalake para Upload de HGID</div>
+                            <div class="bottleneck-desc">Se a Producao nao subir o HGID para o Datalake, nao e possivel
+                                emitir SVM</div>
+                        </div>
+                    </li>
+                    <li class="bottleneck-item medium">
+                        <span class="bottleneck-severity severity-medium-badge">Media</span>
+                        <div class="bottleneck-text">
+                            <div class="bottleneck-name">Sincronizacao com HealthGoStudio</div>
+                            <div class="bottleneck-desc">HGIDs sincronizados no Client podem nao aparecer imediatamente
+                                no Studio ate liberacao manual</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="impact-box high">
+                <div class="impact-header">
+                    <svg class="impact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                    </svg>
+                    <span class="impact-title">IMPACTO NA DEVOLUTIVA AO CLIENTE</span>
+                </div>
+                <p style="color: var(--text-dim); margin-bottom: 12px;">Problemas no Client afetam diretamente o
+                    atendimento na clinica:</p>
+                <ul class="impact-list">
+                    <li>Interrupcao do atendimento quando servidor cai</li>
+                    <li>Bloqueio na emissao de SVMs quando HGID nao esta no Datalake</li>
+                    <li>Atrasos por liberacao manual entre Client e Studio</li>
+                    <li>Impacto direto na experiencia do cliente final</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HealthGoStudio -->
+        <div class="system-card">
+            <div class="system-header">
+                <div class="system-title">
+                    <div class="system-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="system-name">HealthGoStudio</h2>
+                        <span class="system-type">Ferramenta Interna - Suporte N2/N3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Explicacao
+                </div>
+                <p class="section-content">Ferramenta de Suporte para uso operacional do N2 e N3. Vinculado ao servidor
+                    interno da HealthGo com conexao ao banco de dados Nocobase/AWS para armazenamento de todos os dados
+                    dos equipamentos bem como, sensores, componentes, placas, firmware, software e demais dados.</p>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    Funcao Principal
+                </div>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <strong>Gestao de SVM</strong>
+                        <span>Subir SVM do Datalake para Nocobase e emitir para instalacao no cliente</span>
+                    </li>
+                    <li class="feature-item">
+                        <strong>Importar Dados de Calibracao</strong>
+                        <span>Processar dados de calibracao dos sensores</span>
+                    </li>
+                    <li class="feature-item">
+                        <strong>Processamento de Dados</strong>
+                        <span>Remocao de outliers, analise estatistica</span>
+                    </li>
+                    <li class="feature-item">
+                        <strong>Modelo SVM</strong>
+                        <span>Treinar novo modelo SVM, revisar predicoes e graficos (N3 e Engenharia)</span>
+                    </li>
+                    <li class="feature-item">
+                        <strong>Compilacao de Firmware</strong>
+                        <span>Compilar firmware do dispositivo selecionado e enviar para a nuvem (Nocobase/AWS)</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Requisitos Tecnicos
+                </div>
+                <table class="info-table">
+                    <thead>
+                        <tr>
+                            <th>Categoria</th>
+                            <th>Requisito</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sistema Operacional</td>
+                            <td>Windows 10 ou superior</td>
+                        </tr>
+                        <tr>
+                            <td>Rede</td>
+                            <td>Netbird VPN conectado ao SV HealthGo</td>
+                        </tr>
+                        <tr>
+                            <td>Processador</td>
+                            <td>Intel Core i5 ou superior</td>
+                        </tr>
+                        <tr>
+                            <td>Memoria RAM</td>
+                            <td>8GB</td>
+                        </tr>
+                        <tr>
+                            <td>Disco</td>
+                            <td>256GB SSD</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    Maiores Gargalos
+                </div>
+                <ul class="bottleneck-list">
+                    <li class="bottleneck-item high">
+                        <span class="bottleneck-severity severity-high-badge">Alta</span>
+                        <div class="bottleneck-text">
+                            <div class="bottleneck-name">Dashboard em Tempo Real com Dados Imprecisos</div>
+                            <div class="bottleneck-desc">A dashboard em tempo real envia dados com baixa precisao e
+                                velocidade, frequentemente fica offline</div>
+                        </div>
+                    </li>
+                    <li class="bottleneck-item medium">
+                        <span class="bottleneck-severity severity-medium-badge">Media</span>
+                        <div class="bottleneck-text">
+                            <div class="bottleneck-name">Falta de Visibilidade de Manutencao Preventiva</div>
+                            <div class="bottleneck-desc">Nao e possivel visualizar o numero de exames realizados por
+                                HGID (250 exames ou 1 ano)</div>
+                        </div>
+                    </li>
+                    <li class="bottleneck-item medium">
+                        <span class="bottleneck-severity severity-medium-badge">Media</span>
+                        <div class="bottleneck-text">
+                            <div class="bottleneck-name">Falta de Controle Remoto de Componentes</div>
+                            <div class="bottleneck-desc">Nao ha funcionalidade de bypass remoto para componentes do
+                                equipamento</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="impact-box medium">
+                <div class="impact-header">
+                    <svg class="impact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                    </svg>
+                    <span class="impact-title">IMPACTO NA DEVOLUTIVA AO CLIENTE</span>
+                </div>
+                <p style="color: var(--text-dim); margin-bottom: 12px;">Dados imprecisos em tempo real dificultam
+                    diagnostico. Analise precisa depende da estabilidade da dashboard.</p>
+                <ul class="impact-list">
+                    <li>Dados imprecisos em tempo real dificultam diagnostico</li>
+                    <li>Restricoes de firmware atrasam testes de solucao</li>
+                    <li>Falta de contador de exames impede previsao de manutencoes</li>
+                    <li>Problemas de hardware nao sao resolvidos remotamente</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Requisitos Tecnicos -->
+        <div class="executive-section">
+            <div class="section-title">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                Requisitos Tecnicos para Operar
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    Hardware e Sistema Operacional
+                </div>
+                <table class="info-table">
+                    <thead>
+                        <tr>
+                            <th>Componente</th>
+                            <th>Requisito Minimo</th>
+                            <th>Requisito Recomendado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sistema Operacional</td>
+                            <td>Windows 10 ou superior</td>
+                            <td>Windows 11</td>
+                        </tr>
+                        <tr>
+                            <td>Processador</td>
+                            <td>Intel Core i5</td>
+                            <td>Intel Core i7</td>
+                        </tr>
+                        <tr>
+                            <td>Memoria RAM</td>
+                            <td>8GB</td>
+                            <td>16GB</td>
+                        </tr>
+                        <tr>
+                            <td>Armazenamento</td>
+                            <td>256GB SSD</td>
+                            <td>512GB SSD</td>
+                        </tr>
+                        <tr>
+                            <td>Rede</td>
+                            <td>Conexao estavel com a VPN Netbird</td>
+                            <td>Conexao dedicada 10Mbps+</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    Ferramentas Obrigatorias
+                </div>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <strong>Netbird VPN</strong>
+                        <span>Conexao obligatoria com o servidor HealthGo via VPN. Sem a VPN ativa, nao e possivel
+                            acessar os sistemas internos.</span>
+                    </li>
+                    <li class="feature-item">
+                        <strong>Navegador Web</strong>
+                        <span>Google Chrome ou Microsoft Edge (versoes atualizadas) para acessar BLiP Desk e
+                            HubSpot.</span>
+                    </li>
+                    <li class="feature-item">
+                        <strong>Acesso a Internet</strong>
+                        <span>Conexao estavel para comunicacao com clientes via BLiP e acesso ao HubSpot.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                    </svg>
+                    Conectividade e Infraestrutura
+                </div>
+                <table class="info-table">
+                    <thead>
+                        <tr>
+                            <th>Recurso</th>
+                            <th>Descricao</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>VPN Netbird</td>
+                            <td>Conexao ativa com URL do servidor HealthGo para acessar Datalake, Nocobase e AWS</td>
+                        </tr>
+                        <tr>
+                            <td>Internet</td>
+                            <td>Acesso para BLiP Desk e HubSpot (sistemas externos)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                    </svg>
+                    Permissoes e Acessos
+                </div>
+                <table class="info-table">
+                    <thead>
+                        <tr>
+                            <th>Sistema</th>
+                            <th>Permissao Necessaria</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nocobase</td>
+                            <td>Acesso completo para gestao de dados e SVMs</td>
+                        </tr>
+                        <tr>
+                            <td>Datalake</td>
+                            <td>Leitura e escrita para upload de HGIDs</td>
+                        </tr>
+                        <tr>
+                            <td>AWS</td>
+                            <td>Upload de firmwares compilados</td>
+                        </tr>
+                        <tr>
+                            <td>HubSpot</td>
+                            <td>Nivel N2/N3 configurado para gestao de tickets</td>
+                        </tr>
+                        <tr>
+                            <td>Netbird</td>
+                            <td>Conexao ativa com o dominio healthgo.internal</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Checklist de Preparacao
+                </div>
+                <ul class="bottleneck-list">
+                    <li class="bottleneck-item">
+                        <span class="bottleneck-severity severity-high-badge"
+                            style="background: rgba(16, 185, 129, 0.15); color: var(--success);">OK</span>
+                        <div class="bottleneck-text">
+                            <div class="bottleneck-name">Windows 10/11 instalado e atualizado</div>
+                        </div>
+                    </li>
+                    <li class="bottleneck-item">
+                        <span class="bottleneck-severity severity-high-badge"
+                            style="background: rgba(16, 185, 129, 0.15); color: var(--success);">OK</span>
+                        <div class="bottleneck-text">
+                            <div class="bottleneck-name">Netbird VPN instalado e conectado</div>
+                        </div>
+                    </li>
+                    <li class="bottleneck-item">
+                        <span class="bottleneck-severity severity-high-badge"
+                            style="background: rgba(16, 185, 129, 0.15); color: var(--success);">OK</span>
+                        <div class="bottleneck-text">
+                            <div class="bottleneck-name">HealthGoClient instalado</div>
+                        </div>
+                    </li>
+                    <li class="bottleneck-item">
+                        <span class="bottleneck-severity severity-high-badge"
+                            style="background: rgba(16, 185, 129, 0.15); color: var(--success);">OK</span>
+                        <div class="bottleneck-text">
+                            <div class="bottleneck-name">HealthGoStudio instalado</div>
+                        </div>
+                    </li>
+                    <li class="bottleneck-item">
+                        <span class="bottleneck-severity severity-high-badge"
+                            style="background: rgba(16, 185, 129, 0.15); color: var(--success);">OK</span>
+                        <div class="bottleneck-text">
+                            <div class="bottleneck-name">Acesso ao HubSpot confirmado</div>
+                        </div>
+                    </li>
+                    <li class="bottleneck-item">
+                        <span class="bottleneck-severity severity-high-badge"
+                            style="background: rgba(16, 185, 129, 0.15); color: var(--success);">OK</span>
+                        <div class="bottleneck-text">
+                            <div class="bottleneck-name">Acesso ao BLiP Desk confirmado</div>
+                        </div>
+                    </li>
+                    <li class="bottleneck-item">
+                        <span class="bottleneck-severity severity-high-badge"
+                            style="background: rgba(16, 185, 129, 0.15); color: var(--success);">OK</span>
+                        <div class="bottleneck-text">
+                            <div class="bottleneck-name">Credenciais de acesso configuradas</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p>HealthGo - Analise de Sistemas Internos | v1.0</p>
+            <p style="margin-top: 8px;">Desenvolvido por Andre Luiz de Souza - Especialista de Suporte Pleno N3</p>
+            <p style="margin-top: 4px; opacity: 0.6;">Gerado em 11/05/2026</p>
+        </footer>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Relatório — Motivos de Chamadores Maio/2026 — André Luiz de Souza</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0d1117; color: #e6edf3; line-height: 1.6; font-size: 13px; }
+
+  .container { max-width: 1100px; margin: 0 auto; background: #161b22; border: 1px solid #30363d; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+
+  .header { background: linear-gradient(135deg, #161b22 0%, #1c2333 100%); padding: 40px 48px 30px; border-bottom: 1px solid #30363d; }
+  .header-inner { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; }
+  .header-left h1 { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #58a6ff, #a371f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px; }
+  .header-left .subtitle { color: #8b949e; font-size: 13px; }
+  .header-right { text-align: right; }
+  .header-right .analista { font-size: 14px; font-weight: 600; color: #e6edf3; }
+  .header-right .nivel { font-size: 12px; color: #a371f7; }
+  .header-right .periodo { font-size: 12px; color: #8b949e; margin-top: 4px; }
+
+  .legend-bar { background: #0d1117; padding: 16px 48px; display: flex; gap: 24px; flex-wrap: wrap; border-bottom: 1px solid #21262d; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-remoto { background: #3fb950; }
+  .dot-recolhimento { background: #f85149; }
+  .dot-indevido { background: #f0883e; }
+  .dot-duplicado { background: #8b949e; }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #30363d; border-bottom: 1px solid #30363d; }
+  .stat-card { background: #161b22; padding: 24px 20px; text-align: center; position: relative; }
+  .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+  .stat-card.green::before { background: linear-gradient(90deg, #3fb950, #56d364); }
+  .stat-card.red::before { background: linear-gradient(90deg, #f85149, #ff7b72); }
+  .stat-card.orange::before { background: linear-gradient(90deg, #f0883e, #f5a623); }
+  .stat-card.blue::before { background: linear-gradient(90deg, #58a6ff, #79c0ff); }
+  .stat-value { font-size: 32px; font-weight: 800; color: #e6edf3; }
+  .stat-label { font-size: 11px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+  .stat-sub { font-size: 11px; color: #58a6ff; margin-top: 2px; }
+
+  .filtro { padding: 16px 48px; background: #0d1117; border-bottom: 1px solid #21262d; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .filtro-label { font-size: 12px; color: #8b949e; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .filtro-btn { padding: 6px 16px; border-radius: 20px; border: 1px solid #30363d; background: #161b22; color: #8b949e; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif; }
+  .filtro-btn:hover { border-color: #58a6ff; color: #e6edf3; }
+  .filtro-btn.active { background: rgba(88,166,255,0.15); border-color: #58a6ff; color: #58a6ff; }
+  .filtro-btn.active-remoto { background: rgba(63,185,80,0.15); border-color: #3fb950; color: #3fb950; }
+  .filtro-btn.active-recolhimento { background: rgba(248,81,73,0.15); border-color: #f85149; color: #f85149; }
+  .filtro-btn.active-indevido { background: rgba(240,136,62,0.15); border-color: #f0883e; color: #f0883e; }
+
+  .search-box { margin-left: auto; display: flex; align-items: center; gap: 8px; background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 6px 12px; }
+  .search-box input { background: transparent; border: none; color: #e6edf3; font-size: 12px; outline: none; width: 180px; font-family: 'Inter', sans-serif; }
+  .search-box input::placeholder { color: #484f58; }
+
+  .section-title { font-size: 14px; font-weight: 700; padding: 20px 48px 10px; display: flex; align-items: center; gap: 10px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; }
+  .section-title .count { background: #21262d; color: #e6edf3; font-size: 12px; padding: 2px 10px; border-radius: 10px; }
+
+  table { width: 100%; border-collapse: collapse; }
+  thead th { text-align: left; padding: 12px 16px; background: #21262d; color: #8b949e; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; border-bottom: 1px solid #30363d; }
+  thead th:first-child { padding-left: 48px; }
+  tbody tr { border-bottom: 1px solid #21262d; transition: background 0.15s; }
+  tbody tr:hover { background: rgba(88,166,255,0.04); }
+  tbody tr.hidden { display: none; }
+  td { padding: 12px 16px; font-size: 12px; color: #c9d1d9; vertical-align: top; }
+  td:first-child { padding-left: 48px; }
+  .num-cell { color: #484f58; font-size: 11px; min-width: 30px; }
+  .cliente { font-weight: 600; color: #e6edf3; font-size: 12px; }
+  .cliente span { font-weight: 400; color: #8b949e; font-size: 11px; margin-left: 6px; }
+  .motivo { color: #c9d1d9; max-width: 400px; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: 700; margin-top: 4px; }
+  .badge-remoto { background: rgba(63,185,80,0.15); color: #3fb950; }
+  .badge-recolhimento { background: rgba(248,81,73,0.15); color: #f85149; }
+  .badge-indevido { background: rgba(240,136,62,0.15); color: #f0883e; }
+  .badge-duplicado { background: rgba(139,148,158,0.15); color: #8b949e; }
+  .badge-n3 { background: rgba(88,166,255,0.15); color: #58a6ff; }
+  .hgid { font-family: monospace; font-size: 11px; color: #a371f7; }
+  .serie { font-family: monospace; font-size: 11px; color: #8b949e; }
+  .observacao { font-size: 11px; color: #8b949e; margin-top: 3px; font-style: italic; }
+  .n3-ref { font-size: 10px; color: #58a6ff; background: rgba(88,166,255,0.08); padding: 2px 6px; border-radius: 4px; margin-top: 3px; display: inline-block; }
+
+  .summary-section { padding: 30px 48px; border-top: 1px solid #30363d; background: #0d1117; }
+  .summary-section h2 { font-size: 16px; font-weight: 700; margin-bottom: 20px; color: #e6edf3; display: flex; align-items: center; gap: 10px; }
+  .summary-section h2::before { content: ''; width: 4px; height: 20px; background: linear-gradient(135deg, #58a6ff, #a371f7); border-radius: 2px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .summary-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 20px; }
+  .summary-card h3 { font-size: 12px; font-weight: 600; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+  .summary-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #21262d; font-size: 12px; }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-row .label { color: #8b949e; }
+  .summary-row .value { font-weight: 600; color: #e6edf3; }
+  .summary-row .value.red { color: #f85149; }
+  .summary-row .value.green { color: #3fb950; }
+  .summary-row .value.orange { color: #f0883e; }
+  .summary-row .value.purple { color: #a371f7; }
+
+  .footer { text-align: center; padding: 24px 48px; border-top: 1px solid #21262d; color: #484f58; font-size: 11px; }
+
+  @media print { body { background: white; } .container { box-shadow: none; border: 1px solid #ccc; } }
+  @media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .summary-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <h1>Relatório — Motivos de Chamadores</h1>
+        <div class="subtitle">HealthGo Air — Suporte Nível 3 — Maio 2026</div>
+      </div>
+      <div class="header-right">
+        <div class="analista">André Luiz de Souza</div>
+        <div class="nivel">Especialista de Suporte — N3</div>
+        <div class="periodo">01/05/2026 a 23/05/2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend-bar">
+    <div class="legend-item"><div class="legend-dot dot-remoto"></div>Resolução Remota</div>
+    <div class="legend-item"><div class="legend-dot dot-recolhimento"></div>Recolhimento (N3)</div>
+    <div class="legend-item"><div class="legend-dot dot-indevido"></div>Chamado Indevido</div>
+    <div class="legend-item"><div class="legend-dot dot-duplicado"></div>Duplicado / Reg. N3</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="stat-card green">
+      <div class="stat-value">20</div>
+      <div class="stat-label">Resolução Remota</div>
+      <div class="stat-sub">47,6%</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-value">12</div>
+      <div class="stat-label">Recolhimento (N3)</div>
+      <div class="stat-sub">28,6%</div>
+    </div>
+    <div class="stat-card orange">
+      <div class="stat-value">5</div>
+      <div class="stat-label">Chamado Indevido</div>
+      <div class="stat-sub">11,9%</div>
+    </div>
+    <div class="stat-card blue">
+      <div class="stat-value">42</div>
+      <div class="stat-label">Total de Atendimentos</div>
+      <div class="stat-sub">Maio 2026</div>
+    </div>
+  </div>
+
+  <!-- FILTER -->
+  <div class="filtro">
+    <span class="filtro-label">Filtrar:</span>
+    <button class="filtro-btn active" onclick="filtrar('todos', this)">Todos (42)</button>
+    <button class="filtro-btn" onclick="filtrar('remoto', this)">Resolução Remota (20)</button>
+    <button class="filtro-btn" onclick="filtrar('recolhimento', this)">Recolhimento (12)</button>
+    <button class="filtro-btn" onclick="filtrar('indevido', this)">Chamado Indevido (5)</button>
+    <div class="search-box">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#484f58" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchInput" placeholder="Buscar por cliente..." onkeyup="filtrarBusca()">
+    </div>
+  </div>
+
+  <!-- TABLE: RESOLUÇÃO REMOTA -->
+  <div class="section-title">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3fb950" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+    Resolução Remota <span class="count">20 casos</span>
+  </div>
+  <table id="tabela-remoto">
+    <thead>
+      <tr>
+        <th style="width:35px">#</th>
+        <th>Cliente / Contato</th>
+        <th style="width:280px">Motivo do Chamado</th>
+        <th style="width:100px">Resolução</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-categoria="remoto">
+        <td class="num-cell">1</td>
+        <td>Luiz Reynaldo L. Pereira <span>Gastroenterologista e Cirurgião</span></td>
+        <td class="motivo">Solicitação do link de instalação do Software</td>
+        <td><span class="badge badge-remoto">Enviado link</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">2</td>
+        <td>Dra Lívia Braz</td>
+        <td class="motivo">Falha de autenticação do Firmware</td>
+        <td><span class="badge badge-remoto">Remoto</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">3</td>
+        <td>Inês Moura</td>
+        <td class="motivo">Falha de autenticação do Firmware</td>
+        <td><span class="badge badge-remoto">Remoto</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">4</td>
+        <td>Aline Souza <span>Gastroenterologista</span></td>
+        <td class="motivo">Análise de calibração</td>
+        <td><span class="badge badge-remoto">Analisado</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">5</td>
+        <td>Augusto Grimaldi</td>
+        <td class="motivo">Dúvidas de interpretação do exame</td>
+        <td><span class="badge badge-remoto">Orientado</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">6</td>
+        <td>Dra Valéria de Figueiredo Salazar</td>
+        <td class="motivo">Balanceamento de sensores (SVM) <span class="n3-ref">HGID: 25090920</span></td>
+        <td><span class="badge badge-remoto">SVM realizado</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">7</td>
+        <td>Luís Alberto Sobral</td>
+        <td class="motivo">Falha de autenticação do firmware</td>
+        <td><span class="badge badge-remoto">Remoto</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">8</td>
+        <td>Carla Técnica HERM / Dra Amanda Mascarenhas</td>
+        <td class="motivo">Dúvidas de operação na realização do sopro</td>
+        <td><span class="badge badge-remoto">Orientado</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">9</td>
+        <td>Silveira Cathcart Junior</td>
+        <td class="motivo">Falha de autenticação do firmware</td>
+        <td><span class="badge badge-remoto">Remoto</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">10</td>
+        <td>Cristiano Khoury</td>
+        <td class="motivo">Basal H2 elevado, dúvidas de operação</td>
+        <td><span class="badge badge-remoto">Orientado</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">11</td>
+        <td>Kaisa</td>
+        <td class="motivo">Instabilidade no software / Computador com alto consumo de memória RAM e CPU</td>
+        <td><span class="badge badge-remoto">Remoto</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">12</td>
+        <td>Cristina Dias <span>Gastroenterologista</span></td>
+        <td class="motivo">Solicitação do certificado de calibração</td>
+        <td><span class="badge badge-remoto">Enviado</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">13</td>
+        <td>Sarah Branco</td>
+        <td class="motivo">Informações sobre o aparelho em manutenção na fábrica <span class="n3-ref">HGID: 26030503</span></td>
+        <td><span class="badge badge-remoto">Comunicado</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">14</td>
+        <td>Tuka Ktel</td>
+        <td class="motivo">Falha de autenticação no HTU / Led vermelho — Resolvido remotamente</td>
+        <td><span class="badge badge-remoto">Resolvido</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">15</td>
+        <td>Kaisa</td>
+        <td class="motivo">Limpeza dos logs do software</td>
+        <td><span class="badge badge-remoto">Remoto</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">16</td>
+        <td>Tanise Macedo Botelho</td>
+        <td class="motivo">Comunicação ativa sobre o aparelho em manutenção na fábrica</td>
+        <td><span class="badge badge-remoto">Comunicado</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">17</td>
+        <td>Dr Renato Lovato Melo</td>
+        <td class="motivo">Comunicação ativa sobre o aparelho em manutenção <span class="n3-ref">HGID: 25121601</span></td>
+        <td><span class="badge badge-remoto">Comunicado</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">18</td>
+        <td>Natália Rocha de Aguiar</td>
+        <td class="motivo">Dúvidas de configuração no Software</td>
+        <td><span class="badge badge-remoto">Orientado</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">19</td>
+        <td>Dr Marcos Tavares</td>
+        <td class="motivo">Instabilidade no software decorrente do consumo de CPU do PC</td>
+        <td><span class="badge badge-remoto">Orientado</span></td>
+      </tr>
+      <tr data-categoria="remoto">
+        <td class="num-cell">20</td>
+        <td>Dra Danielle Sampaio</td>
+        <td class="motivo">Dúvidas de instalação</td>
+        <td><span class="badge badge-remoto">Orientado</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- TABLE: RECOLHIMENTO (N3) -->
+  <div class="section-title">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f85149" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Recolhimento — Investigação N3 <span class="count">12 casos</span>
+  </div>
+  <table id="tabela-recolhimento">
+    <thead>
+      <tr>
+        <th style="width:35px">#</th>
+        <th>Cliente</th>
+        <th style="width:240px">Motivo do Recolhimento</th>
+        <th>HGID</th>
+        <th>Nº Série</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-categoria="recolhimento">
+        <td class="num-cell">1</td>
+        <td>Dr. Tiago Costa De Almeida <span>em conjunto com Karla</span></td>
+        <td class="motivo">Led piscando vermelho / Substituição — HTU não autentica</td>
+        <td class="hgid">25090920</td>
+        <td class="serie">202510130003</td>
+      </tr>
+      <tr data-categoria="recolhimento">
+        <td class="num-cell">2</td>
+        <td>Dra. Dra. Danielle Camacho <span>Gastroenterologista</span></td>
+        <td class="motivo">Abertura indevida de chamado — equipamento sem defeito</td>
+        <td class="hgid">—</td>
+        <td class="serie">—</td>
+      </tr>
+      <tr data-categoria="recolhimento">
+        <td class="num-cell">3</td>
+        <td>Dr. Paulo Nazareno Soares Rosa</td>
+        <td class="motivo">Análise de calibração — Basais H2 elevados, curvas flat</td>
+        <td class="hgid">25082501</td>
+        <td class="serie">202509020003</td>
+      </tr>
+      <tr data-categoria="recolhimento">
+        <td class="num-cell">4</td>
+        <td>Dra. Aline Carboni Casado</td>
+        <td class="motivo">Análise de calibração — Sensor TGS2611 acima do padrão; IMO constante</td>
+        <td class="hgid">25090909</td>
+        <td class="serie">202509190005</td>
+      </tr>
+      <tr data-categoria="recolhimento">
+        <td class="num-cell">5</td>
+        <td>Dra. Rita de Cássia Silva</td>
+        <td class="motivo">Análise de calibração — Basais >40 PPM persistentes; falha no sensor</td>
+        <td class="hgid">25092606</td>
+        <td class="serie">202510130004</td>
+      </tr>
+      <tr data-categoria="recolhimento">
+        <td class="num-cell">6</td>
+        <td>Dra. OLIVIA DUARTE DE CASTRO ALVES</td>
+        <td class="motivo">Não conformidade na porta C do aparelho / Substituição — Instabilidade física na entrada USB-C</td>
+        <td class="hgid">25120402</td>
+        <td class="serie">202512100006</td>
+      </tr>
+      <tr data-categoria="recolhimento">
+        <td class="num-cell">7</td>
+        <td>Dr. Jorge Alberto Capra Biasuz</td>
+        <td class="motivo">Falha de calibração — Sensores fora de calibração; mal contato interno</td>
+        <td class="hgid">25061123</td>
+        <td class="serie">202506100001</td>
+      </tr>
+      <tr data-categoria="recolhimento">
+        <td class="num-cell">8</td>
+        <td>Dra. Alanna Alexandre Silva de Azevedo</td>
+        <td class="motivo">Falha de calibração — Contaminação dos sensores na calibração de fábrica</td>
+        <td class="hgid">26011310</td>
+        <td class="serie">202512290005</td>
+      </tr>
+      <tr data-categoria="recolhimento">
+        <td class="num-cell">9</td>
+        <td>Dr. Elias Benjamin Moran Gonzalez</td>
+        <td class="motivo">Substituição — Equipamento fora dos padrões de calibração</td>
+        <td class="hgid">—</td>
+        <td class="serie">—</td>
+      </tr>
+      <tr data-categoria="recolhimento">
+        <td class="num-cell">10</td>
+        <td>Dr. André Lorenzon / Dra Julia Zucchi</td>
+        <td class="motivo">Não conformidade na porta C do aparelho / Substituição</td>
+        <td class="hgid">25062913</td>
+        <td class="serie">202506270006</td>
+      </tr>
+      <tr data-categoria="recolhimento">
+        <td class="num-cell">11</td>
+        <td>Stela Scaglioni Marini</td>
+        <td class="motivo">Substituição — Bomba pneumática parou de funcionar</td>
+        <td class="hgid">—</td>
+        <td class="serie">—</td>
+      </tr>
+      <tr data-categoria="recolhimento">
+        <td class="num-cell">12</td>
+        <td>Dra. Adriana Endoscopia HB / Dr. Flávio Morita</td>
+        <td class="motivo">Substituição — Falha de calibração</td>
+        <td class="hgid">—</td>
+        <td class="serie">—</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- TABLE: CHAMADO INDEVIDO -->
+  <div class="section-title">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f0883e" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    Chamado Indevido <span class="count">5 casos</span>
+  </div>
+  <table id="tabela-indevido">
+    <thead>
+      <tr>
+        <th style="width:35px">#</th>
+        <th>Cliente</th>
+        <th style="width:300px">Motivo da Classificação</th>
+        <th style="width:100px">Ação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-categoria="indevido">
+        <td class="num-cell">1</td>
+        <td>Aline Cristina Kusumoto</td>
+        <td class="motivo">Abertura indevida de chamado — caso sem necessidade técnica</td>
+        <td><span class="badge badge-indevido">Encerrado</span></td>
+      </tr>
+      <tr data-categoria="indevido">
+        <td class="num-cell">2</td>
+        <td>Ricardo Barros</td>
+        <td class="motivo">Abertura indevida de chamado — equipamento sem defeito</td>
+        <td><span class="badge badge-indevido">Encerrado</span></td>
+      </tr>
+      <tr data-categoria="indevido">
+        <td class="num-cell">3</td>
+        <td>Renisa Maróstica</td>
+        <td class="motivo">Abertura indevida de chamado</td>
+        <td><span class="badge badge-indevido">Encerrado</span></td>
+      </tr>
+      <tr data-categoria="indevido">
+        <td class="num-cell">4</td>
+        <td>Gabi / Enf Dr Ramodnil</td>
+        <td class="motivo">Recolhimento indevido — equipamento sem defeito real (recoleta)</td>
+        <td><span class="badge badge-indevido">Revisto</span></td>
+      </tr>
+      <tr data-categoria="indevido">
+        <td class="num-cell">5</td>
+        <td>Roberlei Sócio</td>
+        <td class="motivo">Dúvida de operação no software — sem necessidade de chamado técnico</td>
+        <td><span class="badge badge-indevido">Encerrado</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- TABLE: REGISTROS N3 ADICIONAIS (Maio, fora da lista manual) -->
+  <div class="section-title">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    Registros N3 Adicionais (Maio 2026 — não constantes na lista manual) <span class="count">5 casos</span>
+  </div>
+  <table id="tabela-adicional">
+    <thead>
+      <tr>
+        <th style="width:35px">#</th>
+        <th>Cliente</th>
+        <th style="width:240px">Motivo do Recolhimento</th>
+        <th>HGID</th>
+        <th>Nº Série</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-categoria="adicional">
+        <td class="num-cell">1</td>
+        <td>Dra. Juliana Ferrari</td>
+        <td class="motivo">Sensores fora do padrão — Basal H2 elevado</td>
+        <td class="hgid">25091806</td>
+        <td class="serie">202510060006</td>
+      </tr>
+      <tr data-categoria="adicional">
+        <td class="num-cell">2</td>
+        <td>Dra. Carla Moura Fé Elias</td>
+        <td class="motivo">Sensores travados/comportamento linear — Curvas idênticas</td>
+        <td class="hgid">26030601</td>
+        <td class="serie">202603090015</td>
+      </tr>
+      <tr data-categoria="adicional">
+        <td class="num-cell">3</td>
+        <td>LORENZON Serviços Médicos / Dra Julia Zucchi</td>
+        <td class="motivo">Falha HTU / TGS2611 — GoPremium reserva</td>
+        <td class="hgid">26042401</td>
+        <td class="serie">202604240002</td>
+      </tr>
+      <tr data-categoria="adicional">
+        <td class="num-cell">4</td>
+        <td>Dra. Cyrla Zaltman</td>
+        <td class="motivo">Sensores fora — Recolhimento para substituição</td>
+        <td class="hgid">—</td>
+        <td class="serie">—</td>
+      </tr>
+      <tr data-categoria="adicional">
+        <td class="num-cell">5</td>
+        <td>Juliane Ramacciotti</td>
+        <td class="motivo">Led vermelho — Em andamento (N3)</td>
+        <td class="hgid">—</td>
+        <td class="serie">—</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SUMMARY -->
+  <div class="summary-section">
+    <h2>Resumo Analítico — Maio 2026</h2>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <h3>Distribuição por Tipo</h3>
+        <div class="summary-row"><span class="label">Resolução Remota</span><span class="value green">20 (47,6%)</span></div>
+        <div class="summary-row"><span class="label">Recolhimento (N3)</span><span class="value red">12 (28,6%)</span></div>
+        <div class="summary-row"><span class="label">Chamado Indevido</span><span class="value orange">5 (11,9%)</span></div>
+        <div class="summary-row"><span class="label">Reg. N3 Adicionais</span><span class="value purple">5 (11,9%)</span></div>
+        <div class="summary-row"><span class="label">Total</span><span class="value">42</span></div>
+      </div>
+      <div class="summary-card">
+        <h3>Principais Motivos (Chamadores)</h3>
+        <div class="summary-row"><span class="label">Falha de autenticação firmware/HTU</span><span class="value red">5</span></div>
+        <div class="summary-row"><span class="label">Dúvidas de operação / configuração</span><span class="value green">6</span></div>
+        <div class="summary-row"><span class="label">Análise / falha de calibração</span><span class="value red">7</span></div>
+        <div class="summary-row"><span class="label">Substituição / não conformidade hardware</span><span class="value red">5</span></div>
+        <div class="summary-row"><span class="label">Comunicação / info manutenção</span><span class="value green">4</span></div>
+        <div class="summary-row"><span class="label">Abertura indevida</span><span class="value orange">5</span></div>
+        <div class="summary-row"><span class="label">Outros (link, certificado, interpretação)</span><span class="value">6</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Relatório Motivos de Chamadores — Maio 2026<br>
+    André Luiz de Souza — Especialista de Suporte N3<br>
+    HealthGo Air Support Intelligence — Gerado em 24/05/2026
+  </div>
+</div>
+
+<script>
+function filtrar(tipo, btn) {
+  document.querySelectorAll('.filtro-btn').forEach(b => b.className = 'filtro-btn');
+  btn.className = 'filtro-btn active';
+
+  var tables = document.querySelectorAll('table tbody tr');
+  tables.forEach(function(row) {
+    var cat = row.getAttribute('data-categoria');
+    if (tipo === 'todos') { row.classList.remove('hidden'); return; }
+    if (cat === tipo) { row.classList.remove('hidden'); }
+    else { row.classList.add('hidden'); }
+  });
+
+  // Toggle section headers
+  var sections = document.querySelectorAll('.section-title');
+  var sectionMap = ['remoto', 'recolhimento', 'indevido', 'adicional'];
+  var idx = sectionMap.indexOf(tipo);
+  sections.forEach(function(sec, i) {
+    if (tipo === 'todos') { sec.style.display = 'flex'; return; }
+    sec.style.display = (sectionMap.indexOf(tipo) === i) ? 'flex' : 'none';
+  });
+}
+
+function filtrarBusca() {
+  var input = document.getElementById('searchInput');
+  var filter = input.value.toUpperCase();
+  var tables = document.querySelectorAll('table tbody tr');
+  tables.forEach(function(row) {
+    var text = row.textContent.toUpperCase();
+    row.classList.toggle('hidden', filter.length > 0 && text.indexOf(filter) === -1);
+  });
+}
+</script>
+</body>
+</html>

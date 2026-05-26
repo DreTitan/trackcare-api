@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Relatório Consolidado — Motivos de Recolhimento HealthGo Air</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+    line-height: 1.7;
+    font-size: 11px;
+    padding: 0;
+  }
+
+  .page {
+    padding: 40px 48px;
+    page-break-after: always;
+    min-height: 100%;
+  }
+  .page:last-child { page-break-after: avoid; }
+
+  /* Header */
+  .report-header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 2px solid #30363d;
+    position: relative;
+  }
+  .report-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, #58a6ff, #a371f7, #f778ba);
+  }
+  .report-header h1 {
+    font-size: 22px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #58a6ff, #a371f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .report-header .subtitle {
+    color: #8b949e;
+    font-size: 11px;
+    font-weight: 400;
+  }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .meta-item {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 10px 14px;
+    text-align: center;
+  }
+  .meta-item .label { color: #8b949e; font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .meta-item .value { color: #e6edf3; font-size: 12px; font-weight: 600; margin-top: 2px; }
+
+  /* Sections */
+  h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #e6edf3;
+    margin: 28px 0 14px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #21262d;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h2 .num {
+    background: linear-gradient(135deg, #58a6ff, #a371f7);
+    color: #0d1117;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e6edf3;
+    margin: 20px 0 10px 0;
+  }
+
+  /* Executive summary card */
+  .exec-summary {
+    background: linear-gradient(135deg, #161b22 0%, #1c2333 100%);
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .exec-summary p {
+    color: #c9d1d9;
+    font-size: 11.5px;
+    line-height: 1.8;
+  }
+  .highlight { color: #58a6ff; font-weight: 600; }
+  .highlight-warn { color: #f0883e; font-weight: 600; }
+  .highlight-danger { color: #f85149; font-weight: 600; }
+
+  /* Stats cards */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .stat-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .stat-card.blue::before { background: linear-gradient(90deg, #58a6ff, #79c0ff); }
+  .stat-card.red::before { background: linear-gradient(90deg, #f85149, #ff7b72); }
+  .stat-card.purple::before { background: linear-gradient(90deg, #a371f7, #d2a8ff); }
+  .stat-card.green::before { background: linear-gradient(90deg, #3fb950, #56d364); }
+  .stat-card .stat-value { font-size: 24px; font-weight: 800; color: #e6edf3; }
+  .stat-card .stat-label { font-size: 9px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 12px 0;
+    font-size: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #30363d;
+  }
+  thead th {
+    background: #161b22;
+    color: #8b949e;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #30363d;
+  }
+  tbody td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #21262d;
+    color: #c9d1d9;
+    vertical-align: top;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: #161b22; }
+  .rank-cell {
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .pct-bar {
+    display: inline-block;
+    height: 6px;
+    border-radius: 3px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 9px;
+    font-weight: 600;
+  }
+  .badge-critical { background: rgba(248,81,73,0.15); color: #f85149; }
+  .badge-high { background: rgba(240,136,62,0.15); color: #f0883e; }
+  .badge-medium { background: rgba(210,168,255,0.15); color: #d2a8ff; }
+  .badge-programmed { background: rgba(63,185,80,0.15); color: #3fb950; }
+
+  /* Pie chart */
+  .chart-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    margin: 20px 0;
+    padding: 20px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+  }
+  .chart-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10.5px;
+    color: #c9d1d9;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .legend-pct { color: #8b949e; font-size: 10px; margin-left: auto; padding-left: 12px; font-weight: 600; }
+
+  /* Alert boxes */
+  .alert {
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 10.5px;
+    line-height: 1.7;
+    border-left: 4px solid;
+  }
+  .alert-warning {
+    background: rgba(240,136,62,0.08);
+    border-color: #f0883e;
+    color: #f0883e;
+  }
+  .alert-danger {
+    background: rgba(248,81,73,0.08);
+    border-color: #f85149;
+    color: #ff7b72;
+  }
+  .alert-info {
+    background: rgba(88,166,255,0.08);
+    border-color: #58a6ff;
+    color: #79c0ff;
+  }
+  .alert-important {
+    background: rgba(163,113,247,0.08);
+    border-color: #a371f7;
+    color: #d2a8ff;
+  }
+  .alert-title {
+    font-weight: 700;
+    font-size: 11px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding: 10px 0 10px 24px;
+    margin: 16px 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, #58a6ff, #a371f7, #f778ba);
+    border-radius: 2px;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #58a6ff;
+    border: 2px solid #0d1117;
+  }
+  .timeline-date {
+    font-size: 10px;
+    font-weight: 600;
+    color: #58a6ff;
+    min-width: 70px;
+  }
+  .timeline-text {
+    font-size: 10px;
+    color: #c9d1d9;
+  }
+  .timeline-month {
+    font-size: 11px;
+    font-weight: 700;
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 10px 0 6px 0;
+    padding-left: 0;
+    position: relative;
+  }
+
+  /* Category sections */
+  .category-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0 12px 0;
+    padding: 12px 16px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+  }
+  .category-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .category-info h3 { margin: 0; font-size: 12px; }
+  .category-info .cat-stats { color: #8b949e; font-size: 10px; margin-top: 2px; }
+
+  /* Recommendations */
+  .rec-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .rec-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 14px;
+    border-left: 3px solid;
+  }
+  .rec-card.critical { border-left-color: #f85149; }
+  .rec-card.important { border-left-color: #f0883e; }
+  .rec-card.improvement { border-left-color: #58a6ff; }
+  .rec-card .rec-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #e6edf3;
+    margin-bottom: 4px;
+  }
+  .rec-card .rec-text {
+    font-size: 10px;
+    color: #8b949e;
+    line-height: 1.6;
+  }
+
+  /* Footer */
+  .report-footer {
+    text-align: center;
+    padding: 20px 0 0 0;
+    margin-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #484f58;
+    font-size: 9px;
+  }
+
+  /* Page break helpers */
+  .page-break { page-break-before: always; }
+
+  /* Conclusion */
+  .conclusion-box {
+    background: linear-gradient(135deg, rgba(88,166,255,0.05), rgba(163,113,247,0.05));
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .conclusion-box p {
+    color: #c9d1d9;
+    font-size: 11.5px;
+    line-height: 1.8;
+  }
+
+  .bold { font-weight: 700; }
+  .text-muted { color: #8b949e; }
+
+  /* Print styles */
+  @media print {
+    body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: Cover + Summary + Ranking -->
+<div class="page">
+  <div class="report-header">
+    <h1>Relatório Consolidado de Recolhimento</h1>
+    <div class="subtitle">Principais Motivos de Recolhimento — Aparelhos HealthGo Air</div>
+    <div class="meta-grid">
+      <div class="meta-item">
+        <div class="label">Data de Emissão</div>
+        <div class="value">16/04/2026</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Período Analisado</div>
+        <div class="value">24/03 a 15/04/2026</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Base de Dados</div>
+        <div class="value">16 Relatórios N3</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="stats-row">
+    <div class="stat-card blue">
+      <div class="stat-value">16</div>
+      <div class="stat-label">Total Recolhimentos</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-value">93,75%</div>
+      <div class="stat-label">Falhas Corretivas</div>
+    </div>
+    <div class="stat-card purple">
+      <div class="stat-value">5</div>
+      <div class="stat-label">Categorias de Falha</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-value">75%</div>
+      <div class="stat-label">Top 3 Causas</div>
+    </div>
+  </div>
+
+  <!-- Executive Summary -->
+  <h2><span class="num">1</span> Resumo Executivo</h2>
+  <div class="exec-summary">
+    <p>
+      Foram analisados <span class="highlight">16 relatórios N3</span> de investigação de produto (FRGH.049). 
+      Todos os casos resultaram em <span class="highlight-danger">recolhimento do equipamento</span>. 
+      A análise identificou <span class="highlight">5 categorias principais de falha</span>, sendo as mais recorrentes: 
+      <span class="highlight-warn">falha de autenticação do HTU</span> (25%), 
+      <span class="highlight-warn">falha nas bombas pneumáticas</span> (25%) e 
+      <span class="highlight-warn">falha/descalibração de sensores</span> (25%). 
+      Juntas, essas três categorias representam <span class="highlight-danger">75% de todos os recolhimentos</span>, 
+      apontando predominantemente para falhas de hardware. 
+      Foram identificados <span class="highlight-danger">2 casos de reincidência</span> pós-reparo e 
+      <span class="highlight-danger">1 equipamento novo</span> que falhou no treinamento.
+    </p>
+  </div>
+
+  <!-- Ranking Table -->
+  <h2><span class="num">2</span> Ranking de Motivos de Recolhimento</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:30px">#</th>
+        <th>Categoria de Falha</th>
+        <th style="width:40px; text-align:center">Qtd.</th>
+        <th style="width:70px; text-align:center">%</th>
+        <th style="width:80px; text-align:center">Gravidade</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="rank-cell" style="color:#f85149">1</td>
+        <td>🔴 Falha de Autenticação do HTU (LED vermelho)</td>
+        <td style="text-align:center; font-weight:700">4</td>
+        <td style="text-align:center">25% <span class="pct-bar" style="width:50px; background:linear-gradient(90deg,#f85149,#ff7b72)"></span></td>
+        <td style="text-align:center"><span class="badge badge-critical">Crítica</span></td>
+      </tr>
+      <tr>
+        <td class="rank-cell" style="color:#f0883e">2</td>
+        <td>🟠 Falha nas Bombas Pneumáticas / Válvulas</td>
+        <td style="text-align:center; font-weight:700">4</td>
+        <td style="text-align:center">25% <span class="pct-bar" style="width:50px; background:linear-gradient(90deg,#f0883e,#f5a623)"></span></td>
+        <td style="text-align:center"><span class="badge badge-critical">Crítica</span></td>
+      </tr>
+      <tr>
+        <td class="rank-cell" style="color:#e3b341">3</td>
+        <td>🟡 Falha / Descalibração de Sensores</td>
+        <td style="text-align:center; font-weight:700">4</td>
+        <td style="text-align:center">25% <span class="pct-bar" style="width:50px; background:linear-gradient(90deg,#e3b341,#f5d547)"></span></td>
+        <td style="text-align:center"><span class="badge badge-high">Alta</span></td>
+      </tr>
+      <tr>
+        <td class="rank-cell" style="color:#58a6ff">4</td>
+        <td>🔵 Falha de Conexão / Hardware Geral</td>
+        <td style="text-align:center; font-weight:700">2</td>
+        <td style="text-align:center">12,5% <span class="pct-bar" style="width:25px; background:linear-gradient(90deg,#58a6ff,#79c0ff)"></span></td>
+        <td style="text-align:center"><span class="badge badge-high">Alta</span></td>
+      </tr>
+      <tr>
+        <td class="rank-cell" style="color:#8b949e">5</td>
+        <td>⚪ Aparelho não liga (DOA)</td>
+        <td style="text-align:center; font-weight:700">1</td>
+        <td style="text-align:center">6,25% <span class="pct-bar" style="width:12px; background:linear-gradient(90deg,#8b949e,#c9d1d9)"></span></td>
+        <td style="text-align:center"><span class="badge badge-critical">Crítica</span></td>
+      </tr>
+      <tr>
+        <td class="rank-cell" style="color:#3fb950">6</td>
+        <td>🟢 Manutenção Preventiva (250 exames)</td>
+        <td style="text-align:center; font-weight:700">1</td>
+        <td style="text-align:center">6,25% <span class="pct-bar" style="width:12px; background:linear-gradient(90deg,#3fb950,#56d364)"></span></td>
+        <td style="text-align:center"><span class="badge badge-programmed">Programada</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pie Chart -->
+  <div class="chart-container">
+    <svg width="180" height="180" viewBox="0 0 180 180">
+      <!-- Pie slices - calculated for: 25%, 25%, 25%, 12.5%, 6.25%, 6.25% -->
+      <!-- Slice 1: HTU 25% = 90deg, start 0 -->
+      <circle cx="90" cy="90" r="70" fill="none" stroke="#f85149" stroke-width="36" 
+        stroke-dasharray="109.96 329.87" stroke-dashoffset="0" transform="rotate(-90 90 90)"/>
+      <!-- Slice 2: Bombas 25% = 90deg -->
+      <circle cx="90" cy="90" r="70" fill="none" stroke="#f0883e" stroke-width="36" 
+        stroke-dasharray="109.96 329.87" stroke-dashoffset="-109.96" transform="rotate(-90 90 90)"/>
+      <!-- Slice 3: Sensores 25% = 90deg -->
+      <circle cx="90" cy="90" r="70" fill="none" stroke="#e3b341" stroke-width="36" 
+        stroke-dasharray="109.96 329.87" stroke-dashoffset="-219.91" transform="rotate(-90 90 90)"/>
+      <!-- Slice 4: Conexão 12.5% = 45deg -->
+      <circle cx="90" cy="90" r="70" fill="none" stroke="#58a6ff" stroke-width="36" 
+        stroke-dasharray="54.98 384.85" stroke-dashoffset="-329.87" transform="rotate(-90 90 90)"/>
+      <!-- Slice 5: DOA 6.25% -->
+      <circle cx="90" cy="90" r="70" fill="none" stroke="#8b949e" stroke-width="36" 
+        stroke-dasharray="27.49 412.34" stroke-dashoffset="-384.85" transform="rotate(-90 90 90)"/>
+      <!-- Slice 6: Preventiva 6.25% -->
+      <circle cx="90" cy="90" r="70" fill="none" stroke="#3fb950" stroke-width="36" 
+        stroke-dasharray="27.49 412.34" stroke-dashoffset="-412.34" transform="rotate(-90 90 90)"/>
+      <!-- Center circle -->
+      <circle cx="90" cy="90" r="52" fill="#161b22"/>
+      <text x="90" y="86" text-anchor="middle" font-size="18" font-weight="800" fill="#e6edf3">16</text>
+      <text x="90" y="100" text-anchor="middle" font-size="8" fill="#8b949e">RECOLHIMENTOS</text>
+    </svg>
+    <div class="chart-legend">
+      <div class="legend-item"><span class="legend-dot" style="background:#f85149"></span>Falha Autenticação HTU<span class="legend-pct">25%</span></div>
+      <div class="legend-item"><span class="legend-dot" style="background:#f0883e"></span>Falha Bombas/Válvulas<span class="legend-pct">25%</span></div>
+      <div class="legend-item"><span class="legend-dot" style="background:#e3b341"></span>Falha/Descalibração Sensores<span class="legend-pct">25%</span></div>
+      <div class="legend-item"><span class="legend-dot" style="background:#58a6ff"></span>Falha Conexão/Hardware<span class="legend-pct">12,5%</span></div>
+      <div class="legend-item"><span class="legend-dot" style="background:#8b949e"></span>Aparelho não liga (DOA)<span class="legend-pct">6,25%</span></div>
+      <div class="legend-item"><span class="legend-dot" style="background:#3fb950"></span>Manutenção Preventiva<span class="legend-pct">6,25%</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: Detailed Categories -->
+<div class="page">
+  <h2><span class="num">3</span> Detalhamento por Categoria</h2>
+
+  <!-- 3.1 HTU -->
+  <div class="category-header">
+    <div class="category-icon" style="background:rgba(248,81,73,0.15)">🔴</div>
+    <div class="category-info">
+      <h3>3.1 — Falha de Autenticação do HTU</h3>
+      <div class="cat-stats">4 casos — 25% do total — Gravidade Crítica</div>
+    </div>
+  </div>
+  <p style="color:#8b949e; margin-bottom:8px; font-size:10.5px">
+    O HTU (módulo de autenticação do hardware) não autentica no software nem na autenticação padrão do aparelho, resultando em <strong style="color:#f85149">LED vermelho piscando</strong> e impossibilidade de uso.
+  </p>
+  <table>
+    <thead>
+      <tr><th>Cliente</th><th>Data</th><th>Nº Série</th><th>HGID</th><th>Observações</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Centro Médico Aloha</td><td>10/04/2026</td><td>202506240015</td><td>25062512</td>
+        <td>Go Premium: SIM. Falha identificada via terminal debug</td>
+      </tr>
+      <tr>
+        <td>Dra. Carla Moura (Neurogastro)</td><td>01/04/2026</td><td>202602270001</td><td>26022404</td>
+        <td style="color:#f85149; font-weight:600">⚠ Equipamento NOVO — falhou no treinamento</td>
+      </tr>
+      <tr>
+        <td>Dra. Débora Campello</td><td>06/04/2026</td><td>202601150002</td><td>26010804</td>
+        <td>Falha identificada nos logs do debug</td>
+      </tr>
+      <tr>
+        <td>Dra. Kaline Nobre</td><td>09/04/2026</td><td>202509260008</td><td>26021005</td>
+        <td>Possível deslocamento na placa ou falha de encaixe</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="alert alert-warning">
+    <div class="alert-title">⚠️ ATENÇÃO</div>
+    O caso da Dra. Carla Moura é particularmente preocupante — trata-se de um equipamento <strong>novo que falhou já no treinamento</strong>, indicando possível falha de fabricação/montagem no controle de qualidade.
+  </div>
+  <p style="color:#8b949e; font-size:10px; margin-top:4px"><strong>Ações tentadas sem sucesso:</strong> Verificação de porta COM, atualização de drivers, reset de firmware, SVM.</p>
+
+  <!-- 3.2 Bombas -->
+  <div class="category-header">
+    <div class="category-icon" style="background:rgba(240,136,62,0.15)">🟠</div>
+    <div class="category-info">
+      <h3>3.2 — Falha nas Bombas Pneumáticas / Válvulas</h3>
+      <div class="cat-stats">4 casos — 25% do total — Gravidade Crítica</div>
+    </div>
+  </div>
+  <p style="color:#8b949e; margin-bottom:8px; font-size:10.5px">
+    Bombas pneumáticas travaram, resultando em ausência de sons, valores repetidos e impossibilidade de realizar limpezas automáticas.
+  </p>
+  <table>
+    <thead>
+      <tr><th>Cliente</th><th>Data</th><th>Nº Série</th><th>HGID</th><th>Observações</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Dr. André Lorenzon</td><td>09/04/2026</td><td>202506270006</td><td>25062913</td>
+        <td>Go Premium. Bombas funcionaram brevemente e pararam</td>
+      </tr>
+      <tr>
+        <td>Dr. Marcelo Kalichsztein</td><td>13/04/2026</td><td>202503020007</td><td>25062423</td>
+        <td>Bombas travaram fechadas, válvulas OK</td>
+      </tr>
+      <tr>
+        <td>Dra. Alanna Azevedo</td><td>24/03/2026</td><td>202512290005</td><td>26011310</td>
+        <td>Nunca houve resultados positivos de CH4</td>
+      </tr>
+      <tr>
+        <td>Dra. Dalva Maria Alcantara</td><td>01/04/2026</td><td>202511240003</td><td>25101707</td>
+        <td>Sem barulho algum. Valores H2 = CH4 constantes</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="alert alert-important">
+    <div class="alert-title">📌 PADRÃO IDENTIFICADO</div>
+    Em todos os casos, o sintoma inicial foi <strong>ausência de sons</strong> ou <strong>valores repetidos</strong>, indicando que as bombas pneumáticas são um componente de alto risco de falha.
+  </div>
+  <p style="color:#8b949e; font-size:10px; margin-top:4px"><strong>Ações tentadas sem sucesso:</strong> Update de firmware, SVM, desligar/ligar, reinicialização.</p>
+</div>
+
+<!-- PAGE 3: More categories -->
+<div class="page">
+  <!-- 3.3 Sensores -->
+  <div class="category-header">
+    <div class="category-icon" style="background:rgba(227,179,65,0.15)">🟡</div>
+    <div class="category-info">
+      <h3>3.3 — Falha / Descalibração de Sensores</h3>
+      <div class="cat-stats">4 casos — 25% do total — Gravidade Alta</div>
+    </div>
+  </div>
+  <p style="color:#8b949e; margin-bottom:8px; font-size:10.5px">
+    Sensores operando fora dos parâmetros de calibração, gerando valores incorretos, curvas flat ou leituras erradas.
+  </p>
+  <table>
+    <thead>
+      <tr><th>Cliente</th><th>Data</th><th>Nº Série</th><th>HGID</th><th>Observações</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Dr. Douglas Lazzeris</td><td>15/04/2026</td><td>202507300012</td><td>26031803</td>
+        <td style="color:#f85149">⚠ Sensor fora do conversor MCP3564. <strong>Recolhido anteriormente</strong></td>
+      </tr>
+      <tr>
+        <td>Dr. Espedito M Pacifico</td><td>14/04/2026</td><td>202506100007</td><td>26022301</td>
+        <td>Go Premium: NÃO. Falha na placa dos sensores da câmara</td>
+      </tr>
+      <tr>
+        <td>Dra. Aline Souza (Endoclin)</td><td>10/04/2026</td><td>202602240001</td><td>26012320</td>
+        <td>Valores H2 marcando errado. Curvas flat após SVM</td>
+      </tr>
+      <tr>
+        <td>Dra. Lorena Sagrilo Auer</td><td>24/03/2026</td><td>202509100003</td><td>25082508</td>
+        <td style="color:#f85149">⚠ Sensores TGS2600/TGS2611 fora. <strong>Retornou da calibração ruim</strong></td>
+      </tr>
+      <tr>
+        <td>Dra. Aleksandra Pianco Leal</td><td>15/04/2026</td><td>202508130003</td><td>25080803</td>
+        <td>Calibração feita com quantidade maior de gás (pré-modificações)</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="alert alert-danger">
+    <div class="alert-title">🚨 REINCIDÊNCIAS GRAVES</div>
+    <strong>Dr. Douglas Lazzeris:</strong> Aparelho que já havia sido recolhido anteriormente e retornou com falha.<br>
+    <strong>Dra. Lorena Sagrilo Auer:</strong> Equipamento recolhido para calibração de 1 ano/250 exames e retornou à médica com defeito.<br><br>
+    Esses casos indicam <strong>falhas no processo de reparo/calibração na fábrica</strong>.
+  </div>
+
+  <!-- 3.4 Conexão -->
+  <div class="category-header">
+    <div class="category-icon" style="background:rgba(88,166,255,0.15)">🔵</div>
+    <div class="category-info">
+      <h3>3.4 — Falha de Conexão / Hardware Geral</h3>
+      <div class="cat-stats">2 casos — 12,5% do total — Gravidade Alta</div>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr><th>Cliente</th><th>Data</th><th>Nº Série</th><th>HGID</th><th>Observações</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Dra. Erika Yvamoto</td><td>10/04/2026</td><td>202506100006</td><td>25061223</td>
+        <td>LED queimado, falha de conexão com software</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 3.5 Preventiva -->
+  <div class="category-header">
+    <div class="category-icon" style="background:rgba(63,185,80,0.15)">🟢</div>
+    <div class="category-info">
+      <h3>3.5 — Manutenção Preventiva</h3>
+      <div class="cat-stats">1 caso — 6,25% do total — Programada</div>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr><th>Cliente</th><th>Data</th><th>Nº Série</th><th>HGID</th><th>Observações</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Dra. Aline Kusumoto</td><td>15/04/2026</td><td>202504280005</td><td>25051622</td>
+        <td>Atingiu 250 exames, calibração fora de conformidade</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 3.6 DOA -->
+  <div class="category-header">
+    <div class="category-icon" style="background:rgba(139,148,158,0.15)">⚪</div>
+    <div class="category-info">
+      <h3>3.6 — Aparelho Não Liga (DOA)</h3>
+      <div class="cat-stats">1 caso — 6,25% do total — Gravidade Crítica</div>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr><th>Cliente</th><th>Data</th><th>Nº Série</th><th>HGID</th><th>Observações</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Dr. Ricardo Tadayoshi</td><td>26/03/2026</td><td>202601020003</td><td>25123007</td>
+        <td>Compra modelo combo. Deveria ter recebido comodato há 4 meses — nunca funcionou</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="alert alert-warning">
+    <div class="alert-title">⚠️ ATENÇÃO</div>
+    Equipamento ficou aparentemente <strong>4 meses sem uso</strong> antes de se constatar que não funcionava, indicando possível falha na logística de ativação/acompanhamento pós-venda.
+  </div>
+</div>
+
+<!-- PAGE 4: Stats, Timeline, Recommendations, Conclusion -->
+<div class="page">
+  <h2><span class="num">4</span> Estatísticas Gerais</h2>
+  <table>
+    <thead>
+      <tr><th>Indicador</th><th style="text-align:center">Valor</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Total de recolhimentos</td><td style="text-align:center; font-weight:700">16</td></tr>
+      <tr><td>Falhas corretivas (não programadas)</td><td style="text-align:center; font-weight:700; color:#f85149">15 (93,75%)</td></tr>
+      <tr><td>Manutenção preventiva</td><td style="text-align:center; font-weight:700; color:#3fb950">1 (6,25%)</td></tr>
+      <tr><td>Casos com Go Premium</td><td style="text-align:center; font-weight:700">3 (18,75%)</td></tr>
+      <tr><td>Casos de reincidência (recolhimento anterior)</td><td style="text-align:center; font-weight:700; color:#f85149">2 (12,5%)</td></tr>
+      <tr><td>Equipamentos novos com falha</td><td style="text-align:center; font-weight:700; color:#f0883e">1 (6,25%)</td></tr>
+      <tr><td>Tentativas de SVM sem sucesso</td><td style="text-align:center; font-weight:700">10+ casos</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="num">5</span> Linha do Tempo dos Recolhimentos</h2>
+  <div style="background:#161b22; border:1px solid #30363d; border-radius:12px; padding:16px 20px;">
+    <div class="timeline">
+      <div class="timeline-month">Março 2026</div>
+      <div class="timeline-item"><span class="timeline-date">24/03</span><span class="timeline-text">Dra. Alanna Azevedo — Bombas pneumáticas travadas</span></div>
+      <div class="timeline-item"><span class="timeline-date">24/03</span><span class="timeline-text">Dra. Lorena Sagrilo Auer — Descalibração sensores TGS</span></div>
+      <div class="timeline-item"><span class="timeline-date">26/03</span><span class="timeline-text">Dr. Ricardo Tadayoshi — Aparelho não liga (DOA)</span></div>
+
+      <div class="timeline-month">Abril 2026</div>
+      <div class="timeline-item"><span class="timeline-date">01/04</span><span class="timeline-text">Dra. Carla Moura — Falha HTU (equip. novo)</span></div>
+      <div class="timeline-item"><span class="timeline-date">01/04</span><span class="timeline-text">Dra. Dalva Maria Alcantara — Falha bombas/válvulas</span></div>
+      <div class="timeline-item"><span class="timeline-date">06/04</span><span class="timeline-text">Dra. Débora Campello — Falha autenticação HTU</span></div>
+      <div class="timeline-item"><span class="timeline-date">09/04</span><span class="timeline-text">Dr. André Lorenzon — Falha bombas pneumáticas</span></div>
+      <div class="timeline-item"><span class="timeline-date">09/04</span><span class="timeline-text">Dra. Kaline Nobre — Falha autenticação HTU</span></div>
+      <div class="timeline-item"><span class="timeline-date">10/04</span><span class="timeline-text">Centro Médico Aloha — Falha HTU</span></div>
+      <div class="timeline-item"><span class="timeline-date">10/04</span><span class="timeline-text">Dra. Aline Souza — Descalibração sensores H2</span></div>
+      <div class="timeline-item"><span class="timeline-date">10/04</span><span class="timeline-text">Dra. Erika Yvamoto — LED queimado / falha conexão</span></div>
+      <div class="timeline-item"><span class="timeline-date">13/04</span><span class="timeline-text">Dr. Marcelo Kalichsztein — Bombas travaram fechadas</span></div>
+      <div class="timeline-item"><span class="timeline-date">14/04</span><span class="timeline-text">Dr. Espedito M Pacifico — Falha placa sensores</span></div>
+      <div class="timeline-item"><span class="timeline-date">15/04</span><span class="timeline-text">Dr. Douglas Lazzeris — Sensor fora MCP3564 (reincidência)</span></div>
+      <div class="timeline-item"><span class="timeline-date">15/04</span><span class="timeline-text">Dra. Aleksandra Pianco Leal — Falha bomba pneumática</span></div>
+      <div class="timeline-item"><span class="timeline-date">15/04</span><span class="timeline-text">Dra. Aline Kusumoto — Manutenção preventiva 250 exames</span></div>
+    </div>
+  </div>
+  <div class="alert alert-info" style="margin-top:12px">
+    <div class="alert-title">📊 CONCENTRAÇÃO TEMPORAL</div>
+    Há uma clara concentração de recolhimentos na <strong>primeira quinzena de abril/2026</strong> (13 de 16 casos), sugerindo possível lote problemático ou degradação temporal de componentes.
+  </div>
+
+  <h2><span class="num">6</span> Recomendações</h2>
+  <h3 style="color:#f85149; font-size:11px; margin-bottom:8px">🔴 Críticas</h3>
+  <div class="rec-grid">
+    <div class="rec-card critical">
+      <div class="rec-title">1. Bombas Pneumáticas</div>
+      <div class="rec-text">Componente com alta taxa de falha (25%). Revisar fornecedor, materiais e processo de montagem.</div>
+    </div>
+    <div class="rec-card critical">
+      <div class="rec-title">2. Autenticação HTU</div>
+      <div class="rec-text">Investigar relação com lotes específicos de placas ou processo de encaixe/soldagem.</div>
+    </div>
+    <div class="rec-card critical">
+      <div class="rec-title">3. Reincidências Pós-Reparo</div>
+      <div class="rec-text">Quality Assurance pós-reparo precisa ser reforçado. 2 equipamentos retornaram com falha.</div>
+    </div>
+  </div>
+  <h3 style="color:#f0883e; font-size:11px; margin-bottom:8px">🟠 Importantes</h3>
+  <div class="rec-grid">
+    <div class="rec-card important">
+      <div class="rec-title">4. Calibração de Sensores</div>
+      <div class="rec-text">Revisão do processo de calibração na fábrica e possível redução do intervalo de manutenção preventiva.</div>
+    </div>
+    <div class="rec-card important">
+      <div class="rec-title">5. SVM com Baixa Eficácia</div>
+      <div class="rec-text">As falhas são predominantemente de hardware. SVM não resolveu na maioria dos casos.</div>
+    </div>
+  </div>
+  <h3 style="color:#58a6ff; font-size:11px; margin-bottom:8px">🔵 Melhorias</h3>
+  <div class="rec-grid">
+    <div class="rec-card improvement">
+      <div class="rec-title">6. Monitoramento Proativo</div>
+      <div class="rec-text">Alertas automáticos no dashboard quando parâmetros saírem dos limites, antecipando falhas.</div>
+    </div>
+    <div class="rec-card improvement">
+      <div class="rec-title">7. Rastreabilidade por Lote</div>
+      <div class="rec-text">Cruzar números de série para identificar lotes de fabricação problemáticos.</div>
+    </div>
+  </div>
+
+  <h2><span class="num">7</span> Conclusão</h2>
+  <div class="conclusion-box">
+    <p>
+      Os <span class="highlight">três principais motivos de recolhimento</span> — falha de autenticação HTU, falha nas bombas pneumáticas e descalibração de sensores — representam juntos 
+      <span class="highlight-danger">75% de todos os casos</span> e apontam predominantemente para <span class="bold">falhas de hardware</span>. 
+      A concentração temporal dos recolhimentos e os casos de reincidência pós-reparo são sinais de alerta que demandam 
+      <span class="highlight-warn">ação imediata na cadeia de produção e controle de qualidade</span>.
+    </p>
+  </div>
+
+  <div class="report-footer">
+    <p>Relatório gerado em 16/04/2026 • Produto: HealthGo Air • Documento: FRGH.049 • Analista: André Luiz de Souza</p>
+    <p style="margin-top:4px">Sistema de Gestão da Qualidade — HealthGo</p>
+  </div>
+</div>
+
+</body>
+</html>

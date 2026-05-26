@@ -1,0 +1,28 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.log
+.vs/
+
+# Env files with secrets
+.env
+*.local.json
+
+# Node
+node_modules/
+dist/
+out/
+
+# IDE
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Packages
+*.nupkg

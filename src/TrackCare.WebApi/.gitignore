@@ -1,0 +1,3 @@
+DB_CONNECTION_STRING=postgresql://postgres:SENHA_AQUI@db.ewcldebtsrjfdkckvqin.supabase.co:5432/postgres
+SUPABASE_URL=https://ewcldebtsrjfdkckvqin.supabase.co
+SUPABASE_KEY=sua_chave_aqui

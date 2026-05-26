@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Consolidado - Motivos de Recolhimento HealthGo Air (18 a 26/05/2026)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header {
+            background: linear-gradient(135deg, #005a8d, #003d5c);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,90,141,0.3);
+        }
+        .header h1 { font-size: 1.8em; margin-bottom: 8px; }
+        .header h2 { font-size: 1.1em; font-weight: 400; opacity: 0.9; }
+        .period-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+        }
+        .card:hover { transform: translateY(-2px); }
+        .card-icon { font-size: 2em; margin-bottom: 8px; }
+        .card-value { font-size: 2em; font-weight: bold; color: #005a8d; }
+        .card-label { color: #7f8c8d; font-size: 0.85em; margin-top: 5px; }
+        .card.total-card { background: linear-gradient(135deg, #005a8d, #003d5c); color: white; }
+        .card.total-card .card-value { color: white; }
+        .card.total-card .card-label { color: rgba(255,255,255,0.8); }
+        .card.comunicacao { border-left: 4px solid #e74c3c; }
+        .card.equipamento { border-left: 4px solid #e67e22; }
+        .card.entrega { border-left: 4px solid #9b59b6; }
+        .card.nao-atend { border-left: 4px solid #3498db; }
+        .chart-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .chart-section h3 { margin-bottom: 15px; color: #2c3e50; border-bottom: 2px solid #005a8d; padding-bottom: 8px; }
+        .chart-bar { margin-bottom: 15px; }
+        .chart-label { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.9em; }
+        .chart-bar-bg { background: #ecf0f1; border-radius: 8px; height: 24px; overflow: hidden; }
+        .chart-bar-fill { height: 100%; border-radius: 8px; transition: width 1s ease; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: white; font-size: 0.8em; font-weight: bold; }
+        .chart-bar-fill.comunicacao { background: linear-gradient(90deg, #c0392b, #e74c3c); }
+        .chart-bar-fill.equipamento { background: linear-gradient(90deg, #d35400, #e67e22); }
+        .chart-bar-fill.entrega { background: linear-gradient(90deg, #8e44ad, #9b59b6); }
+        .chart-bar-fill.nao-atend { background: linear-gradient(90deg, #2980b9, #3498db); }
+        .table-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+        .table-section h3 { margin-bottom: 15px; color: #2c3e50; border-bottom: 2px solid #005a8d; padding-bottom: 8px; }
+        table { width: 100%; border-collapse: collapse; min-width: 700px; }
+        thead th {
+            background: #005a8d;
+            color: white;
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 0.85em;
+        }
+        thead th:first-child { border-radius: 8px 0 0 0; text-align: left; }
+        thead th:last-child { border-radius: 0 8px 0 0; }
+        tbody tr:nth-child(even) { background: #f8f9fa; }
+        tbody tr:hover { background: #eaf4fb; }
+        tbody td { padding: 10px 8px; text-align: center; border-bottom: 1px solid #ecf0f1; font-size: 0.9em; }
+        tbody td:first-child { text-align: left; font-weight: 600; }
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+        .badge-comunicacao { background: #fdecea; color: #c0392b; }
+        .badge-equipamento { background: #fef5e7; color: #d35400; }
+        .badge-entrega { background: #f5eef8; color: #8e44ad; }
+        .badge-nao-atend { background: #eaf4fb; color: #2980b9; }
+        .badge-zero { background: #f0f0f0; color: #999; }
+        .total-row { background: #eaf4fb !important; font-weight: bold; }
+        .total-row td { border-top: 2px solid #005a8d; }
+        .details-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .details-section h3 { margin-bottom: 15px; color: #2c3e50; border-bottom: 2px solid #005a8d; padding-bottom: 8px; }
+        .provider-block {
+            border-left: 4px solid #005a8d;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+            border-radius: 0 8px 8px 0;
+        }
+        .provider-block:hover { background: #eaf4fb; }
+        .provider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .provider-name { font-weight: bold; color: #2c3e50; font-size: 0.95em; }
+        .provider-date { color: #7f8c8d; font-size: 0.85em; }
+        .provider-total { background: #005a8d; color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.8em; font-weight: bold; }
+        .motivos-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+        .motivo-tag {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+        .tag-comunicacao { background: #fdecea; color: #c0392b; border: 1px solid #e74c3c; }
+        .tag-equipamento { background: #fef5e7; color: #d35400; border: 1px solid #e67e22; }
+        .tag-entrega { background: #f5eef8; color: #8e44ad; border: 1px solid #9b59b6; }
+        .tag-nao-atend { background: #eaf4fb; color: #2980b9; border: 1px solid #3498db; }
+        .footer {
+            text-align: center;
+            padding: 15px;
+            color: #95a5a6;
+            font-size: 0.85em;
+        }
+        @media print {
+            body { background: white; padding: 0; }
+            .card, .chart-section, .table-section, .details-section { box-shadow: none; break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>HealthGo Air</h1>
+            <h2>Relatório Consolidado — Motivos de Recolhimento</h2>
+            <div class="period-badge">Período: 18/05/2026 a 26/05/2026</div>
+        </div>
+
+        <div class="summary-cards">
+            <div class="card comunicacao">
+                <div class="card-icon">&#9888;</div>
+                <div class="card-value">12</div>
+                <div class="card-label">Erro / Falha de Comunicação</div>
+            </div>
+            <div class="card equipamento">
+                <div class="card-icon">&#128268;</div>
+                <div class="card-value">12</div>
+                <div class="card-label">Equipamento Danificado</div>
+            </div>
+            <div class="card entrega">
+                <div class="card-icon">&#128230;</div>
+                <div class="card-value">6</div>
+                <div class="card-label">Entrega Incorreta</div>
+            </div>
+            <div class="card nao-atend">
+                <div class="card-icon">&#128679;</div>
+                <div class="card-value">7</div>
+                <div class="card-label">Não Atendimento da Remessa</div>
+            </div>
+            <div class="card total-card">
+                <div class="card-icon">&#128194;</div>
+                <div class="card-value">37</div>
+                <div class="card-label">Total de Recolhimentos (12 prestadores)</div>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <h3>Distribuição por Motivo de Recolhimento</h3>
+            <div class="chart-bar">
+                <div class="chart-label"><span>Erro / Falha de Comunicação</span><span>12 (32,4%)</span></div>
+                <div class="chart-bar-bg"><div class="chart-bar-fill comunicacao" style="width:100%">12</div></div>
+            </div>
+            <div class="chart-bar">
+                <div class="chart-label"><span>Equipamento Danificado</span><span>12 (32,4%)</span></div>
+                <div class="chart-bar-bg"><div class="chart-bar-fill equipamento" style="width:100%">12</div></div>
+            </div>
+            <div class="chart-bar">
+                <div class="chart-label"><span>Não Atendimento da Remessa</span><span>7 (18,9%)</span></div>
+                <div class="chart-bar-bg"><div class="chart-bar-fill nao-atend" style="width:58.3%">7</div></div>
+            </div>
+            <div class="chart-bar">
+                <div class="chart-label"><span>Entrega Incorreta</span><span>6 (16,2%)</span></div>
+                <div class="chart-bar-bg"><div class="chart-bar-fill entrega" style="width:50%">6</div></div>
+            </div>
+        </div>
+
+        <div class="table-section">
+            <h3>Resumo por Prestador — Período 18/05 a 26/05/2026</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Prestador / Estabelecimento</th>
+                        <th>Data</th>
+                        <th>Erro/Falha Com.</th>
+                        <th>Equip. Danif.</th>
+                        <th>Entrega Incor.</th>
+                        <th>Não Atend.</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Dr. LORENZON SERVIÇOS MÉDICOS LTDA</td>
+                        <td>18/05</td>
+                        <td><span class="badge badge-comunicacao">2</span></td>
+                        <td><span class="badge badge-equipamento">1</span></td>
+                        <td><span class="badge badge-zero">0</span></td>
+                        <td><span class="badge badge-nao-atend">2</span></td>
+                        <td><strong>5</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Dr. Elias Benjamin Moran Gonzalez</td>
+                        <td>19/05</td>
+                        <td><span class="badge badge-comunicacao">1</span></td>
+                        <td><span class="badge badge-equipamento">1</span></td>
+                        <td><span class="badge badge-entrega">1</span></td>
+                        <td><span class="badge badge-zero">0</span></td>
+                        <td><strong>3</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Dra. Carla Moura Fé Elias</td>
+                        <td>21/05</td>
+                        <td><span class="badge badge-comunicacao">2</span></td>
+                        <td><span class="badge badge-equipamento">1</span></td>
+                        <td><span class="badge badge-zero">0</span></td>
+                        <td><span class="badge badge-nao-atend">1</span></td>
+                        <td><strong>4</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Dra. Juliana Ferrari</td>
+                        <td>21/05</td>
+                        <td><span class="badge badge-comunicacao">1</span></td>
+                        <td><span class="badge badge-equipamento">2</span></td>
+                        <td><span class="badge badge-entrega">1</span></td>
+                        <td><span class="badge badge-nao-atend">1</span></td>
+                        <td><strong>5</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Dra. Cyrla Zaltman</td>
+                        <td>21/05</td>
+                        <td><span class="badge badge-comunicacao">1</span></td>
+                        <td><span class="badge badge-equipamento">1</span></td>
+                        <td><span class="badge badge-entrega">1</span></td>
+                        <td><span class="badge badge-nao-atend">1</span></td>
+                        <td><strong>4</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Dra. Stela Scaglioni Marini</td>
+                        <td>22/05</td>
+                        <td><span class="badge badge-comunicacao">1</span></td>
+                        <td><span class="badge badge-equipamento">1</span></td>
+                        <td><span class="badge badge-entrega">1</span></td>
+                        <td><span class="badge badge-nao-atend">1</span></td>
+                        <td><strong>4</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Dr. FLAVIO HIROSHI ANANIAS MORITA</td>
+                        <td>22/05</td>
+                        <td><span class="badge badge-comunicacao">1</span></td>
+                        <td><span class="badge badge-equipamento">1</span></td>
+                        <td><span class="badge badge-entrega">2</span></td>
+                        <td><span class="badge badge-zero">0</span></td>
+                        <td><strong>4</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Dra. Rafaela Muniz</td>
+                        <td>25/05</td>
+                        <td><span class="badge badge-comunicacao">2</span></td>
+                        <td><span class="badge badge-equipamento">1</span></td>
+                        <td><span class="badge badge-zero">0</span></td>
+                        <td><span class="badge badge-nao-atend">1</span></td>
+                        <td><strong>4</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Dra. Cristina Melo</td>
+                        <td>25/05</td>
+                        <td><span class="badge badge-zero">0</span></td>
+                        <td><span class="badge badge-equipamento">1</span></td>
+                        <td><span class="badge badge-zero">0</span></td>
+                        <td><span class="badge badge-zero">0</span></td>
+                        <td><strong>1</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Dra. Juliane Santos da Silveira Ramacciotti</td>
+                        <td>26/05</td>
+                        <td><span class="badge badge-zero">0</span></td>
+                        <td><span class="badge badge-zero">0</span></td>
+                        <td><span class="badge badge-zero">0</span></td>
+                        <td><span class="badge badge-zero">0</span></td>
+                        <td><strong>0</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Dra. Jacklinne</td>
+                        <td>26/05</td>
+                        <td><span class="badge badge-comunicacao">1</span></td>
+                        <td><span class="badge badge-equipamento">1</span></td>
+                        <td><span class="badge badge-zero">0</span></td>
+                        <td><span class="badge badge-zero">0</span></td>
+                        <td><strong>2</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Dra. Luiza Lage</td>
+                        <td>26/05</td>
+                        <td><span class="badge badge-comunicacao">1</span></td>
+                        <td><span class="badge badge-equipamento">1</span></td>
+                        <td><span class="badge badge-zero">0</span></td>
+                        <td><span class="badge badge-zero">0</span></td>
+                        <td><strong>2</strong></td>
+                    </tr>
+                    <tr class="total-row">
+                        <td colspan="2">TOTAL GERAL</td>
+                        <td><strong>12</strong></td>
+                        <td><strong>12</strong></td>
+                        <td><strong>6</strong></td>
+                        <td><strong>7</strong></td>
+                        <td><strong>37</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="details-section">
+            <h3>Detalhes por Estabelecimento</h3>
+
+            <div class="provider-block">
+                <div class="provider-header">
+                    <div>
+                        <div class="provider-name">Dr. LORENZON SERVIÇOS MÉDICOS LTDA</div>
+                        <div class="provider-date">18/05/2026</div>
+                    </div>
+                    <div class="provider-total">5 recol.</div>
+                </div>
+                <div class="motivos-grid">
+                    <span class="motivo-tag tag-comunicacao">Erro de Comunicação ×2</span>
+                    <span class="motivo-tag tag-equipamento">Equipamento Danificado ×1</span>
+                    <span class="motivo-tag tag-nao-atend">Não Atendimento da Remessa ×2</span>
+                </div>
+            </div>
+
+            <div class="provider-block">
+                <div class="provider-header">
+                    <div>
+                        <div class="provider-name">Dr. Elias Benjamin Moran Gonzalez</div>
+                        <div class="provider-date">19/05/2026</div>
+                    </div>
+                    <div class="provider-total">3 recol.</div>
+                </div>
+                <div class="motivos-grid">
+                    <span class="motivo-tag tag-comunicacao">Falha de comunicação (NFe não transmitiu) ×1</span>
+                    <span class="motivo-tag tag-equipamento">Equipamento Danificado — oxímetro com defeito ×1</span>
+                    <span class="motivo-tag tag-entrega">Entrega Incorreta ×1</span>
+                </div>
+            </div>
+
+            <div class="provider-block">
+                <div class="provider-header">
+                    <div>
+                        <div class="provider-name">Dra. Carla Moura Fé Elias</div>
+                        <div class="provider-date">21/05/2026</div>
+                    </div>
+                    <div class="provider-total">4 recol.</div>
+                </div>
+                <div class="motivos-grid">
+                    <span class="motivo-tag tag-comunicacao">Erro de comunicação ×2</span>
+                    <span class="motivo-tag tag-equipamento">Equipamento Danificado — glicose com defeito ×1</span>
+                    <span class="motivo-tag tag-nao-atend">Não Atendimento da Remessa ×1</span>
+                </div>
+            </div>
+
+            <div class="provider-block">
+                <div class="provider-header">
+                    <div>
+                        <div class="provider-name">Dra. Juliana Ferrari</div>
+                        <div class="provider-date">21/05/2026</div>
+                    </div>
+                    <div class="provider-total">5 recol.</div>
+                </div>
+                <div class="motivos-grid">
+                    <span class="motivo-tag tag-comunicacao">Erro de comunicação — NFe não gerou ×1</span>
+                    <span class="motivo-tag tag-equipamento">Equipamento Danificado ×2</span>
+                    <span class="motivo-tag tag-entrega">Entrega Incorreta ×1</span>
+                    <span class="motivo-tag tag-nao-atend">Não Atendimento da Remessa ×1</span>
+                </div>
+            </div>
+
+            <div class="provider-block">
+                <div class="provider-header">
+                    <div>
+                        <div class="provider-name">Dra. Cyrla Zaltman</div>
+                        <div class="provider-date">21/05/2026</div>
+                    </div>
+                    <div class="provider-total">4 recol.</div>
+                </div>
+                <div class="motivos-grid">
+                    <span class="motivo-tag tag-comunicacao">Erro de comunicação ×1</span>
+                    <span class="motivo-tag tag-equipamento">Equipamento Danificado — detector fetal com defeito ×1</span>
+                    <span class="motivo-tag tag-entrega">Entrega Incorreta ×1</span>
+                    <span class="motivo-tag tag-nao-atend">Não Atendimento da Remessa — destinatário ausente / endereço incorreto ×1</span>
+                </div>
+            </div>
+
+            <div class="provider-block">
+                <div class="provider-header">
+                    <div>
+                        <div class="provider-name">Dra. Stela Scaglioni Marini</div>
+                        <div class="provider-date">22/05/2026</div>
+                    </div>
+                    <div class="provider-total">4 recol.</div>
+                </div>
+                <div class="motivos-grid">
+                    <span class="motivo-tag tag-comunicacao">Erro de comunicação — NFe não gerou ×1</span>
+                    <span class="motivo-tag tag-equipamento">Equipamento Danificado — desfibrilador com defeito ×1</span>
+                    <span class="motivo-tag tag-entrega">Entrega Incorreta ×1</span>
+                    <span class="motivo-tag tag-nao-atend">Não Atendimento da Remessa ×1</span>
+                </div>
+            </div>
+
+            <div class="provider-block">
+                <div class="provider-header">
+                    <div>
+                        <div class="provider-name">Dr. FLAVIO HIROSHI ANANIAS MORITA</div>
+                        <div class="provider-date">22/05/2026</div>
+                    </div>
+                    <div class="provider-total">4 recol.</div>
+                </div>
+                <div class="motivos-grid">
+                    <span class="motivo-tag tag-comunicacao">Erro de comunicação — NFe não gerou ×1</span>
+                    <span class="motivo-tag tag-equipamento">Equipamento Danificado — bisturi elétrico com defeito ×1</span>
+                    <span class="motivo-tag tag-entrega">Entrega Incorreta — endereço incorreto ×2</span>
+                </div>
+            </div>
+
+            <div class="provider-block">
+                <div class="provider-header">
+                    <div>
+                        <div class="provider-name">Dra. Rafaela Muniz</div>
+                        <div class="provider-date">25/05/2026</div>
+                    </div>
+                    <div class="provider-total">4 recol.</div>
+                </div>
+                <div class="motivos-grid">
+                    <span class="motivo-tag tag-comunicacao">Erro de comunicação — NFe não gerou ×2</span>
+                    <span class="motivo-tag tag-equipamento">Equipamento Danificado — cabo de ureteroscopia ×1</span>
+                    <span class="motivo-tag tag-nao-atend">Não Atendimento da Remessa ×1</span>
+                </div>
+            </div>
+
+            <div class="provider-block">
+                <div class="provider-header">
+                    <div>
+                        <div class="provider-name">Dra. Cristina Melo</div>
+                        <div class="provider-date">25/05/2026</div>
+                    </div>
+                    <div class="provider-total">1 recol.</div>
+                </div>
+                <div class="motivos-grid">
+                    <span class="motivo-tag tag-equipamento">Equipamento Danificado ×1</span>
+                </div>
+            </div>
+
+            <div class="provider-block">
+                <div class="provider-header">
+                    <div>
+                        <div class="provider-name">Dra. Juliane Santos da Silveira Ramacciotti</div>
+                        <div class="provider-date">26/05/2026</div>
+                    </div>
+                    <div class="provider-total">0 recol.</div>
+                </div>
+                <div class="motivos-grid">
+                    <span style="color:#95a5a6;font-size:0.85em;">Sem recolhimentos no período</span>
+                </div>
+            </div>
+
+            <div class="provider-block">
+                <div class="provider-header">
+                    <div>
+                        <div class="provider-name">Dra. Jacklinne</div>
+                        <div class="provider-date">26/05/2026</div>
+                    </div>
+                    <div class="provider-total">2 recol.</div>
+                </div>
+                <div class="motivos-grid">
+                    <span class="motivo-tag tag-comunicacao">Erro de comunicação — NFe não gerou ×1</span>
+                    <span class="motivo-tag tag-equipamento">Equipamento Danificado — equipo com defeito ×1</span>
+                </div>
+            </div>
+
+            <div class="provider-block">
+                <div class="provider-header">
+                    <div>
+                        <div class="provider-name">Dra. Luiza Lage</div>
+                        <div class="provider-date">26/05/2026</div>
+                    </div>
+                    <div class="provider-total">2 recol.</div>
+                </div>
+                <div class="motivos-grid">
+                    <span class="motivo-tag tag-comunicacao">Erro de comunicação — NFe não gerou ×1</span>
+                    <span class="motivo-tag tag-equipamento">Equipamento Danificado — sensor com defeito ×1</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Relatório Consolidado — Motivos de Recolhimento HealthGo Air<br>
+            Período: 18/05/2026 a 26/05/2026 | Gerado em 26/05/2026
+        </div>
+    </div>
+</body>
+</html>

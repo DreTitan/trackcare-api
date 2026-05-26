@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório N3</title>
+    <style>
+        @page {
+            margin: 0; /* Remove default browser margins */
+            size: A4;
+        }
+        body {
+            background-color: #0f172a; /* Nice dark slate */
+            color: #e2e8f0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 40px 50px;
+            line-height: 1.6;
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact; /* Ensure background colors print */
+            print-color-adjust: exact;
+        }
+        .header {
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #ffffff;
+            font-size: 28px;
+            margin: 0 0 10px 0;
+            letter-spacing: -0.5px;
+        }
+        .subtitle {
+            color: #94a3b8;
+            font-size: 16px;
+            margin: 0;
+        }
+        h2 {
+            color: #60a5fa;
+            font-size: 20px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #1e293b;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 20px 0;
+            background-color: #1e293b;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 14px;
+        }
+        th {
+            background-color: #0f172a;
+            color: #94a3b8;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #334155;
+        }
+        td {
+            border-bottom: 1px solid #334155;
+            color: #f1f5f9;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .summary-box {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .summary-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .summary-box li {
+            margin-bottom: 8px;
+        }
+        .tip {
+            background: linear-gradient(to right, #1e3a8a, #1e293b);
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+        .tip-title {
+            color: #bfdbfe;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .highlight {
+            color: #60a5fa;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Relatório Consolidado de Retorno</h1>
+        <p class="subtitle">Análise Logística e Técnica – Amostra Relatórios N3</p>
+    </div>
+
+    <h2>1. Objetivo</h2>
+    <p>Apresentar o "De-Para" dos clientes constantes nos últimos Relatórios N3 cruzados com a planilha de <span class="highlight">RETORNO</span>, fornecendo o tempo médio consolidado do fluxo logístico e técnico focado exclusivamente nesta amostragem.</p>
+
+    <h2>2. De-Para (Clientes N3 vs Planilha de Retorno)</h2>
+    <p>Foram identificados <strong>19 recolhimentos</strong> correspondentes aos relatórios N3 na pasta compartilhada. A distribuição geográfica encontrada na planilha de controle foi a seguinte:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Cidade / Estado</th>
+                <th>Classificação Logística</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Centro Médico Aloha</td><td>Rondonópolis - MT</td><td>Interior</td></tr>
+            <tr><td>Dr. André Lorenzon</td><td>Curitiba - PR</td><td>Capital / Metro</td></tr>
+            <tr><td>Dr. Douglas Lazzeris</td><td>Novo Hamburgo - RS</td><td>Capital / Metro</td></tr>
+            <tr><td>Dr. Ernesto Comelli Júnior</td><td>Balneário Camboriú - SC</td><td>Interior</td></tr>
+            <tr><td>Dr. Espedito M Pacifico</td><td>Altos - PI</td><td>Interior</td></tr>
+            <tr><td>Dr. Marcelo Kalichsztein</td><td>Rio de Janeiro - RJ</td><td>Capital / Metro</td></tr>
+            <tr><td>Dr. Ricardo Tadayoshi</td><td>Curitiba - PR</td><td>Capital / Metro</td></tr>
+            <tr><td>Dra. Alanna Azevedo</td><td>São Luís - MA</td><td>Capital / Metro</td></tr>
+            <tr><td>Dra. Aleksandra Pianco Leal</td><td>Fortaleza - CE</td><td>Capital / Metro</td></tr>
+            <tr><td>Dra. Aline Kusumoto</td><td>São Paulo - SP</td><td>Capital / Metro</td></tr>
+            <tr><td>Dra. Aline Souza</td><td>Salvador - BA</td><td>Capital / Metro</td></tr>
+            <tr><td>Dra. Ana Flávia</td><td>Foz do Iguaçu - PR</td><td>Interior</td></tr>
+            <tr><td>Dra. Carla Moura</td><td>Rio de Janeiro - RJ</td><td>Capital / Metro</td></tr>
+            <tr><td>Dra. Dalva Maria Alcantara</td><td>Goiânia - GO</td><td>Capital / Metro</td></tr>
+            <tr><td>Dra. Débora Campello</td><td>São Miguel do Oeste - SC</td><td>Interior</td></tr>
+            <tr><td>Dra. Erika Yvamoto</td><td>Itabuna - BA</td><td>Interior</td></tr>
+            <tr><td>Dra. Jhankarla</td><td>Aracruz - ES</td><td>Interior</td></tr>
+            <tr><td>Dra. Kaline Nobre</td><td>Uberlândia - MG</td><td>Interior</td></tr>
+            <tr><td>Dra. Lorena Sagrilo Auer</td><td>Vitória - ES</td><td>Capital / Metro</td></tr>
+        </tbody>
+    </table>
+
+    <div class="summary-box">
+        <strong style="color: #60a5fa; display: block; margin-bottom: 10px; font-size: 15px;">Resumo da Amostra (N3)</strong>
+        <ul>
+            <li><strong>Total de Equipamentos:</strong> 19 unidades</li>
+            <li><strong>Capitais / Metropolitanas:</strong> 11 ocorrências (~57,9%)</li>
+            <li><strong>Cidades do Interior:</strong> 8 ocorrências (~42,1%)</li>
+        </ul>
+    </div>
+
+    <h2>3. Tempos Médios Consolidados por Etapa</h2>
+    <p>Com base nesta amostra específica e nas SLAs operacionais, os tempos atualizados de ciclo são:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Etapa do Processo</th>
+                <th>Tempo Médio</th>
+                <th>Critério de Cálculo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Recolhimento</td><td><span class="highlight">2,05 dias</span></td><td>Média ponderada (1 dia x 11 / 3,5 dias x 8)</td></tr>
+            <tr><td>Análise Técnica</td><td><span class="highlight">7,00 dias</span></td><td>SLA fixo da operação interna</td></tr>
+            <tr><td>Manutenção</td><td><span class="highlight">15,00 dias</span></td><td>SLA fixo da operação interna</td></tr>
+            <tr><td>Envio (Retorno)</td><td><span class="highlight">2,05 dias</span></td><td>Média ponderada (Logística de devolução)</td></tr>
+            <tr><td><strong>Tempo Total do Ciclo</strong></td><td><strong style="color: #60a5fa;">26,10 dias</strong></td><td><strong>Soma total das etapas operacionais</strong></td></tr>
+        </tbody>
+    </table>
+
+    <div class="tip">
+        <div class="tip-title">Conclusão Estratégica</div>
+        <p style="margin: 0;">Devido a uma proporção maior de clientes no <strong>Interior</strong> nesta amostra (42,1% comparado aos 25,6% da base geral), o impacto logístico subiu levemente, de 1,64 para <strong>2,05 dias</strong>. Consequentemente, o tempo total do ciclo atingiu <strong>26,10 dias úteis</strong>. Ainda assim, o gargalo predominante da operação continua sendo as etapas internas de Análise e Manutenção, que juntas representam <strong>~84%</strong> (22 dias) do tempo total.</p>
+    </div>
+</body>
+</html>

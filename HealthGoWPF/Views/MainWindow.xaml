@@ -1,0 +1,505 @@
+<Window x:Class="HealthGoWPF.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="HealthGo Collection Manager"
+        Width="1400" Height="800"
+        WindowStartupLocation="CenterScreen"
+        Background="#F8FAFC">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Menu Lateral -->
+        <Border Grid.Column="0" Background="#1E293B">
+            <StackPanel>
+                <!-- Logo/Título -->
+                <StackPanel Margin="20,30,20,40">
+                    <TextBlock Text="HealthGo" FontSize="28" FontWeight="Bold" Foreground="#60A5FA"/>
+                    <TextBlock Text="Collection Manager" FontSize="14" Foreground="#94A3B8" Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <!-- Menu Items -->
+                <Button x:Name="BtnDashboard" Style="{StaticResource PrimaryButton}"
+                        Background="#3B82F6" Margin="15,5"
+                        Click="BtnDashboard_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="📊" FontSize="16" Margin="0,0,10,0"/>
+                        <TextBlock Text="Dashboard"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="BtnRecolhimentos" Style="{StaticResource SecondaryButton}"
+                        BorderBrush="#475569" Foreground="White" Margin="15,5"
+                        Click="BtnRecolhimentos_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="📋" FontSize="16" Margin="0,0,10,0"/>
+                        <TextBlock Text="Recolhimentos"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="BtnNovoRecolhimento" Style="{StaticResource SecondaryButton}"
+                        BorderBrush="#475569" Foreground="White" Margin="15,5"
+                        Click="BtnNovoRecolhimento_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="➕" FontSize="16" Margin="0,0,10,0"/>
+                        <TextBlock Text="Novo Recolhimento"/>
+                    </StackPanel>
+                </Button>
+
+                <Separator Background="#334155" Margin="15,30"/>
+
+                <TextBlock Text="SISTEMA" Foreground="#64748B" FontSize="11" Margin="20,10"/>
+
+                <Button x:Name="BtnSair" Style="{StaticResource SecondaryButton}"
+                        BorderBrush="#475569" Foreground="#94A3B8" Margin="15,5"
+                        Click="BtnSair_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🚪" FontSize="16" Margin="0,0,10,0"/>
+                        <TextBlock Text="Sair"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- Conteúdo Principal -->
+        <Grid Grid.Column="1">
+            <!-- Header -->
+            <Border Background="White" VerticalAlignment="Top" Height="70" Padding="30,0">
+                <Grid>
+                    <TextBlock x:Name="TxtTitulo" Text="Dashboard" FontSize="24" FontWeight="Bold"
+                               Foreground="#1E293B" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="TxtData" HorizontalAlignment="Right" VerticalAlignment="Center"
+                               Foreground="#64748B"/>
+                </Grid>
+            </Border>
+
+            <!-- Área de Conteúdo -->
+            <ScrollViewer Margin="30,90,30,30" VerticalScrollBarVisibility="Auto">
+                <Grid x:Name="ConteudoPrincipal">
+                    <!-- Dashboard -->
+                    <StackPanel x:Name="PainelDashboard">
+                        <!-- Cards de Métricas -->
+                        <UniformGrid Columns="4" Margin="0,0,0,30">
+                            <Border Style="{StaticResource Card}" Margin="0,0,15,0" Background="#3B82F6">
+                                <StackPanel>
+                                    <TextBlock Text="📋" FontSize="32" HorizontalAlignment="Right"/>
+                                    <TextBlock x:Name="TxtTotalAtivos" Text="0" FontSize="36" FontWeight="Bold" Foreground="White" Margin="0,10,0,0"/>
+                                    <TextBlock Text="Recolhimentos Ativos" Foreground="White" Opacity="0.9"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource Card}" Margin="0,0,15,0" Background="#F59E0B">
+                                <StackPanel>
+                                    <TextBlock Text="⏳" FontSize="32" HorizontalAlignment="Right"/>
+                                    <TextBlock x:Name="TxtAguardaColeta" Text="0" FontSize="36" FontWeight="Bold" Foreground="White" Margin="0,10,0,0"/>
+                                    <TextBlock Text="Aguardam Coleta" Foreground="White" Opacity="0.9"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource Card}" Margin="0,0,15,0" Background="#8B5CF6">
+                                <StackPanel>
+                                    <TextBlock Text="🔧" FontSize="32" HorizontalAlignment="Right"/>
+                                    <TextBlock x:Name="TxtEmReparo" Text="0" FontSize="36" FontWeight="Bold" Foreground="White" Margin="0,10,0,0"/>
+                                    <TextBlock Text="Em Reparo" Foreground="White" Opacity="0.9"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource Card}" Background="#10B981">
+                                <StackPanel>
+                                    <TextBlock Text="✅" FontSize="32" HorizontalAlignment="Right"/>
+                                    <TextBlock x:Name="TxtEncerradosMes" Text="0" FontSize="36" FontWeight="Bold" Foreground="White" Margin="0,10,0,0"/>
+                                    <TextBlock Text="Encerrados (Mês)" Foreground="White" Opacity="0.9"/>
+                                </StackPanel>
+                            </Border>
+                        </UniformGrid>
+
+                        <!-- Botão Novo -->
+                        <Button Content="➕ Novo Recolhimento" Style="{StaticResource PrimaryButton}"
+                                HorizontalAlignment="Left" Margin="0,0,0,30"
+                                Click="BtnNovoRecolhimento_Click"/>
+
+                        <!-- Lista de Recolhimentos Recentes -->
+                        <Border Style="{StaticResource Card}">
+                            <StackPanel>
+                                <TextBlock Text="Recolhimentos Recentes" Style="{StaticResource HeaderLabel}"/>
+                                <DataGrid x:Name="DgRecentes" AutoGenerateColumns="False" IsReadOnly="True"
+                                          BorderThickness="0" GridLinesVisibility="Horizontal"
+                                          HeadersVisibility="Column" RowHeight="45"
+                                          HorizontalScrollBarVisibility="Disabled"
+                                          MouseDoubleClick="DgRecentes_MouseDoubleClick">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="HGID" Binding="{Binding Hgid}" Width="100"/>
+                                        <DataGridTextColumn Header="Cliente" Binding="{Binding ClienteNome}" Width="200"/>
+                                        <DataGridTextColumn Header="Status" Binding="{Binding StatusTexto}" Width="150"/>
+                                        <DataGridTextColumn Header="Solicitação" Binding="{Binding DataSolicitacao, StringFormat=dd/MM/yyyy}" Width="120"/>
+                                        <DataGridTemplateColumn Header="Ações" Width="100">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Content="👁️ Ver" Style="{StaticResource SecondaryButton}"
+                                                            Padding="10,5" FontSize="12"
+                                                            Click="BtnVerRecolhimento_Click"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Lista de Recolhimentos -->
+                    <StackPanel x:Name="PainelLista" Visibility="Collapsed">
+                        <!-- Filtros -->
+                        <Border Style="{StaticResource Card}" Margin="0,0,0,20">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="150"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="TxtBusca" Grid.Column="0" Margin="0,0,15,0"
+                                         TextChanged="TxtBusca_TextChanged"/>
+                                <ComboBox x:Name="CmbStatus" Grid.Column="1" Margin="0,0,15,0"
+                                          SelectionChanged="CmbStatus_SelectionChanged"/>
+                                <Button Content="🔍 Buscar" Grid.Column="2" Style="{StaticResource PrimaryButton}"
+                                        Click="BtnBuscar_Click"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Lista -->
+                        <Border Style="{StaticResource Card}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,15">
+                                    <TextBlock Text="Todos os Recolhimentos" Style="{StaticResource HeaderLabel}"/>
+                                    <Button Content="➕ Novo" Style="{StaticResource PrimaryButton}"
+                                            HorizontalAlignment="Right" Click="BtnNovoRecolhimento_Click"/>
+                                </Grid>
+                                <DataGrid x:Name="DgRecolhimentos" AutoGenerateColumns="False" IsReadOnly="True"
+                                          BorderThickness="0" GridLinesVisibility="Horizontal"
+                                          HeadersVisibility="Column" RowHeight="45"
+                                          MouseDoubleClick="DgRecolhimentos_MouseDoubleClick">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="HGID" Binding="{Binding Hgid}" Width="100"/>
+                                        <DataGridTextColumn Header="Nº Série" Binding="{Binding NumeroSerie}" Width="130"/>
+                                        <DataGridTextColumn Header="Cliente" Binding="{Binding ClienteNome}" Width="200"/>
+                                        <DataGridTextColumn Header="Status" Binding="{Binding StatusTexto}" Width="150"/>
+                                        <DataGridTextColumn Header="Ticket Hub" Binding="{Binding TicketHub}" Width="120"/>
+                                        <DataGridTextColumn Header="Ticket BLiP" Binding="{Binding TicketBlip}" Width="100"/>
+                                        <DataGridTextColumn Header="Solicitação" Binding="{Binding DataSolicitacao, StringFormat=dd/MM/yyyy}" Width="110"/>
+                                        <DataGridTemplateColumn Header="Ações" Width="180">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Button Content="👁️" Style="{StaticResource SecondaryButton}" Padding="8,5" Margin="0,0,5,0"
+                                                                Click="BtnVerRecolhimento_Click"/>
+                                                        <Button Content="✏️" Style="{StaticResource SecondaryButton}" Padding="8,5" Margin="0,0,5,0"
+                                                                Click="BtnEditarRecolhimento_Click"/>
+                                                        <Button Content="🗑️" Style="{StaticResource SecondaryButton}" Padding="8,5"
+                                                                Click="BtnExcluirRecolhimento_Click"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Formulário de Recolhimento -->
+                    <Border x:Name="PainelFormulario" Style="{StaticResource Card}" Visibility="Collapsed">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,20">
+                                    <TextBlock Text="Novo Recolhimento" Style="{StaticResource HeaderLabel}"/>
+                                    <Button Content="← Voltar" Style="{StaticResource SecondaryButton}"
+                                            HorizontalAlignment="Right" Click="BtnVoltar_Click"/>
+                                </Grid>
+
+                                <!-- Cliente -->
+                                <TextBlock Text="INFORMAÇÕES DO CLIENTE" Style="{StaticResource SectionLabel}"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,15,0">
+                                        <TextBlock Text="Nome do Cliente *"/>
+                                        <TextBox x:Name="TxtClienteNome"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Grid.Row="0" Margin="0,0,0,0">
+                                        <TextBlock Text="Contato"/>
+                                        <TextBox x:Name="TxtClienteContato"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,0,15,0">
+                                        <TextBlock Text="E-mail"/>
+                                        <TextBox x:Name="TxtClienteEmail"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Grid.Row="1" Margin="0,0,0,0">
+                                        <TextBlock Text="Telefone"/>
+                                        <TextBox x:Name="TxtClienteTelefone"/>
+                                    </StackPanel>
+                                </Grid>
+                                <StackPanel Margin="0,10,0,0">
+                                    <TextBlock Text="Plano"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                        <RadioButton x:Name="RbGoPremium" Content="GoPremium" Margin="0,0,20,0"/>
+                                        <RadioButton x:Name="RbSimples" Content="Simples" IsChecked="True"/>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <!-- Equipamento -->
+                                <TextBlock Text="INFORMAÇÕES DO EQUIPAMENTO" Style="{StaticResource SectionLabel}"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" Margin="0,0,15,0">
+                                        <TextBlock Text="HGID *"/>
+                                        <TextBox x:Name="TxtHgid"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Margin="0,0,15,0">
+                                        <TextBlock Text="Número de Série *"/>
+                                        <TextBox x:Name="TxtNumeroSerie"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Modelo"/>
+                                        <TextBox x:Name="TxtModelo"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- Tickets -->
+                                <TextBlock Text="TICKETS" Style="{StaticResource SectionLabel}"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" Margin="0,0,15,0">
+                                        <TextBlock Text="Ticket HubSpot"/>
+                                        <TextBox x:Name="TxtTicketHub"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Ticket BLiP"/>
+                                        <TextBox x:Name="TxtTicketBlip"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- Problema -->
+                                <TextBlock Text="DESCRIÇÃO DO PROBLEMA" Style="{StaticResource SectionLabel}"/>
+                                <TextBox x:Name="TxtDescricaoProblema" TextWrapping="Wrap" AcceptsReturn="True"
+                                         Height="80" VerticalContentAlignment="Top"/>
+
+                                <!-- Relatório N3 -->
+                                <TextBlock Text="RELATÓRIO N3 (Análise Técnica)" Style="{StaticResource SectionLabel}"/>
+                                <TextBox x:Name="TxtRelatorioN3" TextWrapping="Wrap" AcceptsReturn="True"
+                                         Height="120" VerticalContentAlignment="Top"/>
+
+                                <!-- Status -->
+                                <TextBlock Text="STATUS DE RECOLHIMENTO" Style="{StaticResource SectionLabel}"/>
+                                <CheckBox x:Name="ChkJaRecolhido" Content="Equipamento já foi recolhido?" Margin="0,5,0,10"/>
+
+                                <!-- Observações -->
+                                <TextBlock Text="OBSERVAÇÕES" Style="{StaticResource SectionLabel}"/>
+                                <TextBox x:Name="TxtObservacoes" TextWrapping="Wrap" AcceptsReturn="True"
+                                         Height="80" VerticalContentAlignment="Top"/>
+
+                                <!-- Anexos -->
+                                <TextBlock Text="ANEXOS (PDF)" Style="{StaticResource SectionLabel}"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,5,0,10">
+                                    <Button Content="📎 Anexar PDF" Style="{StaticResource SecondaryButton}"
+                                            Click="BtnAnexarPdf_Click"/>
+                                </StackPanel>
+                                <ListBox x:Name="LstAnexos" Height="100" Margin="0,0,0,10"
+                                         SelectionChanged="LstAnexos_SelectionChanged">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Margin="5">
+                                                <TextBlock Text="📄" FontSize="16" Margin="0,0,10,0"/>
+                                                <TextBlock Text="{Binding NomeOriginal}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+
+                                <!-- Botões -->
+                                <StackPanel Orientation="Horizontal" Margin="0,30,0,0" HorizontalAlignment="Right">
+                                    <Button Content="Cancelar" Style="{StaticResource SecondaryButton}"
+                                            Margin="0,0,15,0" Click="BtnVoltar_Click"/>
+                                    <Button Content="💾 Salvar" Style="{StaticResource PrimaryButton}"
+                                            Click="BtnSalvarRecolhimento_Click"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+
+                    <!-- Detalhe do Recolhimento -->
+                    <Border x:Name="PainelDetalhe" Style="{StaticResource Card}" Visibility="Collapsed">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,20">
+                                    <TextBlock x:Name="TxtTituloDetalhe" Text="Detalhes do Recolhimento" Style="{StaticResource HeaderLabel}"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Button Content="✏️ Editar" Style="{StaticResource PrimaryButton}"
+                                                Margin="0,0,10,0" Click="BtnEditarRecolhimentoDetalhe_Click"/>
+                                        <Button Content="← Voltar" Style="{StaticResource SecondaryButton}"
+                                                Click="BtnVoltar_Click"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- Header Info -->
+                                <Grid Margin="0,0,0,20">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Background="{StaticResource PrimaryBrush}" CornerRadius="5" Padding="15,8">
+                                            <TextBlock x:Name="TxtHgidDetalhe" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                                        </Border>
+                                        <Border x:Name="BorderStatus" Background="{StaticResource WarningBrush}"
+                                                CornerRadius="5" Padding="15,8" Margin="15,0,0,0">
+                                            <TextBlock x:Name="TxtStatusDetalhe" FontSize="14" FontWeight="Bold" Foreground="White"/>
+                                        </Border>
+                                    </StackPanel>
+                                    <TextBlock x:Name="TxtDataSolicitacaoDetalhe" HorizontalAlignment="Right"
+                                               Foreground="#64748B" VerticalAlignment="Center"/>
+                                </Grid>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Coluna 1 -->
+                                    <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                                        <TextBlock Text="CLIENTE" Style="{StaticResource SectionLabel}"/>
+                                        <Border Background="#F8FAFC" CornerRadius="5" Padding="15">
+                                            <StackPanel>
+                                                <TextBlock x:Name="TxtClienteDetalhe" FontWeight="SemiBold" FontSize="16"/>
+                                                <TextBlock x:Name="TxtContatoDetalhe" Foreground="#64748B" Margin="0,5,0,0"/>
+                                                <TextBlock x:Name="TxtPlanoDetalhe" Foreground="#64748B" Margin="0,5,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <TextBlock Text="EQUIPAMENTO" Style="{StaticResource SectionLabel}"/>
+                                        <Border Background="#F8FAFC" CornerRadius="5" Padding="15">
+                                            <StackPanel>
+                                                <TextBlock><Run FontWeight="SemiBold">Nº Série:</Run> <Run x:Name="TxtSerieDetalhe"/></TextBlock>
+                                                <TextBlock Margin="0,5,0,0"><Run FontWeight="SemiBold">Modelo:</Run> <Run x:Name="TxtModeloDetalhe"/></TextBlock>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <TextBlock Text="TICKETS" Style="{StaticResource SectionLabel}"/>
+                                        <Border Background="#F8FAFC" CornerRadius="5" Padding="15">
+                                            <StackPanel>
+                                                <TextBlock><Run FontWeight="SemiBold">HubSpot:</Run> <Run x:Name="TxtTicketHubDetalhe"/></TextBlock>
+                                                <TextBlock Margin="0,5,0,0"><Run FontWeight="SemiBold">BLiP:</Run> <Run x:Name="TxtTicketBlipDetalhe"/></TextBlock>
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
+
+                                    <!-- Coluna 2 -->
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="PROBLEMA" Style="{StaticResource SectionLabel}"/>
+                                        <Border Background="#F8FAFC" CornerRadius="5" Padding="15">
+                                            <TextBlock x:Name="TxtProblemaDetalhe" TextWrapping="Wrap"/>
+                                        </Border>
+
+                                        <TextBlock Text="RELATÓRIO N3" Style="{StaticResource SectionLabel}"/>
+                                        <Border Background="#F8FAFC" CornerRadius="5" Padding="15" MinHeight="100">
+                                            <TextBlock x:Name="TxtRelatorioDetalhe" TextWrapping="Wrap"/>
+                                        </Border>
+
+                                        <TextBlock Text="ANEXOS" Style="{StaticResource SectionLabel}"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,5,0,10">
+                                            <Button Content="📎 Anexar PDF" Style="{StaticResource SecondaryButton}"
+                                                    Margin="0,0,10,0" Click="BtnAnexarPdfDetalhe_Click"/>
+                                            <Button Content="📄 Abrir" Style="{StaticResource SecondaryButton}"
+                                                    Click="BtnAbrirAnexo_Click"/>
+                                            <Button Content="🗑️ Excluir" Style="{StaticResource SecondaryButton}"
+                                                    Click="BtnExcluirAnexo_Click"/>
+                                        </StackPanel>
+                                        <ListBox x:Name="LstAnexosDetalhe" Height="120">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" Margin="5">
+                                                        <TextBlock Text="📄" FontSize="16" Margin="0,0,10,0"/>
+                                                        <TextBlock Text="{Binding NomeOriginal}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+
+                                        <TextBlock Text="ALTERAR STATUS" Style="{StaticResource SectionLabel}"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="150"/>
+                                            </Grid.ColumnDefinitions>
+                                            <ComboBox x:Name="CmbNovoStatus" Grid.Column="0" Margin="0,0,15,0"/>
+                                            <Button Content="💾 Atualizar" Style="{StaticResource PrimaryButton}"
+                                                    Grid.Column="1" Click="BtnAtualizarStatus_Click"/>
+                                        </Grid>
+
+                                        <TextBlock Text="COMENTÁRIOS DO PROCESSO" Style="{StaticResource SectionLabel}"/>
+                                        <Border Background="#F8FAFC" CornerRadius="5" Padding="10" Margin="0,5,0,10">
+                                            <StackPanel>
+                                                <Grid Margin="0,0,0,10">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="150"/>
+                                                        <ColumnDefinition Width="100"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBox x:Name="TxtNovoComentario" Grid.Column="0" Margin="0,0,10,0"
+                                                             TextWrapping="Wrap" AcceptsReturn="True" Height="60"
+                                                             VerticalContentAlignment="Top"/>
+                                                    <ComboBox x:Name="CmbSetor" Grid.Column="1" Margin="0,0,10,0">
+                                                        <ComboBoxItem Content="N1"/>
+                                                        <ComboBoxItem Content="N2"/>
+                                                        <ComboBoxItem Content="N3"/>
+                                                        <ComboBoxItem Content="Admin"/>
+                                                        <ComboBoxItem Content="Logística"/>
+                                                        <ComboBoxItem Content="Técnico"/>
+                                                    </ComboBox>
+                                                    <Button Content="💬 Comentar" Style="{StaticResource PrimaryButton}"
+                                                            Grid.Column="2" Click="BtnAdicionarComentario_Click"/>
+                                                </Grid>
+                                                <ListBox x:Name="LstComentarios" Height="150">
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="5"
+                                                                    Padding="10" Margin="0,0,0,5" Background="White">
+                                                                <StackPanel>
+                                                                    <Grid>
+                                                                        <StackPanel Orientation="Horizontal">
+                                                                            <TextBlock Text="{Binding Setor}" FontWeight="Bold" Foreground="#3B82F6"/>
+                                                                            <TextBlock Text=" • " Foreground="#94A3B8"/>
+                                                                            <TextBlock Text="{Binding Usuario}" Foreground="#64748B"/>
+                                                                            <TextBlock Text=" • " Foreground="#94A3B8"/>
+                                                                            <TextBlock Text="{Binding DataCriacao, StringFormat=dd/MM/yyyy HH:mm}" Foreground="#94A3B8"/>
+                                                                        </StackPanel>
+                                                                        <Button Content="🗑️" Style="{StaticResource SecondaryButton}"
+                                                                                HorizontalAlignment="Right" Padding="5,2"
+                                                                                Click="BtnExcluirComentario_Click" Tag="{Binding Id}"/>
+                                                                    </Grid>
+                                                                    <TextBlock Text="{Binding Texto}" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                                                                </StackPanel>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Window>
