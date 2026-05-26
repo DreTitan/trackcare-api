@@ -8,6 +8,7 @@ obj/
 
 # Env files with secrets
 .env
+.env.*
 *.local.json
 
 # Node
@@ -26,3 +27,29 @@ Thumbs.db
 
 # Packages
 *.nupkg
+
+# Publish
+publish/
+publish.zip
+
+# Docker
+docker-compose*.yml
+
+# Subfolders to ignore
+Dre-s_Proposals/
+Ferramentas%20internas/
+Manual_Atribuicoes_N3_Tester_Otimizado.html
+POP_HealthGo_Suporte_Tecnico.html
+POP_001_HealthGoAir_v04.html
+Manual_Atribuicoes_N3_Tester.pdf
+Manual%20Operacional%20H2%20e%20CH4.pdf
+Projeto_Gabrielly/
+HealthGoCollection/
+CreateIcon.cs
+CreateIcon.ps1
+DEPLOY.md
+README.md
+HealthGoWPF_compartilhar.zip
+Projeto_Gabrielly.zip
+Certificado%20Mentoria%20360%BA.png
+Mapeamento_Atividades_Suporte.pdf
