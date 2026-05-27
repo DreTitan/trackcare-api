@@ -53,20 +53,11 @@ public static class DependencyInjection
         services.AddScoped<IAnexoRepository, AnexoRepository>();
         services.AddScoped<IComentarioRepository, ComentarioRepository>();
 
-        var supabaseUrl = configuration["Supabase:Url"];
-        var supabaseKey = configuration["Supabase:Key"];
-        var supabaseBucket = configuration["Supabase:Bucket"] ?? "anexos";
+        var uploadPath = Environment.GetEnvironmentVariable("UPLOAD_PATH")
+            ?? Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 
-        if (!string.IsNullOrEmpty(supabaseUrl) && !string.IsNullOrEmpty(supabaseKey))
-        {
-            services.AddScoped<IFileStorageService>(_ =>
-                new SupabaseStorageService(new SupabaseSettings
-                {
-                    Url = supabaseUrl,
-                    Key = supabaseKey,
-                    Bucket = supabaseBucket
-                }));
-        }
+        services.AddScoped<IFileStorageService>(_ =>
+            new LocalFileStorageService(new SupabaseSettings { Bucket = uploadPath }));
 
         return services;
     }

@@ -23,9 +23,9 @@ CREATE TABLE IF NOT EXISTS recolhimentos (
     "DataPrevistaDevolucao" timestamptz,
     "DataDevolucaoReal" timestamptz,
     "Observacoes" character varying(4000),
-    "CriadoPor" character varying(100),
-    "CriadoEm" timestamptz NOT NULL,
-    "AtualizadoEm" timestamptz NOT NULL,
+    "CreatedBy" character varying(100),
+    "Created" timestamptz NOT NULL,
+    "LastModified" timestamptz NOT NULL,
     CONSTRAINT "PK_recolhimentos" PRIMARY KEY ("Id")
 );
 

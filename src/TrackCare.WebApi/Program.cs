@@ -78,8 +78,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+var uploadPath = Environment.GetEnvironmentVariable("UPLOAD_PATH")
+    ?? Path.Combine(builder.Environment.ContentRootPath, "uploads");
+
 app.UseCors("AllowReactApp");
 app.UseAuthorization();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(uploadPath),
+    RequestPath = "/files"
+});
 app.MapControllers();
 
 app.MapGet("/", () => Results.Ok(new { status = "ok", timestamp = DateTime.UtcNow }));

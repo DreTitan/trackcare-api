@@ -1,4 +1,17 @@
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: trackcare-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=trackcare
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
   trackcare-api:
     build:
       context: ./src
@@ -6,9 +19,11 @@ services:
     container_name: trackcare-api
     ports:
       - "8080:8080"
+    depends_on:
+      - postgres
     environment:
       - PORT=8080
-      - DB_CONNECTION_STRING=${DB_CONNECTION_STRING}
+      - DB_CONNECTION_STRING=Host=postgres;Port=5432;Database=trackcare;Username=postgres;Password=postgres
       - SUPABASE_URL=${SUPABASE_URL}
       - SUPABASE_KEY=${SUPABASE_KEY}
       - FRONTEND_URL=${FRONTEND_URL:-http://localhost:5173}
@@ -23,8 +38,10 @@ services:
         - VITE_API_URL=${VITE_API_URL:-http://localhost:8080/api}
     container_name: trackcare-web
     ports:
-      - "3000:3000"
+      - "3000:80"
     depends_on:
       - trackcare-api
     restart: unless-stopped
 
+volumes:
+  postgres_data:
