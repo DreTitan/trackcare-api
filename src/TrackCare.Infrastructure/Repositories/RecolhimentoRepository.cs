@@ -107,7 +107,7 @@ public class RecolhimentoRepository : IRecolhimentoRepository
         var primeiroDiaMes = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
         var encerradosMes = await _context.Recolhimentos
             .Where(r => r.Status == StatusRecolhimento.Encerrado &&
-                       r.AtualizadoEm >= primeiroDiaMes)
+                       r.LastModified >= primeiroDiaMes)
             .CountAsync();
 
         return (totalAtivos, aguardaColeta, emReparo, encerradosMes);

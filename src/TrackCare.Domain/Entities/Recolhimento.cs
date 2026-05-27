@@ -1,10 +1,10 @@
+using TrackCare.Domain.Common;
 using TrackCare.Domain.Enums;
 
 namespace TrackCare.Domain.Entities;
 
-public class Recolhimento
+public class Recolhimento : BaseAuditableEntity
 {
-    public int Id { get; set; }
     public string Hgid { get; set; } = string.Empty;
     public string NumeroSerie { get; set; } = string.Empty;
     public string? Modelo { get; set; }
@@ -25,9 +25,6 @@ public class Recolhimento
     public DateTime? DataPrevistaDevolucao { get; set; }
     public DateTime? DataDevolucaoReal { get; set; }
     public string? Observacoes { get; set; }
-    public string? CriadoPor { get; set; }
-    public DateTime CriadoEm { get; set; } = DateTime.UtcNow;
-    public DateTime AtualizadoEm { get; set; } = DateTime.UtcNow;
 
     public ICollection<HistoricoStatus> HistoricoStatus { get; set; } = new List<HistoricoStatus>();
     public ICollection<Anexo> Anexos { get; set; } = new List<Anexo>();

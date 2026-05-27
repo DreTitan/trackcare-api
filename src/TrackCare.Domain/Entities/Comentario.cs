@@ -1,8 +1,9 @@
+using TrackCare.Domain.Common;
+
 namespace TrackCare.Domain.Entities;
 
-public class Comentario
+public class Comentario : BaseEntity
 {
-    public int Id { get; set; }
     public int RecolhimentoId { get; set; }
     public string Texto { get; set; } = string.Empty;
     public string? Usuario { get; set; }

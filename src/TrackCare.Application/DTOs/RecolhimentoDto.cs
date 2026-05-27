@@ -23,7 +23,7 @@ public record RecolhimentoDto(
     DateTime? DataPrevistaDevolucao,
     DateTime? DataDevolucaoReal,
     string? Observacoes,
-    string? CriadoPor,
-    DateTime CriadoEm,
-    DateTime AtualizadoEm
+    string? CreatedBy,
+    DateTimeOffset Created,
+    DateTimeOffset LastModified
 );

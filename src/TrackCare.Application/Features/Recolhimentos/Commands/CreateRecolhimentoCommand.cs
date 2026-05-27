@@ -45,9 +45,9 @@ public class CreateRecolhimentoCommandHandler : IRequestHandler<CreateRecolhimen
             Observacoes = request.Dto.Observacoes,
             Status = StatusRecolhimento.N3_Enviou,
             DataSolicitacao = DateTime.UtcNow,
-            CriadoPor = request.Dto.Usuario,
-            CriadoEm = DateTime.UtcNow,
-            AtualizadoEm = DateTime.UtcNow
+            CreatedBy = request.Dto.Usuario,
+            Created = DateTimeOffset.UtcNow,
+            LastModified = DateTimeOffset.UtcNow
         };
 
         var created = await _repository.AddAsync(entity);

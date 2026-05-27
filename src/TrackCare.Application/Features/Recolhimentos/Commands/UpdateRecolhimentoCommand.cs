@@ -38,7 +38,7 @@ public class UpdateRecolhimentoCommandHandler : IRequestHandler<UpdateRecolhimen
         entity.JaRecolhido = request.Dto.JaRecolhido;
         entity.DataPrevistaColeta = request.Dto.DataPrevistaColeta;
         entity.Observacoes = request.Dto.Observacoes;
-        entity.AtualizadoEm = DateTime.UtcNow;
+        entity.LastModified = DateTimeOffset.UtcNow;
 
         await _repository.UpdateAsync(entity);
         return _mapper.Map<RecolhimentoDto>(entity);

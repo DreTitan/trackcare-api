@@ -1,13 +1,14 @@
 using FluentValidation;
-using TrackCare.Application.Mapping;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using TrackCare.Application;
 using TrackCare.Infrastructure;
+using TrackCare.Infrastructure.Persistence;
 using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Azure / Cloud: usa variáveis de ambiente
-// WEBSITE_ -> Azure App Service
-// DB_CONNECTION_STRING, SUPABASE_URL, SUPABASE_KEY -> genérico
 var dbConn = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
     ?? Environment.GetEnvironmentVariable("WEBSITE_DB_CONNECTION_STRING");
 var supabaseUrl = Environment.GetEnvironmentVariable("SUPABASE_URL")
@@ -42,7 +43,7 @@ if (!string.IsNullOrEmpty(supabaseUrl))
 if (!string.IsNullOrEmpty(supabaseKey))
     builder.Configuration["Supabase:Key"] = supabaseKey;
 
-// Porta: Azure usa 8080, local usa 5000
+// Porta
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
 builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
@@ -53,12 +54,8 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new() { Title = "TrackCare API", Version = "v1" });
 });
 
-builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssembly(typeof(MappingProfile).Assembly));
-
+builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructure(builder.Configuration);
-
-builder.Services.AddValidatorsFromAssemblyContaining<MappingProfile>();
 
 builder.Services.AddCors(options =>
 {
@@ -85,7 +82,6 @@ app.UseCors("AllowReactApp");
 app.UseAuthorization();
 app.MapControllers();
 
-// Railway health check endpoint
 app.MapGet("/", () => Results.Ok(new { status = "ok", timestamp = DateTime.UtcNow }));
 
 app.Run();

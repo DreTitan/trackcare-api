@@ -1,10 +1,10 @@
+using TrackCare.Domain.Common;
 using TrackCare.Domain.Enums;
 
 namespace TrackCare.Domain.Entities;
 
-public class HistoricoStatus
+public class HistoricoStatus : BaseEntity
 {
-    public int Id { get; set; }
     public int RecolhimentoId { get; set; }
     public StatusRecolhimento StatusAnterior { get; set; }
     public StatusRecolhimento StatusNovo { get; set; }

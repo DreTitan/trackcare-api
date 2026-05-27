@@ -1,10 +1,10 @@
+using TrackCare.Domain.Common;
 using TrackCare.Domain.Enums;
 
 namespace TrackCare.Domain.Entities;
 
-public class Anexo
+public class Anexo : BaseEntity
 {
-    public int Id { get; set; }
     public int RecolhimentoId { get; set; }
     public TipoAnexo Tipo { get; set; } = TipoAnexo.PDF;
     public string NomeOriginal { get; set; } = string.Empty;

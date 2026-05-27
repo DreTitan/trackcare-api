@@ -28,7 +28,7 @@ public class UpdateStatusCommandHandler : IRequestHandler<UpdateStatusCommand, b
 
         var statusAnterior = entity.Status;
         entity.Status = Enum.Parse<StatusRecolhimento>(request.NovoStatus);
-        entity.AtualizadoEm = DateTime.UtcNow;
+        entity.LastModified = DateTimeOffset.UtcNow;
 
         await _repository.UpdateAsync(entity);
 

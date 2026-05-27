@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using TrackCare.Application.Common.Interfaces;
 using TrackCare.Domain.Entities;
 
 namespace TrackCare.Infrastructure.Persistence;
 
-public class TrackCareDbContext : DbContext
+public class TrackCareDbContext : DbContext, IApplicationDbContext
 {
     public TrackCareDbContext(DbContextOptions<TrackCareDbContext> options) : base(options)
     {
@@ -13,6 +14,9 @@ public class TrackCareDbContext : DbContext
     public DbSet<HistoricoStatus> HistoricoStatus => Set<HistoricoStatus>();
     public DbSet<Anexo> Anexos => Set<Anexo>();
     public DbSet<Comentario> Comentarios => Set<Comentario>();
+
+    public new async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        => await base.SaveChangesAsync(cancellationToken);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -33,7 +37,7 @@ public class TrackCareDbContext : DbContext
             entity.Property(e => e.DescricaoProblema).HasMaxLength(2000);
             entity.Property(e => e.RelatorioN3).HasMaxLength(4000);
             entity.Property(e => e.Observacoes).HasMaxLength(4000);
-            entity.Property(e => e.CriadoPor).HasMaxLength(100);
+            entity.Property(e => e.CreatedBy).HasMaxLength(100);
 
             entity.HasIndex(e => e.Hgid);
             entity.HasIndex(e => e.NumeroSerie);
