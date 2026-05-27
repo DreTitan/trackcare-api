@@ -12,5 +12,6 @@ RUN dotnet publish TrackCare.WebApi.csproj -c Release -o /app/publish /p:UseAppH
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 CMD curl -f http://localhost:8080/ || exit 1
 COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "TrackCare.WebApi.dll"]
